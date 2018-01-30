@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.26" />
 
 
-<title>About - A Hugo website</title>
-<meta property="og:title" content="About - A Hugo website">
+<title>Reproducibility - A Hugo website</title>
+<meta property="og:title" content="Reproducibility - A Hugo website">
 
 
 
@@ -50,13 +50,34 @@
 
   <article class="article">
     
+    <span class="article-duration">1 min read</span>
+    
 
-    <h1 class="article-title">About</h1>
+    <h1 class="article-title">Reproducibility</h1>
 
+    
+    <span class="article-date">2018/01/30</span>
     
 
     <div class="article-content">
-      <p>This is a &ldquo;hello world&rdquo; example website for the <a href="https://github.com/rstudio/blogdown"><strong>blogdown</strong></a> package. The theme was forked from <a href="https://github.com/jrutheiser/hugo-lithium-theme">@jrutheiser/hugo-lithium-theme</a> and modified by <a href="https://github.com/yihui/hugo-lithium-theme">Yihui Xie</a>.</p>
+      <blockquote>
+<p><em>“Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.”</em></p>
+</blockquote>
+<p>If you’ve ever asked a question on <a href="https://stackoverflow.com">Stack Overflow</a> (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it’s often overlooked by newcombers. To be brief, a great reproducible example should be:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Minimal</strong> – Provide the least amount of code needed to reproduce the problem.</li>
+<li><strong>Complete</strong> – Provide everything needed to reproduce the problem (pacakges, data, functions, etc.).</li>
+<li><strong>Verifiable</strong> – Test your code and confirm that it reproduces the problem.</li>
+</ol>
+<p>See <a href="https://stackoverflow.com/help/mcve">this SO post</a> for a comprehensive defintion of what constitutes a minimal, complete, and verifiable example. For discussion on reproducibility in R, see <a href="https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example">this SO post</a>.</p>
+<p>Additionally, here’s a list of some other things I think are important:</p>
+<ol style="list-style-type: decimal">
+<li>Load the packages you need. Don’t ask/answer questions with <code>library(tidyverse)</code> when the user only needs <code>dplyr</code>.</li>
+<li>Avoid text heavy questions. Questions are often easier to answer with just a few sentences, data, and the desired output.</li>
+<li>Ask one question at a time. If you have another, post a different question rather than modifying the original.</li>
+<li>Use <code>dput</code> to copy/paste data and <code>reprex</code> for rendering your code.</li>
+<li>Avoid fragile and destructive code like <code>setwd()</code> or <code>rm(list = ls())</code>.</li>
+</ol>
 
     </div>
   </article>

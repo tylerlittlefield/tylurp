@@ -6,20 +6,20 @@
     <description>Recent content in R on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Reproducibility</title>
+      <link>/2018/01/30/reproducibility/</link>
+      <pubDate>Tue, 30 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hello-r-markdown/</guid>
-      <description>R Markdown Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.:19.0 3rd Qu.: 56.00 ## Max.</description>
+      <guid>/2018/01/30/reproducibility/</guid>
+      <description>“Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.”
+ If you’ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it’s often overlooked by newcombers. To be brief, a great reproducible example should be:
+Minimal – Provide the least amount of code needed to reproduce the problem.</description>
     </item>
     
   </channel>
