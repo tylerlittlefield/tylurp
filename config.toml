@@ -5,8 +5,6 @@ theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
-enableEmoji: true
-footnotereturnlinkcontents: "↩"
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -14,16 +12,6 @@ footnotereturnlinkcontents: "↩"
 [[menu.main]]
     name = "About"
     url = "/about/"
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/tyluRp"
-[[menu.main]]
-    name = "Twitter"
-    url = "https://twitter.com/tyluRp"
-    
-[[menu.main]]
-    name = "Stack Overflow"
-    url = "https://stackoverflow.com/users/7362046/tylurp?tab=profile"
 
 [params]
     description = "A website built through Hugo and blogdown."
@@ -42,4 +30,3 @@ footnotereturnlinkcontents: "↩"
     width = 50
     height = 50
     alt = "Logo"
-
