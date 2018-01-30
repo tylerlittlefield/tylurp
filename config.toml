@@ -5,6 +5,8 @@ theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+enableEmoji: true
+footnotereturnlinkcontents: "↩"
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -18,6 +20,10 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/tyluRp"
+    
+[[menu.main]]
+    name = "Stack Overflow"
+    url = "https://stackoverflow.com/users/7362046/tylurp?tab=profile"
 
 [params]
     description = "A website built through Hugo and blogdown."
