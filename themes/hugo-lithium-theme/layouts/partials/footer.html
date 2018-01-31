@@ -8,6 +8,9 @@
             <li><a href="https://www.linkedin.com/in/tyler-littlefield-628662139/"><i class="fa fa-linkedin" aria-hidden="true" title="LinkedIn"></i><span class="sr-only">LinkedIn</span></a></li>
             <li><a href="/"><i title="Last change"></i> Last change: {{ dateFormat "2006/01/02" .Site.LastChange }}</a></li>
         </ul>
+        {{ if .IsPage }}
+          {{ template "_internal/disqus.html" . }}
+        {{ end }}
       </footer>
 
     </div>
