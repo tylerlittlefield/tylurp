@@ -3,4 +3,10 @@ title: "About"
 date: "2016-05-05T21:48:51-07:00"
 ---
 
-This is a "hello world" example website for the [**blogdown**](https://github.com/rstudio/blogdown) package. The theme was forked from [@jrutheiser/hugo-lithium-theme](https://github.com/jrutheiser/hugo-lithium-theme) and modified by [Yihui Xie](https://github.com/yihui/hugo-lithium-theme).
+I am currently a contractor working with the Apple Maps team. Grew up in Oregon where I received my geography degree from the University of Oregon. I am interested in spatial data analysis and collection. I am also a big R useR and spend a lot of time using this tool for summary statistics, plotting, data munging, and more.
+
+In my free time, I drink a lot of coffee, watch movies, and participate in social programming (Stack Overflow).
+
+Shoot me an [email](mailto:tylurp1@gmail.com) if you have any questions or just want to say hi!
+
+![](/images/about.jpg)
