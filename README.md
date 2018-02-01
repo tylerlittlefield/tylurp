@@ -1,3 +1,3 @@
 # tylurp
 
-![](images/about.png)
+![](public/images/about.png)
