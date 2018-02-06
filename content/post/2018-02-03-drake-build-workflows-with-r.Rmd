@@ -112,7 +112,7 @@ make(whole_plan)
 
 Once our workflow has been made, we can play around with the targets we created:
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 readd(plot_recent)
 readd(top_tweeters_recent) %>% as_tibble()
 ```
