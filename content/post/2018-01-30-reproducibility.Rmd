@@ -12,7 +12,7 @@ tags: ['r']
 If you've ever asked a question on [Stack Overflow](https://stackoverflow.com) (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it's often overlooked by newcombers. To be brief, a great reproducible example should be:
 
 1. **Minimal** -- Provide the least amount of code needed to reproduce the problem.
-2. **Complete** -- Provide everything needed to reproduce the problem (pacakges, data, functions, etc.).
+2. **Complete** -- Provide everything needed to reproduce the problem (packages, data, functions, etc.).
 3. **Verifiable** -- Test your code and confirm that it reproduces the problem.
 
 See [this SO post](https://stackoverflow.com/help/mcve) for a comprehensive defintion of what constitutes a minimal, complete, and verifiable example. For discussion on reproducibility in R, see [this SO post](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example).
