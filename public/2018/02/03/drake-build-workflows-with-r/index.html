@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.26" />
+
+
+<title>drake: build workflows with R - A Hugo website</title>
+<meta property="og:title" content="drake: build workflows with R - A Hugo website">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/ein.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">drake: build workflows with R</h1>
+
+    
+    <span class="article-date">2018/02/03</span>
+    
+
+    <div class="article-content">
+      <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="/rmarkdown-libs/vis/vis.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/vis/vis.min.js"></script>
+<script src="/rmarkdown-libs/visNetwork-binding/visNetwork.js"></script>
+
+
+<div class="figure">
+<img src="https://cdn-images-1.medium.com/max/1600/1*0msxQhIX1Wj_LSuY5GwFzg.gif" />
+
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p><strong><code>drake</code></strong> is a really cool R package designed to manage workflows. It’s described as a computational engine for data science projects. The goal is to keep results up to date while also skipping anything that hasn’t changed. As a result, users can scale their work, skip redundant work, and reap the benefits of reproducibility.</p>
+<blockquote>
+<p><a href="https://github.com/ropensci/drake"><em>“What gets done stays done.”</em></a></p>
+</blockquote>
+<p>To no suprise, the package is part of the <a href="https://ropensci.org">rOpenSci</a> project, a community devoted to transparent research practices and reproducibility. It was covered during Jenny Bryan’s workshop at <a href="https://twitter.com/search?q=%23rstudioconf&amp;src=typd">#rstudioconf</a> in San Diego. You can see the slides <a href="https://krlmlr.github.io/drake-pitch/#1">here</a>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> As I write this, I’m not positive that there is a recording of this workshop. I reached out to Kirill Müller and <a href="https://twitter.com/krlmlr/status/960056569466703872">he wasn’t sure either</a> but stay tuned for a text version of the material. Now let’s dive into the code.</p>
+</div>
+<div id="use-drake-to-scrape-tweets" class="section level1">
+<h1>Use <code>drake</code> to scrape tweets</h1>
+<p>The goal is to make a workflow for scraping tweets. Let’s start by loading the libraries we need:</p>
+<pre class="r"><code>library(drake)   # workflow manager
+library(rtweet)  # gather tweets
+library(dplyr)   # data wrangling
+library(ggplot2) # plotting
+library(tibble)  # pretty dataframes</code></pre>
+<p>Next, let’s make a list of the hashtags of interest:</p>
+<pre class="r"><code>hashtag_list &lt;- c(&quot;#rstats&quot;,
+                  &quot;#tidyverse&quot;,
+                  &quot;#dplyr&quot;,
+                  &quot;#data.table&quot;)</code></pre>
+<p>Now it’s time to use <code>drake</code>. We start off by creating a <code>drake_plan</code>, we’ll call this <code>data_plan</code>:</p>
+<pre class="r"><code>data_plan &lt;- drake_plan(
+  recent = search_tweets2(hashtag_list, n = 10000, type = &quot;recent&quot;),
+  strings_in_dots = &quot;literals&quot;
+)</code></pre>
+<p>Then we create a <code>drake_plan</code> for our desired outputs, we’ll call this <code>output_types</code>:</p>
+<pre class="r"><code>output_types &lt;- drake_plan(
+  top_tweeters = make_my_table(dataset__),
+  plot = make_my_plot(dataset__)
+)</code></pre>
+<p>We need to create functions for our <code>output_types</code> object. One function for creating a table of the top tweeters (users who use a hashtag the most) and another function for plotting the number of tweets per hashtag:</p>
+<pre class="r"><code>make_my_table &lt;- function(tweets){
+    data.frame(tweets %&gt;% 
+                 select(screen_name, query) %&gt;% 
+                 group_by_all() %&gt;% 
+                 count() %&gt;% 
+                 ungroup() %&gt;% 
+                 arrange(desc(n)))
+}
+
+make_my_plot &lt;- function(tweets){
+  ggplot(tweets) +
+    geom_histogram(aes(created_at, fill = query)) +
+    scale_y_log10()
+}</code></pre>
+<p>We use <code>plan_analyses</code> to bridge our data with the desired outputs:</p>
+<pre class="r"><code>output_plan &lt;- plan_analyses(
+  plan = output_types,
+  datasets = data_plan
+)</code></pre>
+<p>Finally, we bring everything together using <code>rbind</code> and <code>make</code>, the central most important function in <code>drake</code>:</p>
+<pre class="r"><code>whole_plan &lt;- rbind(data_plan, output_plan)
+make(whole_plan)
+
+# cache /Users/tylerlittlefield/Github/tylurp/.drake
+# connect 7 imports: data_plan, make_my_table, make_my_plot, hashtag_list, whol...
+# connect 3 targets: recent, top_tweeters_recent, plot_recent
+# check 16 items: aes, arrange, count, created_at, data.frame, desc, geom_histo...
+# check 2 items: make_my_plot, make_my_table
+# check 1 item: recent
+# target recent
+# Searching for tweets...
+# Finished collecting tweets!
+# Searching for tweets...
+# Finished collecting tweets!
+# Searching for tweets...
+# Finished collecting tweets!
+# Searching for tweets...
+# Finished collecting tweets!
+# check 2 items: plot_recent, top_tweeters_recent
+# target plot_recent
+# target top_tweeters_recent</code></pre>
+<p>Once our workflow has been made, we can play around with the targets we created:</p>
+<pre class="r"><code>readd(plot_recent)</code></pre>
+<pre><code>## Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
+<pre><code>## Warning: Removed 17 rows containing missing values (geom_bar).</code></pre>
+<p><img src="/post/2018-02-03-drake-build-workflows-with-r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>readd(top_tweeters_recent) %&gt;% as_tibble()</code></pre>
+<pre><code>## # A tibble: 4,035 x 3
+##    screen_name     query       n
+##    &lt;chr&gt;           &lt;chr&gt;   &lt;int&gt;
+##  1 rstatsbot1234   #rstats  1640
+##  2 CRANberriesFeed #rstats   181
+##  3 rweekly_live    #rstats    80
+##  4 Tsundu_Mak      #rstats    75
+##  5 renato_umeton   #rstats    70
+##  6 Rbloggers       #rstats    67
+##  7 mdsumner        #rstats    66
+##  8 DerFredo        #rstats    56
+##  9 Cruz_Julian_    #rstats    51
+## 10 hadleywickham   #rstats    45
+## # ... with 4,025 more rows</code></pre>
+<p>To visualize our workflow we can use <code>vis_drake_graph</code>:</p>
+<pre class="r"><code>config &lt;- drake_config(whole_plan)
+vis_drake_graph(config)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"nodes":{"id":["hashtag_list","search_tweets2","arrange","count","data.frame","desc","group_by_all","n","query","screen_name","select","ungroup","aes","created_at","geom_histogram","ggplot","scale_y_log10","make_my_table","make_my_plot","recent","top_tweeters_recent","plot_recent"],"label":["hashtag_list\n0.002s","search_tweets2\n0.002s","arrange\n0.003s","count\n0.004s","data.frame\n0.011s","desc\n0.003s","group_by_all\n0.003s","n\n0.003s","query\n0.002s","screen_name\n0.002s","select\n0.003s","ungroup\n0.003s","aes\n0.004s","created_at\n0.002s","geom_histogram\n0.005s","ggplot\n0.005s","scale_y_log10\n0.004s","make_my_table\n0.002s","make_my_plot\n0.002s","recent\n149s (~2.48 minutes)","top_tweeters_recent\n0.105s","plot_recent\n1.415s"],"status":["imported","imported","imported","imported","imported","imported","imported","imported","missing","missing","imported","imported","imported","missing","imported","imported","imported","imported","imported","up to date","up to date","up to date"],"type":["object","function","function","function","function","function","function","function","object","object","function","function","function","object","function","function","function","function","function","object","object","object"],"level":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,3,3],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#9A32CD","#9A32CD","#1874CD","#1874CD","#1874CD","#9A32CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#228B22","#228B22","#228B22"],"shape":["dot","triangle","triangle","triangle","triangle","triangle","triangle","triangle","dot","dot","triangle","triangle","triangle","dot","triangle","triangle","triangle","triangle","triangle","dot","dot","dot"],"hover_label":["hashtag_list","function (...) \n{\n    dots <- match_fun(list(...), \"search_tweets\")\n    q <- dots[[\"q\"]]\n    dots[[\"q\"]] <- NULL\n    parse <- dots[[\"parse\"]]\n    rt <- Map(\"search_tweets\", q, MoreArgs = dots)\n    if (!parse) {\n        return(rt)\n    }\n    kp <- l...","function (.data, ...) \n{\n    UseMethod(\"arrange\")\n}","function (x, ..., wt = NULL, sort = FALSE) \n{\n    groups <- group_vars(x)\n    x <- group_by(x, ..., add = TRUE)\n    x <- tally(x, wt = !(!enquo(wt)), sort = sort)\n    x <- group_by(x, !(!(!syms(groups))), add = FALSE)\n    x\n}","function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE, \n    fix.empty.names = TRUE, stringsAsFactors = default.stringsAsFactors()) \n{\n    data.row.names <- if (check.rows && is.null(row.names)) \n        function(current, new, i) ...","function (x) \n-xtfrm(x)","function (.tbl, .funs = list(), ...) \n{\n    funs <- manip_all(.tbl, .funs, enquo(.funs), caller_env(), \n        ...)\n    if (!length(funs)) {\n        funs <- syms(tbl_vars(.tbl))\n    }\n    group_by(.tbl, !(!(!funs)))\n}","function () \n{\n    abort(\"This function should not be called directly\")\n}","query","screen_name","function (.data, ...) \n{\n    UseMethod(\"select\")\n}","function (x, ...) \n{\n    UseMethod(\"ungroup\")\n}","function (x, y, ...) \n{\n    exprs <- rlang::enexprs(x = x, y = y, ...)\n    is_missing <- vapply(exprs, rlang::is_missing, logical(1))\n    aes <- structure(exprs[!is_missing], class = \"uneval\")\n    rename_aes(aes)\n}","created_at","function (mapping = NULL, data = NULL, stat = \"bin\", position = \"stack\", \n    ..., binwidth = NULL, bins = NULL, na.rm = FALSE, show.legend = NA, \n    inherit.aes = TRUE) \n{\n    layer(data = data, mapping = mapping, stat = stat, geom = GeomBar, \n ...","function (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}","function (...) \n{\n    scale_y_continuous(..., trans = log10_trans())\n}","function (tweets) \n{\n    data.frame(tweets %>% select(screen_name, query) %>% group_by_all() %>% \n        count() %>% ungroup() %>% arrange(desc(n)))\n}","function (tweets) \n{\n    ggplot(tweets) + geom_histogram(aes(created_at, fill = query)) + \n        scale_y_log10()\n}","search_tweets2(hashtag_list, n = 10000, type = \"recent\")","make_my_table(recent)","make_my_plot(recent)"],"x":[0.125,0.25,-1,-0.625,-0.5,-0.375,-0.25,-0.125,0.375,0,-0.875,-0.75,0.75,0.875,1,0.5,0.625,-0.4375,0.6875,0.1875,-0.125,0.4375],"y":[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,1,1]},"edges":{"from":["hashtag_list","search_tweets2","make_my_table","recent","make_my_plot","recent","arrange","count","data.frame","desc","group_by_all","n","query","screen_name","select","ungroup","aes","created_at","geom_histogram","ggplot","query","scale_y_log10"],"to":["recent","recent","top_tweeters_recent","top_tweeters_recent","plot_recent","plot_recent","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_plot","make_my_plot","make_my_plot","make_my_plot","make_my_plot","make_my_plot"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","In progress","Failed","Imported","Missing","Object","Function","File"],"color":["#228B22","#000000","#FF7221","#AA0000","#1874CD","#9A32CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","dot","dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black","black","black","black","black"],"font.size":[20,20,20,20,20,20,20,20,20],"id":[1,2,3,4,5,6,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+<p>If we change a parameter in the workflow, we can see this in the workflow diagram:</p>
+<pre class="r"><code>hashtag_list &lt;- c(&quot;#tidyverse&quot;,
+                  &quot;#dplyr&quot;,
+                  &quot;#data.table&quot;)
+
+config &lt;- drake_config(whole_plan)
+vis_drake_graph(config)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"nodes":{"id":["hashtag_list","search_tweets2","arrange","count","data.frame","desc","group_by_all","n","query","screen_name","select","ungroup","aes","created_at","geom_histogram","ggplot","scale_y_log10","make_my_table","make_my_plot","recent","top_tweeters_recent","plot_recent"],"label":["hashtag_list\n0.001s","search_tweets2\n0.002s","arrange\n0.004s","count\n0.003s","data.frame\n0.012s","desc\n0.003s","group_by_all\n0.003s","n\n0.005s","query\n0.002s","screen_name\n0.002s","select\n0.004s","ungroup\n0.004s","aes\n0.004s","created_at\n0.002s","geom_histogram\n0.004s","ggplot\n0.004s","scale_y_log10\n0.005s","make_my_table\n0.003s","make_my_plot\n0.002s","recent\n149s (~2.48 minutes)","top_tweeters_recent\n0.105s","plot_recent\n1.415s"],"status":["imported","imported","imported","imported","imported","imported","imported","imported","missing","missing","imported","imported","imported","missing","imported","imported","imported","imported","imported","outdated","outdated","outdated"],"type":["object","function","function","function","function","function","function","function","object","object","function","function","function","object","function","function","function","function","function","object","object","object"],"level":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,3,3],"font.size":[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],"color":["#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#9A32CD","#9A32CD","#1874CD","#1874CD","#1874CD","#9A32CD","#1874CD","#1874CD","#1874CD","#1874CD","#1874CD","#000000","#000000","#000000"],"shape":["dot","triangle","triangle","triangle","triangle","triangle","triangle","triangle","dot","dot","triangle","triangle","triangle","dot","triangle","triangle","triangle","triangle","triangle","dot","dot","dot"],"hover_label":["hashtag_list","function (...) \n{\n    dots <- match_fun(list(...), \"search_tweets\")\n    q <- dots[[\"q\"]]\n    dots[[\"q\"]] <- NULL\n    parse <- dots[[\"parse\"]]\n    rt <- Map(\"search_tweets\", q, MoreArgs = dots)\n    if (!parse) {\n        return(rt)\n    }\n    kp <- l...","function (.data, ...) \n{\n    UseMethod(\"arrange\")\n}","function (x, ..., wt = NULL, sort = FALSE) \n{\n    groups <- group_vars(x)\n    x <- group_by(x, ..., add = TRUE)\n    x <- tally(x, wt = !(!enquo(wt)), sort = sort)\n    x <- group_by(x, !(!(!syms(groups))), add = FALSE)\n    x\n}","function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE, \n    fix.empty.names = TRUE, stringsAsFactors = default.stringsAsFactors()) \n{\n    data.row.names <- if (check.rows && is.null(row.names)) \n        function(current, new, i) ...","function (x) \n-xtfrm(x)","function (.tbl, .funs = list(), ...) \n{\n    funs <- manip_all(.tbl, .funs, enquo(.funs), caller_env(), \n        ...)\n    if (!length(funs)) {\n        funs <- syms(tbl_vars(.tbl))\n    }\n    group_by(.tbl, !(!(!funs)))\n}","function () \n{\n    abort(\"This function should not be called directly\")\n}","query","screen_name","function (.data, ...) \n{\n    UseMethod(\"select\")\n}","function (x, ...) \n{\n    UseMethod(\"ungroup\")\n}","function (x, y, ...) \n{\n    exprs <- rlang::enexprs(x = x, y = y, ...)\n    is_missing <- vapply(exprs, rlang::is_missing, logical(1))\n    aes <- structure(exprs[!is_missing], class = \"uneval\")\n    rename_aes(aes)\n}","created_at","function (mapping = NULL, data = NULL, stat = \"bin\", position = \"stack\", \n    ..., binwidth = NULL, bins = NULL, na.rm = FALSE, show.legend = NA, \n    inherit.aes = TRUE) \n{\n    layer(data = data, mapping = mapping, stat = stat, geom = GeomBar, \n ...","function (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}","function (...) \n{\n    scale_y_continuous(..., trans = log10_trans())\n}","function (tweets) \n{\n    data.frame(tweets %>% select(screen_name, query) %>% group_by_all() %>% \n        count() %>% ungroup() %>% arrange(desc(n)))\n}","function (tweets) \n{\n    ggplot(tweets) + geom_histogram(aes(created_at, fill = query)) + \n        scale_y_log10()\n}","search_tweets2(hashtag_list, n = 10000, type = \"recent\")","make_my_table(recent)","make_my_plot(recent)"],"x":[0.125,0.25,-1,-0.625,-0.5,-0.375,-0.25,-0.125,0.375,0,-0.875,-0.75,0.75,0.875,1,0.5,0.625,-0.4375,0.6875,0.1875,-0.125,0.4375],"y":[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,1,1]},"edges":{"from":["hashtag_list","search_tweets2","make_my_table","recent","make_my_plot","recent","arrange","count","data.frame","desc","group_by_all","n","query","screen_name","select","ungroup","aes","created_at","geom_histogram","ggplot","query","scale_y_log10"],"to":["recent","recent","top_tweeters_recent","top_tweeters_recent","plot_recent","plot_recent","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_table","make_my_plot","make_my_plot","make_my_plot","make_my_plot","make_my_plot","make_my_plot"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"navigationButtons":true,"hover":true}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false},"byselection":{"enabled":false},"main":{"text":"Workflow graph","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","legend":{"width":0.2,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Outdated","In progress","Failed","Imported","Missing","Object","Function","File"],"color":["#228B22","#000000","#FF7221","#AA0000","#1874CD","#9A32CD","#888888","#888888","#888888"],"shape":["dot","dot","dot","dot","dot","dot","dot","triangle","square"],"font.color":["black","black","black","black","black","black","black","black","black"],"font.size":[20,20,20,20,20,20,20,20,20],"id":[1,2,3,4,5,6,7,8,9]},"nodesToDataframe":true},"igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","events":{"hoverNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }","blurNode":"function(e){\n        var label_info = this.body.data.nodes.get({\n          fields: ['label', 'hover_label'],\n          filter: function (item) {\n            return item.id === e.node\n          },\n          returnType :'Array'\n        });\n        this.body.data.nodes.update({\n          id: e.node,\n          label : label_info[0].hover_label,\n          hover_label : label_info[0].label\n        });\n      }"}},"evals":["events.hoverNode","events.blurNode"],"jsHooks":[]}</script>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>This package seems like it could be really useful. The idea of binding components of a workflow is really interesting. Just thinking of a workflow as a dataframe where each row is a step towards an output is also a really cool idea and I’m excited to explore <code>drake</code> further.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://krlmlr.github.io/drake-pitch/#1" class="uri">https://krlmlr.github.io/drake-pitch/#1</a><a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//tylurp-rbind-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+<script src="https://use.fontawesome.com/efb5af9857.js"></script>
+      <footer class="footer">
+        <ul class="footer-links">
+            <li><a href="mailto:tylurp1@gmail.com"><i class="fa fa-envelope" aria-hidden="true" title="Mail to Tyler"></i><span class="sr-only">Email</span></a></li>
+            <li><a href="https://github.com/tylurp"><i class="fa fa-github" aria-hidden="true" title="Github"></i><span class="sr-only">Github</span></a></li>
+            <li><a href="https://twitter.com/tyluRp"><i class="fa fa-twitter" aria-hidden="true" title="Twitter"></i><span class="sr-only">Twitter</span></a></li>
+            <li><a href="https://stackoverflow.com/users/7362046/tylurp?tab=profile"><i class="fa fa-stack-overflow" aria-hidden="true" title="Stack Overflow"></i><span class="sr-only">Stack Overflow</span></a></li>
+            <li><a href="https://www.linkedin.com/in/tyler-littlefield-628662139/"><i class="fa fa-linkedin" aria-hidden="true" title="LinkedIn"></i><span class="sr-only">LinkedIn</span></a></li>
+            <li><a href="/"><i title="Last change"></i> Last change: 2018/02/03</a></li>
+        </ul>
+        
+          <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "tylurp-rbind-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-106175087-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

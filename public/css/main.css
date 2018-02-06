@@ -301,6 +301,10 @@ code {
   .article-title {
     font-size: 42px;
   }
+  
+  .article-content {
+    font-size: 18px;
+  }
 
   .article-duration {
     font-size: 12px;

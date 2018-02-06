@@ -6,10 +6,21 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>drake: build workflows with R</title>
+      <link>/2018/02/03/drake-build-workflows-with-r/</link>
+      <pubDate>Sat, 03 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/03/drake-build-workflows-with-r/</guid>
+      <description>Introduction drake is a really cool R package designed to manage workflows. It’s described as a computational engine for data science projects. The goal is to keep results up to date while also skipping anything that hasn’t changed. As a result, users can scale their work, skip redundant work, and reap the benefits of reproducibility.
+ “What gets done stays done.”
+ To no suprise, the package is part of the rOpenSci project, a community devoted to transparent research practices and reproducibility.</description>
+    </item>
     
     <item>
       <title>Reproducibility</title>
