@@ -144,7 +144,7 @@ bms <- microbenchmark::microbenchmark(
 
 The results are:
 
-![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/benchmark_long_to_wide.png)
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/benchmark_long_to_wide_average.png)
 
 * `spread` from `tidyr` is great for exploratory data analysis on small datasets or small samples of large datasets.
 
