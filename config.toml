@@ -5,6 +5,7 @@ theme = "hugo-lithium-theme"
 googleAnalytics = "UA-106175087-1"
 disqusShortname = "tylurp-rbind-io"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+enableEmoji = true
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"

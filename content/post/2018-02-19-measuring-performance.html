@@ -1,0 +1,116 @@
+---
+title: Measuring performance
+author: ~
+date: '2018-02-13'
+slug: measuring-performance
+categories: ['r']
+tags: []
+---
+
+
+
+<p>With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use <code>microbenchmark</code> an R package designed to make benchmarking easy.</p>
+<p>I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about <code>microbenchmark</code> in his <a href="adv-r.had.co.nz/Performance.html#microbenchmarking">Advanced R</a> book. As of late, what I have found really informative is an <a href="https://stackoverflow.com/a/48708439/7362046">answer on Stack Overflow by Jaap</a> where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.</p>
+<p>Let’s consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:</p>
+<ol style="list-style-type: decimal">
+<li><code>spread</code> from the <code>tidyr</code> package</li>
+<li><code>dcast</code> from the <code>reshape2</code> package (superseeded by <code>tidyr</code>)</li>
+<li><code>reshape</code> from the <code>stats</code> package</li>
+<li><code>aggregate</code> from the <code>stats</code> package</li>
+<li><code>dcast</code> from <code>data.table</code></li>
+</ol>
+<p>Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:</p>
+<p>The result looks like:</p>
+<pre class="r"><code>as_tibble(stocksm)</code></pre>
+<pre><code>## # A tibble: 300 x 3
+##    time       stock   price
+##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt;
+##  1 2009-01-01 X      1.63  
+##  2 2009-01-02 X     -0.950 
+##  3 2009-01-03 X     -1.59  
+##  4 2009-01-04 X     -0.340 
+##  5 2009-01-05 X     -0.743 
+##  6 2009-01-06 X     -0.749 
+##  7 2009-01-07 X      0.0899
+##  8 2009-01-08 X      0.402 
+##  9 2009-01-09 X      0.278 
+## 10 2009-01-10 X      0.301 
+## # ... with 290 more rows</code></pre>
+<p>We will measure the performance of the following functions:</p>
+<pre class="r"><code>tidyr::spread(stocksm, stock, price)
+reshape2::dcast(stocksm, time ~ stock)
+stats::aggregate(price ~ time, stocksm, I)
+stats::reshape(stocksm_dt, idvar = &quot;time&quot;, timevar = &quot;stock&quot;, direction = &quot;wide&quot;)
+data.table::dcast(stocksm_dt, time ~ stock)
+data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enhanced</code></pre>
+<p>All of these (more or less) return:</p>
+<pre class="r"><code>stocksm %&gt;% 
+  spread(stock, price) %&gt;% 
+  head()</code></pre>
+<pre><code>##         time          X           Y          Z
+## 1 2009-01-01  1.6294516 -2.09484982  2.5942078
+## 2 2009-01-02 -0.9497890 -0.03341051 -0.8690705
+## 3 2009-01-03 -1.5876958  1.25332100  0.6282076
+## 4 2009-01-04 -0.3401463 -2.42295562 -2.6161056
+## 5 2009-01-05 -0.7429521  2.77408556 -5.3840384
+## 6 2009-01-06 -0.7488872 -0.49585775  8.9473531</code></pre>
+<p>And the <em>more or less</em> part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
+<pre class="r"><code>all.equal(
+  tidyr::spread(stocksm, stock, price),
+  reshape2::dcast(stocksm, time ~ stock)
+)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can see that <code>reshape2</code> and <code>tidyr</code> return the same output. This isn’t suprising as <code>tidyr</code> superseeded <code>reshape2</code> and is authored by the same person. However, if we test the outputs of the other solutions we’ll see that the output is not the same:</p>
+<pre class="r"><code>isTRUE(all.equal(
+  tidyr::spread(stocksm, stock, price),
+  stats::aggregate(price ~ time, stocksm, I)
+))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>The differences between the four solutions has to do with the structure of the output. Remove the <code>isTRUE</code> surrounding the <code>all.equal</code> call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the <code>dimnames</code> or the names of the dimensions/variables in each R object.</p>
+<pre class="r"><code>all.equal(
+  tidyr::spread(stocksm, stock, price) %&gt;% as.matrix(),
+  stats::aggregate(price ~ time, stocksm, I) %&gt;% as.matrix()
+)</code></pre>
+<pre><code>## [1] &quot;Attributes: &lt; Component \&quot;dimnames\&quot;: Component 2: 3 string mismatches &gt;&quot;
+## [2] &quot;200 string mismatches&quot;</code></pre>
+<p>Since we are only concerned with converting a long dataset to wide, let’s not worry about the underlying structure and proceed to measure the performance of all methods.</p>
+<p>We can create the functions for running the benchmarks and keeping the <code>microbenchmark</code> call a little cleaner:</p>
+<p>One for increasing the size:</p>
+<pre class="r"><code>tidyr_spread &lt;- function(dat) {
+  tidyr::spread(dat, stock, price)
+}
+
+reshape_decast &lt;- function(dat) {
+  reshape2::dcast(dat, time ~ stock)
+}
+
+stats_aggregate &lt;- function(dat) {
+  stats::aggregate(price ~ time, dat, I)
+}
+
+stats_reshape &lt;- function(dat) {
+  stats::reshape(dat, idvar = &quot;time&quot;, timevar = &quot;stock&quot;, direction = &quot;wide&quot;)
+}
+
+data.table_dcast &lt;- function(dat) {
+  data.table::dcast(dat, time ~ stock)
+}
+
+data.table_dcast_enhanced &lt;- function(dat) {
+  data.table::dcast(dat, time ~ stock, value.var = &quot;time&quot;)
+}</code></pre>
+<p>Finally, we can benchmark!</p>
+<pre class="r"><code>bms &lt;- microbenchmark::microbenchmark(
+  tidyr_spread = tidyr_spread(stocksm),
+  reshape_decast = reshape_decast(stocksm),
+  stats_aggregate = stats_aggregate(stocksm),
+  stats_reshape = stats_reshape(stocksm),
+  data.table_dcast = data.table_dcast(stocksm_dt),
+  data.table_dcast_enhanced = data.table_dcast_enhanced(stocksm_dt),
+  times = 100
+)</code></pre>
+<p>The results:</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/long_to_wide_benchmark.png" />
+
+</div>

@@ -1,0 +1,152 @@
+---
+title: Measuring performance
+author: ~
+date: '2018-02-13'
+slug: measuring-performance
+categories: ['r']
+tags: []
+---
+
+With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use `microbenchmark` an R package designed to make benchmarking easy.
+
+I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](adv-r.had.co.nz/Performance.html#microbenchmarking) book. As of late, what I have found really informative is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
+
+Let's consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:
+
+1. `spread` from the `tidyr` package
+2. `dcast` from the `reshape2` package (superseeded by `tidyr`)
+3. `reshape` from the `stats` package
+4. `aggregate` from the `stats` package
+5. `dcast` from `data.table`
+
+Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:
+
+```{r, include=FALSE}
+library(dplyr)
+library(tidyr)
+
+# Adjust n_xyz to increase size of dataset
+n_obs = 1e2
+n_date = n_obs - 1
+
+# Create dataset
+stocks <- data.frame(
+  time = as.Date('2009-01-01') + 0:n_date,
+  X = rnorm(n_obs, 0, 1),
+  Y = rnorm(n_obs, 0, 2),
+  Z = rnorm(n_obs, 0, 4)
+)
+
+# Gather wide to long
+stocksm <- stocks %>% gather(stock, price, -time)
+
+# Create data.table object for benchmarking purposes
+stocksm_dt <- data.table::as.data.table(stocksm)
+```
+
+The result looks like:
+
+```{r}
+as_tibble(stocksm)
+```
+
+We will measure the performance of the following functions:
+
+```{r, results='hide', message=FALSE}
+tidyr::spread(stocksm, stock, price)
+reshape2::dcast(stocksm, time ~ stock)
+stats::aggregate(price ~ time, stocksm, I)
+stats::reshape(stocksm_dt, idvar = "time", timevar = "stock", direction = "wide")
+data.table::dcast(stocksm_dt, time ~ stock)
+data.table::dcast(stocksm_dt, time ~ stock, value.var = "time") # enhanced
+```
+
+All of these (more or less) return:
+
+```{r}
+stocksm %>% 
+  spread(stock, price) %>% 
+  head()
+```
+
+And the _more or less_ part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the `all.equal` function, i.e. `all.equal(x, y)` where `x` is our target object and `y` is our current object to be used for testing 'near equality' between the two:
+
+```{r, message=FALSE}
+all.equal(
+  tidyr::spread(stocksm, stock, price),
+  reshape2::dcast(stocksm, time ~ stock)
+)
+```
+
+We can see that `reshape2` and `tidyr` return the same output. This isn't suprising as `tidyr` superseeded `reshape2` and is authored by the same person. However, if we test the outputs of the other solutions we'll see that the output is not the same:
+
+```{r}
+isTRUE(all.equal(
+  tidyr::spread(stocksm, stock, price),
+  stats::aggregate(price ~ time, stocksm, I)
+))
+```
+
+The differences between the four solutions has to do with the structure of the output. Remove the `isTRUE` surrounding the `all.equal` call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the `dimnames` or the names of the dimensions/variables in each R object.
+
+```{r}
+all.equal(
+  tidyr::spread(stocksm, stock, price) %>% as.matrix(),
+  stats::aggregate(price ~ time, stocksm, I) %>% as.matrix()
+)
+```
+
+Since we are only concerned with converting a long dataset to wide, let's not worry about the underlying structure and proceed to measure the performance of all methods.
+
+We can create the functions for running the benchmarks and keeping the `microbenchmark` call a little cleaner:
+
+One for increasing the size:
+
+```{r}
+tidyr_spread <- function(dat) {
+  tidyr::spread(dat, stock, price)
+}
+
+reshape_decast <- function(dat) {
+  reshape2::dcast(dat, time ~ stock)
+}
+
+stats_aggregate <- function(dat) {
+  stats::aggregate(price ~ time, dat, I)
+}
+
+stats_reshape <- function(dat) {
+  stats::reshape(dat, idvar = "time", timevar = "stock", direction = "wide")
+}
+
+data.table_dcast <- function(dat) {
+  data.table::dcast(dat, time ~ stock)
+}
+
+data.table_dcast_enhanced <- function(dat) {
+  data.table::dcast(dat, time ~ stock, value.var = "time")
+}
+```
+
+Finally, we can benchmark!
+
+```{r, message=FALSE, eval=FALSE}
+bms <- microbenchmark::microbenchmark(
+  tidyr_spread = tidyr_spread(stocksm),
+  reshape_decast = reshape_decast(stocksm),
+  stats_aggregate = stats_aggregate(stocksm),
+  stats_reshape = stats_reshape(stocksm),
+  data.table_dcast = data.table_dcast(stocksm_dt),
+  data.table_dcast_enhanced = data.table_dcast_enhanced(stocksm_dt),
+  times = 100
+)
+```
+
+The results:
+
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/long_to_wide_benchmark.png)
+
+
+
+
+

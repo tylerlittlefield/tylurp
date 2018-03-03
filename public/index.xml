@@ -6,10 +6,20 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Measuring performance</title>
+      <link>/2018/02/13/measuring-performance/</link>
+      <pubDate>Tue, 13 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/13/measuring-performance/</guid>
+      <description>With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use microbenchmark an R package designed to make benchmarking easy.
+I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about microbenchmark in his Advanced R book.</description>
+    </item>
     
     <item>
       <title>drake: build workflows with R</title>
