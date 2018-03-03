@@ -11,7 +11,7 @@ With any data science project there may be times where performance is a concern.
 
 I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](https://adv-r.hadley.nz/performance.html) book. As of late, what I have found really informative is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
 
-Let's consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:
+For this post, let's consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:
 
 1. `spread` from the `tidyr` package
 2. `dcast` from the `reshape2` package (superseeded by `tidyr`)
@@ -21,7 +21,7 @@ Let's consider the long to wide problem. We want to take a long dataset and make
 
 Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:
 
-```{r, include=FALSE}
+```{r}
 library(dplyr)
 library(tidyr)
 
@@ -99,8 +99,6 @@ all.equal(
 Since we are only concerned with converting a long dataset to wide, let's not worry about the underlying structure and proceed to measure the performance of all methods.
 
 We can create the functions for running the benchmarks and keeping the `microbenchmark` call a little cleaner:
-
-One for increasing the size:
 
 ```{r}
 tidyr_spread <- function(dat) {
