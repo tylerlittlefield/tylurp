@@ -107,7 +107,7 @@ tidyr_spread <- function(dat) {
   tidyr::spread(dat, stock, price)
 }
 
-reshape_decast <- function(dat) {
+reshape_dcast <- function(dat) {
   reshape2::dcast(dat, time ~ stock)
 }
 
@@ -133,7 +133,7 @@ Finally, we can benchmark!
 ```{r, message=FALSE, eval=FALSE}
 bms <- microbenchmark::microbenchmark(
   tidyr_spread = tidyr_spread(stocksm),
-  reshape_decast = reshape_decast(stocksm),
+  reshape_dcast = reshape_decast(stocksm),
   stats_aggregate = stats_aggregate(stocksm),
   stats_reshape = stats_reshape(stocksm),
   data.table_dcast = data.table_dcast(stocksm_dt),
