@@ -9,7 +9,7 @@ tags: []
 
 With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use `microbenchmark` an R package designed to make benchmarking easy.
 
-I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](adv-r.had.co.nz/Performance.html#microbenchmarking) book. As of late, what I have found really informative is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
+I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](https://adv-r.hadley.nz/performance.html) book. As of late, what I have found really informative is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
 
 Let's consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:
 
