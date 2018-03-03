@@ -144,9 +144,7 @@ bms <- microbenchmark::microbenchmark(
 
 The results:
 
-![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/long_to_wide_benchmark.png)
-
-
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/longtowidebenchmark.png)
 
 
 
