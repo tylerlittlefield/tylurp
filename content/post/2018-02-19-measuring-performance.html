@@ -20,16 +20,8 @@ tags: []
 <li><code>dcast</code> from <code>data.table</code></li>
 </ol>
 <p>Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)
+<pre class="r"><code>library(dplyr)
+library(tidyr)
 
 # Adjust n_xyz to increase size of dataset
 n_obs = 1e2
@@ -53,16 +45,16 @@ stocksm_dt &lt;- data.table::as.data.table(stocksm)</code></pre>
 <pre><code>## # A tibble: 300 x 3
 ##    time       stock  price
 ##    &lt;date&gt;     &lt;chr&gt;  &lt;dbl&gt;
-##  1 2009-01-01 X      2.66 
-##  2 2009-01-02 X     -1.42 
-##  3 2009-01-03 X      1.46 
-##  4 2009-01-04 X      1.03 
-##  5 2009-01-05 X     -0.409
-##  6 2009-01-06 X      1.27 
-##  7 2009-01-07 X     -1.46 
-##  8 2009-01-08 X     -0.261
-##  9 2009-01-09 X      1.19 
-## 10 2009-01-10 X      0.586
+##  1 2009-01-01 X     -0.890
+##  2 2009-01-02 X     -1.46 
+##  3 2009-01-03 X     -0.970
+##  4 2009-01-04 X      0.523
+##  5 2009-01-05 X      1.09 
+##  6 2009-01-06 X     -0.543
+##  7 2009-01-07 X      0.890
+##  8 2009-01-08 X     -0.883
+##  9 2009-01-09 X     -2.23 
+## 10 2009-01-10 X     -0.839
 ## # ... with 290 more rows</code></pre>
 <p>We will measure the performance of the following functions:</p>
 <pre class="r"><code>tidyr::spread(stocksm, stock, price)
@@ -75,13 +67,13 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
 <pre class="r"><code>stocksm %&gt;% 
   spread(stock, price) %&gt;% 
   head()</code></pre>
-<pre><code>##         time          X          Y          Z
-## 1 2009-01-01  2.6561114  2.9237877  4.7201400
-## 2 2009-01-02 -1.4170240  0.6800151  4.0700212
-## 3 2009-01-03  1.4622730 -0.4415728 -2.0001695
-## 4 2009-01-04  1.0277796 -0.1996935  5.0680620
-## 5 2009-01-05 -0.4093304  1.1553886 -0.1984743
-## 6 2009-01-06  1.2702285 -4.7606719  4.6680168</code></pre>
+<pre><code>##         time          X           Y         Z
+## 1 2009-01-01 -0.8900013  1.78924686 1.1375031
+## 2 2009-01-02 -1.4590614  1.67990345 1.5648478
+## 3 2009-01-03 -0.9695111 -0.75758439 0.1556534
+## 4 2009-01-04  0.5229745 -0.46118737 3.6158345
+## 5 2009-01-05  1.0945881 -0.08058867 3.5576953
+## 6 2009-01-06 -0.5428447 -1.09536589 1.4342707</code></pre>
 <p>And the <em>more or less</em> part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
 <pre class="r"><code>all.equal(
   tidyr::spread(stocksm, stock, price),
@@ -100,7 +92,7 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
   stats::aggregate(price ~ time, stocksm, I) %&gt;% as.matrix()
 )</code></pre>
 <pre><code>## [1] &quot;Attributes: &lt; Component \&quot;dimnames\&quot;: Component 2: 3 string mismatches &gt;&quot;
-## [2] &quot;300 string mismatches&quot;</code></pre>
+## [2] &quot;200 string mismatches&quot;</code></pre>
 <p>Since we are only concerned with converting a long dataset to wide, let’s not worry about the underlying structure and proceed to measure the performance of all methods.</p>
 <p>We can create the functions for running the benchmarks and keeping the <code>microbenchmark</code> call a little cleaner:</p>
 <pre class="r"><code>tidyr_spread &lt;- function(dat) {

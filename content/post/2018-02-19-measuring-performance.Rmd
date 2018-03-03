@@ -21,7 +21,7 @@ For this post, let's consider the long to wide problem. We want to take a long d
 
 Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:
 
-```{r}
+```{r, message=FALSE}
 library(dplyr)
 library(tidyr)
 
