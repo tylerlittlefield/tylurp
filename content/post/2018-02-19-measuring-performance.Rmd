@@ -7,9 +7,9 @@ categories: ['r']
 tags: []
 ---
 
-With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use `microbenchmark` an R package designed to make benchmarking easy.
+With any data science project there may be times where performance is a concern. This might be a result of the datas size or a lack of resources. In any case, we can use `microbenchmark` to measure the performance of specific functions.^[`microbenchmark` is an R package designed to make benchmarking easy.]
 
-I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](https://adv-r.hadley.nz/performance.html) book. As of late, what I have found really informative is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
+I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](https://adv-r.hadley.nz/performance.html) book. As of late, what I have found really useful is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.
 
 For this post, let's consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:
 
@@ -17,9 +17,9 @@ For this post, let's consider the long to wide problem. We want to take a long d
 2. `dcast` from the `reshape2` package (superseeded by `tidyr`)
 3. `reshape` from the `stats` package
 4. `aggregate` from the `stats` package
-5. `dcast` from `data.table`
+5. `dcast` from the `data.table` package
 
-Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:
+Now that we've gathered the possible solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:
 
 ```{r, message=FALSE}
 library(dplyr)
@@ -50,6 +50,8 @@ The result looks like:
 as_tibble(stocksm)
 ```
 
+We have three variables, `time`, `stock`, and `price` and we want to spread `stock` so that we can look at the `price` for each `stock` at a given `time`. 
+
 We will measure the performance of the following functions:
 
 ```{r, results='hide', message=FALSE}
@@ -69,7 +71,7 @@ stocksm %>%
   head()
 ```
 
-And the _more or less_ part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the `all.equal` function, i.e. `all.equal(x, y)` where `x` is our target object and `y` is our current object to be used for testing 'near equality' between the two:
+And the _more or less_ part is important and is one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the `all.equal` function, i.e. `all.equal(x, y)` where `x` is our target object and `y` is our current object to be used for testing 'near equality' between the two:
 
 ```{r, message=FALSE}
 all.equal(
@@ -78,7 +80,7 @@ all.equal(
 )
 ```
 
-We can see that `reshape2` and `tidyr` return the same output. This isn't suprising as `tidyr` superseeded `reshape2` and is authored by the same person. However, if we test the outputs of the other solutions we'll see that the output is not the same:
+We can see that `reshape2` and `tidyr` return the same output. This isn't too suprising as `tidyr` superseeded `reshape2` and is authored by the same person. However, if we test the outputs of the other solutions we'll see that the output is not the same:
 
 ```{r}
 isTRUE(all.equal(
@@ -87,7 +89,7 @@ isTRUE(all.equal(
 ))
 ```
 
-The differences between the four solutions has to do with the structure of the output. Remove the `isTRUE` surrounding the `all.equal` call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the `dimnames` or the names of the dimensions/variables in each R object.
+The differences between the four solutions has to do with the structure of the output. Some are data frames, some are data tables and others are matrices. Remove the `isTRUE` surrounding the `all.equal` call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the `dimnames` or the names of the dimensions/variables in each R object.
 
 ```{r}
 all.equal(
@@ -96,7 +98,7 @@ all.equal(
 )
 ```
 
-Since we are only concerned with converting a long dataset to wide, let's not worry about the underlying structure and proceed to measure the performance of all methods.
+This is due to the functions naming convention as each function names the resulting spread differently. Since we are only concerned with converting a long dataset to wide, let's not worry about the underlying structure and proceed to measure the performance of all methods.
 
 We can create the functions for running the benchmarks and keeping the `microbenchmark` call a little cleaner:
 
@@ -140,9 +142,13 @@ bms <- microbenchmark::microbenchmark(
 )
 ```
 
-The results:
+The results are:
 
 ![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/benchmark_long_to_wide.png)
 
+* `spread` from `tidyr` is great for exploratory data analysis on small datasets or small samples of large datasets.
 
+* `dcast` from `data.table` is clearly faster once the data gets larger and should be used for spreading big data.
+
+* `reshape` and `aggregate` from the `stats` package perform the worst.
 

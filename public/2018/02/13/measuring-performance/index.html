@@ -55,7 +55,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Measuring performance</h1>
@@ -65,17 +65,17 @@
     
 
     <div class="article-content">
-      <p>With any data science project there may be times where performance is a concern. This might be a result of a lack of resources or the size of the data involved. In any case, we can use <code>microbenchmark</code> an R package designed to make benchmarking easy.</p>
-<p>I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about <code>microbenchmark</code> in his <a href="https://adv-r.hadley.nz/performance.html">Advanced R</a> book. As of late, what I have found really informative is an <a href="https://stackoverflow.com/a/48708439/7362046">answer on Stack Overflow by Jaap</a> where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.</p>
+      <p>With any data science project there may be times where performance is a concern. This might be a result of the datas size or a lack of resources. In any case, we can use <code>microbenchmark</code> to measure the performance of specific functions.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about <code>microbenchmark</code> in his <a href="https://adv-r.hadley.nz/performance.html">Advanced R</a> book. As of late, what I have found really useful is an <a href="https://stackoverflow.com/a/48708439/7362046">answer on Stack Overflow by Jaap</a> where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.</p>
 <p>For this post, let’s consider the long to wide problem. We want to take a long dataset and make it wide. Furthermore, we want to insure that the solution to this problem is faster than the alternatives we can come up with. Off the top of my head, I can think of 5 ways to do this:</p>
 <ol style="list-style-type: decimal">
 <li><code>spread</code> from the <code>tidyr</code> package</li>
 <li><code>dcast</code> from the <code>reshape2</code> package (superseeded by <code>tidyr</code>)</li>
 <li><code>reshape</code> from the <code>stats</code> package</li>
 <li><code>aggregate</code> from the <code>stats</code> package</li>
-<li><code>dcast</code> from <code>data.table</code></li>
+<li><code>dcast</code> from the <code>data.table</code> package</li>
 </ol>
-<p>Once we come up with the possible solutions to this problem, we can then create a reproducible dataset that can be increased easily:</p>
+<p>Now that we’ve gathered the possible solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:</p>
 <pre class="r"><code>library(dplyr)
 library(tidyr)
 
@@ -99,19 +99,20 @@ stocksm_dt &lt;- data.table::as.data.table(stocksm)</code></pre>
 <p>The result looks like:</p>
 <pre class="r"><code>as_tibble(stocksm)</code></pre>
 <pre><code>## # A tibble: 300 x 3
-##    time       stock  price
-##    &lt;date&gt;     &lt;chr&gt;  &lt;dbl&gt;
-##  1 2009-01-01 X     -1.77 
-##  2 2009-01-02 X      1.57 
-##  3 2009-01-03 X     -0.156
-##  4 2009-01-04 X      1.27 
-##  5 2009-01-05 X     -1.25 
-##  6 2009-01-06 X      0.379
-##  7 2009-01-07 X     -1.51 
-##  8 2009-01-08 X      0.843
-##  9 2009-01-09 X     -1.26 
-## 10 2009-01-10 X      0.373
+##    time       stock   price
+##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt;
+##  1 2009-01-01 X      0.630 
+##  2 2009-01-02 X      0.274 
+##  3 2009-01-03 X      0.0744
+##  4 2009-01-04 X     -0.771 
+##  5 2009-01-05 X      0.200 
+##  6 2009-01-06 X     -1.73  
+##  7 2009-01-07 X      1.98  
+##  8 2009-01-08 X     -0.0862
+##  9 2009-01-09 X     -0.992 
+## 10 2009-01-10 X     -0.478 
 ## # ... with 290 more rows</code></pre>
+<p>We have three variables, <code>time</code>, <code>stock</code>, and <code>price</code> and we want to spread <code>stock</code> so that we can look at the <code>price</code> for each <code>stock</code> at a given <code>time</code>.</p>
 <p>We will measure the performance of the following functions:</p>
 <pre class="r"><code>tidyr::spread(stocksm, stock, price)
 reshape2::dcast(stocksm, time ~ stock)
@@ -123,32 +124,33 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
 <pre class="r"><code>stocksm %&gt;% 
   spread(stock, price) %&gt;% 
   head()</code></pre>
-<pre><code>##         time          X         Y          Z
-## 1 2009-01-01 -1.7703754 -1.193563 -6.2710897
-## 2 2009-01-02  1.5715118  1.931735  6.1699346
-## 3 2009-01-03 -0.1555831  1.339740 -2.7028677
-## 4 2009-01-04  1.2688428  2.262260  3.1525239
-## 5 2009-01-05 -1.2508734 -1.325278  8.3768098
-## 6 2009-01-06  0.3794178  1.130185 -0.4517643</code></pre>
-<p>And the <em>more or less</em> part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
+<pre><code>##         time           X           Y         Z
+## 1 2009-01-01  0.62961990  2.03456012  1.707522
+## 2 2009-01-02  0.27356386 -0.01535033 -5.255955
+## 3 2009-01-03  0.07442842 -3.69675078  3.458671
+## 4 2009-01-04 -0.77096602 -1.98324062  1.734791
+## 5 2009-01-05  0.20043108  1.66575551  2.274071
+## 6 2009-01-06 -1.73330540 -2.32405269  3.627860</code></pre>
+<p>And the <em>more or less</em> part is important and is one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
 <pre class="r"><code>all.equal(
   tidyr::spread(stocksm, stock, price),
   reshape2::dcast(stocksm, time ~ stock)
 )</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>We can see that <code>reshape2</code> and <code>tidyr</code> return the same output. This isn’t suprising as <code>tidyr</code> superseeded <code>reshape2</code> and is authored by the same person. However, if we test the outputs of the other solutions we’ll see that the output is not the same:</p>
+<p>We can see that <code>reshape2</code> and <code>tidyr</code> return the same output. This isn’t too suprising as <code>tidyr</code> superseeded <code>reshape2</code> and is authored by the same person. However, if we test the outputs of the other solutions we’ll see that the output is not the same:</p>
 <pre class="r"><code>isTRUE(all.equal(
   tidyr::spread(stocksm, stock, price),
   stats::aggregate(price ~ time, stocksm, I)
 ))</code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<p>The differences between the four solutions has to do with the structure of the output. Remove the <code>isTRUE</code> surrounding the <code>all.equal</code> call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the <code>dimnames</code> or the names of the dimensions/variables in each R object.</p>
+<p>The differences between the four solutions has to do with the structure of the output. Some are data frames, some are data tables and others are matrices. Remove the <code>isTRUE</code> surrounding the <code>all.equal</code> call in order to see these differences. If we treat each operation as a matrix the only difference between each of the outputs is the <code>dimnames</code> or the names of the dimensions/variables in each R object.</p>
 <pre class="r"><code>all.equal(
   tidyr::spread(stocksm, stock, price) %&gt;% as.matrix(),
   stats::aggregate(price ~ time, stocksm, I) %&gt;% as.matrix()
 )</code></pre>
-<pre><code>## [1] &quot;Attributes: &lt; Component \&quot;dimnames\&quot;: Component 2: 3 string mismatches &gt;&quot;</code></pre>
-<p>Since we are only concerned with converting a long dataset to wide, let’s not worry about the underlying structure and proceed to measure the performance of all methods.</p>
+<pre><code>## [1] &quot;Attributes: &lt; Component \&quot;dimnames\&quot;: Component 2: 3 string mismatches &gt;&quot;
+## [2] &quot;100 string mismatches&quot;</code></pre>
+<p>This is due to the functions naming convention as each function names the resulting spread differently. Since we are only concerned with converting a long dataset to wide, let’s not worry about the underlying structure and proceed to measure the performance of all methods.</p>
 <p>We can create the functions for running the benchmarks and keeping the <code>microbenchmark</code> call a little cleaner:</p>
 <pre class="r"><code>tidyr_spread &lt;- function(dat) {
   tidyr::spread(dat, stock, price)
@@ -183,10 +185,21 @@ data.table_dcast_enhanced &lt;- function(dat) {
   data.table_dcast_enhanced = data.table_dcast_enhanced(stocksm_dt),
   times = 100
 )</code></pre>
-<p>The results:</p>
+<p>The results are:</p>
 <div class="figure">
 <img src="https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/benchmark_long_to_wide.png" />
 
+</div>
+<ul>
+<li><p><code>spread</code> from <code>tidyr</code> is great for exploratory data analysis on small datasets or small samples of large datasets.</p></li>
+<li><p><code>dcast</code> from <code>data.table</code> is clearly faster once the data gets larger and should be used for spreading big data.</p></li>
+<li><p><code>reshape</code> and <code>aggregate</code> from the <code>stats</code> package perform the worst.</p></li>
+</ul>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><code>microbenchmark</code> is an R package designed to make benchmarking easy.<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
 
     </div>
