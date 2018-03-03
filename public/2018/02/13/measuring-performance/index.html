@@ -79,7 +79,7 @@
 <pre class="r"><code>library(dplyr)
 library(tidyr)
 
-# Adjust n_xyz to increase size of dataset
+# Adjust n_obs to increase size of dataset
 n_obs = 1e2
 n_date = n_obs - 1
 
@@ -101,16 +101,16 @@ stocksm_dt &lt;- data.table::as.data.table(stocksm)</code></pre>
 <pre><code>## # A tibble: 300 x 3
 ##    time       stock  price
 ##    &lt;date&gt;     &lt;chr&gt;  &lt;dbl&gt;
-##  1 2009-01-01 X     -0.890
-##  2 2009-01-02 X     -1.46 
-##  3 2009-01-03 X     -0.970
-##  4 2009-01-04 X      0.523
-##  5 2009-01-05 X      1.09 
-##  6 2009-01-06 X     -0.543
-##  7 2009-01-07 X      0.890
-##  8 2009-01-08 X     -0.883
-##  9 2009-01-09 X     -2.23 
-## 10 2009-01-10 X     -0.839
+##  1 2009-01-01 X     -1.49 
+##  2 2009-01-02 X      1.07 
+##  3 2009-01-03 X     -0.327
+##  4 2009-01-04 X      1.21 
+##  5 2009-01-05 X      1.03 
+##  6 2009-01-06 X      0.657
+##  7 2009-01-07 X      0.144
+##  8 2009-01-08 X     -0.750
+##  9 2009-01-09 X      0.288
+## 10 2009-01-10 X     -0.137
 ## # ... with 290 more rows</code></pre>
 <p>We will measure the performance of the following functions:</p>
 <pre class="r"><code>tidyr::spread(stocksm, stock, price)
@@ -123,13 +123,13 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
 <pre class="r"><code>stocksm %&gt;% 
   spread(stock, price) %&gt;% 
   head()</code></pre>
-<pre><code>##         time          X           Y         Z
-## 1 2009-01-01 -0.8900013  1.78924686 1.1375031
-## 2 2009-01-02 -1.4590614  1.67990345 1.5648478
-## 3 2009-01-03 -0.9695111 -0.75758439 0.1556534
-## 4 2009-01-04  0.5229745 -0.46118737 3.6158345
-## 5 2009-01-05  1.0945881 -0.08058867 3.5576953
-## 6 2009-01-06 -0.5428447 -1.09536589 1.4342707</code></pre>
+<pre><code>##         time          X          Y          Z
+## 1 2009-01-01 -1.4915871  2.5683787  0.4402866
+## 2 2009-01-02  1.0749918  1.3091216  2.1268716
+## 3 2009-01-03 -0.3267615  5.0490130 -9.0697780
+## 4 2009-01-04  1.2130085 -2.5149600  3.9588763
+## 5 2009-01-05  1.0342554  0.6960091  0.2413602
+## 6 2009-01-06  0.6567515 -1.9396175 -0.1335071</code></pre>
 <p>And the <em>more or less</em> part is important and herein lies one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
 <pre class="r"><code>all.equal(
   tidyr::spread(stocksm, stock, price),

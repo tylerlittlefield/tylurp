@@ -25,7 +25,7 @@ Once we come up with the possible solutions to this problem, we can then create 
 library(dplyr)
 library(tidyr)
 
-# Adjust n_xyz to increase size of dataset
+# Adjust n_obs to increase size of dataset
 n_obs = 1e2
 n_date = n_obs - 1
 
