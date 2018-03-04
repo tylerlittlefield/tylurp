@@ -27,7 +27,6 @@ a {
 
 pre,
 code {
-  font-family: '{{ .Get "mono_font" }}', monospace;
   background-color: #f9f2f4;
   padding: 3px;
   border-radius: 3px;
