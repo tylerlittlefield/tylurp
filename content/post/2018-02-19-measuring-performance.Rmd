@@ -7,6 +7,8 @@ categories: ['r']
 tags: []
 ---
 
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/long_to_wide_density.png)
+
 With any data science project there may be times where performance is a concern. This might be a result of the datas size or a lack of resources. In any case, we can use `microbenchmark` to measure the performance of specific functions.^[`microbenchmark` is an R package designed to make benchmarking easy.]
 
 I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about `microbenchmark` in his [Advanced R](https://adv-r.hadley.nz/performance.html) book. As of late, what I have found really useful is an [answer on Stack Overflow by Jaap](https://stackoverflow.com/a/48708439/7362046) where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.

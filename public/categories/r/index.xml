@@ -18,7 +18,7 @@
       
       <guid>/2018/02/13/measuring-performance/</guid>
       <description>With any data science project there may be times where performance is a concern. This might be a result of the datas size or a lack of resources. In any case, we can use microbenchmark to measure the performance of specific functions.1
-I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about microbenchmark in his Advanced R book. As of late, what I have found really useful is an answer on Stack Overflow by Jaap where he measures the performance of many alternative solutions for a specific problem in this case, finding the sequence of numbers in a vector.</description>
+I discovered this package on Stack Overflow as someone measured the performance of their answer among others. Hadley Wickham also writes about microbenchmark in his Advanced R book.</description>
     </item>
     
     <item>
