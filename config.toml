@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "A Hugo website"
+title = "tyluRp"
 theme = "hugo-lithium-theme"
 googleAnalytics = "UA-106175087-1"
 disqusShortname = "tylurp-rbind-io"
