@@ -75,13 +75,13 @@
 <li><code>aggregate</code> from the <code>stats</code> package</li>
 <li><code>dcast</code> from the <code>data.table</code> package</li>
 </ol>
-<p>Now that we’ve gathered the possible solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:</p>
+<p>Now that we’ve gathered a few solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:</p>
 <pre class="r"><code>library(dplyr)
 library(tidyr)
 
 # Adjust n_obs to increase size of dataset
-n_obs = 1e2
-n_date = n_obs - 1
+n_obs &lt;- 1e2
+n_date &lt;- n_obs - 1
 
 # Create dataset
 stocks &lt;- data.frame(
@@ -99,18 +99,18 @@ stocksm_dt &lt;- data.table::as.data.table(stocksm)</code></pre>
 <p>The result looks like:</p>
 <pre class="r"><code>as_tibble(stocksm)</code></pre>
 <pre><code>## # A tibble: 300 x 3
-##    time       stock   price
-##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt;
-##  1 2009-01-01 X      1.89  
-##  2 2009-01-02 X      0.269 
-##  3 2009-01-03 X     -1.04  
-##  4 2009-01-04 X      0.772 
-##  5 2009-01-05 X      0.0391
-##  6 2009-01-06 X     -0.110 
-##  7 2009-01-07 X      1.19  
-##  8 2009-01-08 X     -0.474 
-##  9 2009-01-09 X     -1.22  
-## 10 2009-01-10 X     -0.917 
+##    time       stock  price
+##    &lt;date&gt;     &lt;chr&gt;  &lt;dbl&gt;
+##  1 2009-01-01 X     -0.318
+##  2 2009-01-02 X      0.531
+##  3 2009-01-03 X      0.697
+##  4 2009-01-04 X      1.57 
+##  5 2009-01-05 X      0.464
+##  6 2009-01-06 X      0.545
+##  7 2009-01-07 X      0.407
+##  8 2009-01-08 X     -1.81 
+##  9 2009-01-09 X     -0.352
+## 10 2009-01-10 X      0.123
 ## # ... with 290 more rows</code></pre>
 <p>We have three variables, <code>time</code>, <code>stock</code>, and <code>price</code> and we want to spread <code>stock</code> so that we can look at the <code>price</code> for each <code>stock</code> at a given <code>time</code>.</p>
 <p>We will measure the performance of the following functions:</p>
@@ -124,13 +124,13 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
 <pre class="r"><code>stocksm %&gt;% 
   spread(stock, price) %&gt;% 
   head()</code></pre>
-<pre><code>##         time          X          Y         Z
-## 1 2009-01-01  1.8895104 -2.1792498 -1.299970
-## 2 2009-01-02  0.2692554 -2.1202077 -1.168921
-## 3 2009-01-03 -1.0408382  0.5839512  8.885503
-## 4 2009-01-04  0.7721473  0.2498800 -2.874002
-## 5 2009-01-05  0.0391101  1.6666575  4.027739
-## 6 2009-01-06 -0.1103250 -2.7279881 -3.877730</code></pre>
+<pre><code>##         time          X          Y          Z
+## 1 2009-01-01 -0.3181931  0.8165809 -4.9254663
+## 2 2009-01-02  0.5314142  0.1214186 -3.9313392
+## 3 2009-01-03  0.6972302  1.4072498 -1.1623289
+## 4 2009-01-04  1.5662409  2.8257114  0.3541687
+## 5 2009-01-05  0.4643984  3.2639568  0.9463186
+## 6 2009-01-06  0.5452727 -2.4676358 -5.5260152</code></pre>
 <p>And the <em>more or less</em> part is important and is one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the <code>all.equal</code> function, i.e. <code>all.equal(x, y)</code> where <code>x</code> is our target object and <code>y</code> is our current object to be used for testing ‘near equality’ between the two:</p>
 <pre class="r"><code>all.equal(
   tidyr::spread(stocksm, stock, price),
@@ -149,7 +149,7 @@ data.table::dcast(stocksm_dt, time ~ stock, value.var = &quot;time&quot;) # enha
   stats::aggregate(price ~ time, stocksm, I) %&gt;% as.matrix()
 )</code></pre>
 <pre><code>## [1] &quot;Attributes: &lt; Component \&quot;dimnames\&quot;: Component 2: 3 string mismatches &gt;&quot;
-## [2] &quot;200 string mismatches&quot;</code></pre>
+## [2] &quot;100 string mismatches&quot;</code></pre>
 <p>This is due to the functions naming convention as each function names the resulting spread differently. Since we are only concerned with converting a long dataset to wide, let’s not worry about the underlying structure and proceed to measure the performance of all methods.</p>
 <p>We can create the functions for running the benchmarks and keeping the <code>microbenchmark</code> call a little cleaner:</p>
 <pre class="r"><code>tidyr_spread &lt;- function(dat) {

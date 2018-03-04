@@ -19,15 +19,15 @@ For this post, let's consider the long to wide problem. We want to take a long d
 4. `aggregate` from the `stats` package
 5. `dcast` from the `data.table` package
 
-Now that we've gathered the possible solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:
+Now that we've gathered a few solutions to this problem, we can create a reproducible dataset. This way others can use it. Additionally, I want to make it easy to increase the size of the data:
 
 ```{r, message=FALSE}
 library(dplyr)
 library(tidyr)
 
 # Adjust n_obs to increase size of dataset
-n_obs = 1e2
-n_date = n_obs - 1
+n_obs <- 1e2
+n_date <- n_obs - 1
 
 # Create dataset
 stocks <- data.frame(
