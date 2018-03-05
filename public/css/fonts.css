@@ -15,6 +15,14 @@
        url('../fonts/lato-v11-latin-regular.woff') format('woff');
 }
 @font-face {
+  font-family: 'Proza Libre';
+  font-style: normal;
+  font-weight: 400;
+  src: local('ProzaLibre'), local('ProzaLibre-Regular'),
+       url('../fonts/ProzaLibre-Regular.woff') format('woff'),
+       url('../fonts/ProzaLibre-Regular.woff') format('woff');
+}
+@font-face {
   font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 400;
@@ -26,7 +34,7 @@ body {
   font-family: 'Merriweather', serif;
 }
 h1, h2, h3, h4, h5, h6, .nav, .article-duration, .archive-item-link, .footer {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Proza Libre', sans-serif;
 }
 code {
   font-family: 'Source Code Pro', monospace;
