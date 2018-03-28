@@ -93,7 +93,7 @@ points(ttops, col = "blue", pch = 20, cex = 0.5)
 
 ![](canopy_analysis_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
-Great, looks good so far. There are a few points that don't look like the belong some noise is to be expected and I'm sure this can be improved over time. Now why don't we inspect the `ttops` object to see the underlying structure:
+Great, looks good so far. There are a few points that don't look like they belong but some noise is to be expected and I'm sure this can be improved over time. Now why don't we inspect the `ttops` object to see the underlying structure:
 
 ``` r
 # Inspect the ttops object
