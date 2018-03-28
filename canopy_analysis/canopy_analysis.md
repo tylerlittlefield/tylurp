@@ -1,8 +1,12 @@
 Tree Canopy Analysis
 ================
 
+In this document, I'll briefly go over how one might be able to detect tree tops using `R`. I will use a very simple image of a single tree in order to demonstate.
+
 Required Libraries
 ------------------
+
+First we load the necessary libraries.
 
 ``` r
 library(sp)
@@ -13,6 +17,12 @@ library(ForestTools)
 
 The Raster Image
 ----------------
+
+Then we can read the image, convert it to a raster object and plot it to see what we're working with. Before we do this, let's take a look at the original image:
+
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/canopy_analysis/canopy_analysis_files/figure-markdown_github/tree.jpg)
+
+There we have it, a single tree in a field. Now let's plot the raster image:
 
 ``` r
 # Load our test image
