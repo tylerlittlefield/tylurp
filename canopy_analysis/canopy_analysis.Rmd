@@ -1,0 +1,95 @@
+---
+title: "Tree Canopy Analysis"
+output: github_document
+---
+
+## Required Libraries
+
+```{r, message=FALSE}
+library(sp)
+library(raster)
+library(rgdal)
+library(ForestTools)
+```
+
+## The Raster Image
+
+```{r}
+# Load our test image
+img <- "/Users/tylerlittlefield/Desktop/tree.jpg"
+
+# Create a raster object
+raster_img <- raster(img)
+raster_img
+
+# Plot the raster image
+plot(raster_img, main = "Sample tree image") 
+```
+
+Note that we can also control the colors of the terrain using the `terrain.colors` function:
+
+```{r}
+# Control the terrain colors
+col_heights <- terrain.colors(10)
+plot(raster_img, col = col_heights, main = "Controlled height colors")
+```
+
+## Canopy Detection
+
+We start by creating a window function. In this case, we use a simple linear equation:
+
+```{r}
+# Create a window function
+lin <- function(x) {
+  x * 0.05 + 0.6
+}
+```
+
+We then use a handy function called `TreeTopFinder` from the `ForestTools` package:
+
+```{r}
+# Find the tops of the tree
+ttops <- TreeTopFinder(
+  CHM = raster_img, # raster image
+  winFun = lin,     # window function for determining variable window radius
+  minHeight = 150   # minimum height value for a pixel to be considered
+)
+```
+
+Let's take a look at what this gives us:
+
+```{r}
+# Plot the tops of the tree
+plot(raster_img, col = col_heights, main = "Tree top detections")
+points(ttops, col = "blue", pch = 20, cex = 0.5)
+```
+
+Great, looks good so far. Now why don't we inspect the `ttops` object to see the underlying structure:
+
+```{r}
+# Inspect the ttops object
+str(ttops)
+```
+
+Since we have coordinates associated with every tree top detection, we can create a polygon around the perimeter of the farthest reaching points:
+
+```{r}
+# We can create a polygon for the tree
+ttops_coords <- coordinates(ttops) # Extract the tree top coordinates
+ttops_poly <- chull(ttops_coords)  # Subset points which lie on convex hull
+coords <- ttops_coords[c(ttops_poly, ttops_poly[1]), ] # close the polygon
+plot(coords, main = "Approximate perimeter of tree top")
+lines(coords)
+```
+
+Finally, we can wrap this all up and plot the tree top detections and the approximate perimeter of the tree top:
+
+```{r}
+# Now wrap it all together
+plot(raster_img, col = col_heights, main = "Approximate perimeter of tree top")
+plot(ttops, col = "blue", pch = 20, cex = 0.5, add = TRUE)
+lines(coords)
+```
+
+
+
