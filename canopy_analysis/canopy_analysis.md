@@ -1,7 +1,7 @@
 Tree Canopy Analysis
 ================
 
-In this document, I'll briefly go over how one might be able to detect tree tops using `R`. I will use a very simple image of a single tree in order to demonstate.
+In this document, I'll briefly go over how one might be able to detect tree tops using `R`. I will use a very simple image of a single tree in order to demonstrate.
 
 Required Libraries
 ------------------
@@ -15,10 +15,10 @@ library(rgdal)
 library(ForestTools)
 ```
 
-The Raster Image
-----------------
+The Aerial Imagery
+------------------
 
-Then we can read the image, convert it to a raster object and plot it to see what we're working with. Before we do this, let's take a look at the original image:
+Now that we've loaded the libraries, we can read the image, convert it to a raster object and plot it to see what we're working with. Before we do this, let's take a look at the original image:
 
 ![](https://raw.githubusercontent.com/tyluRp/tylurp/master/canopy_analysis/canopy_analysis_files/figure-markdown_github/tree.jpg)
 
@@ -72,7 +72,7 @@ lin <- function(x) {
 }
 ```
 
-We then use a handy function called `TreeTopFinder` from the `ForestTools` package:
+We can then use a handy function called `TreeTopFinder` from the `ForestTools` package:
 
 ``` r
 # Find the tops of the tree
@@ -93,7 +93,7 @@ points(ttops, col = "blue", pch = 20, cex = 0.5)
 
 ![](canopy_analysis_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
-Great, looks good so far. Now why don't we inspect the `ttops` object to see the underlying structure:
+Great, looks good so far. There are a few points that don't look like the belong some noise is to be expected and I'm sure this can be improved over time. Now why don't we inspect the `ttops` object to see the underlying structure:
 
 ``` r
 # Inspect the ttops object
@@ -119,9 +119,9 @@ str(ttops)
 Since we have coordinates associated with every tree top detection, we can create a polygon around the perimeter of the farthest reaching points:
 
 ``` r
-# We can create a polygon for the tree
+# Create a polygon for the tree top
 ttops_coords <- coordinates(ttops) # Extract the tree top coordinates
-ttops_poly <- chull(ttops_coords)  # Subset points which lie on convex hull
+ttops_poly <- chull(ttops_coords)  # compute convex hull of points
 coords <- ttops_coords[c(ttops_poly, ttops_poly[1]), ] # close the polygon
 plot(coords, main = "Approximate perimeter of tree top")
 lines(coords)
