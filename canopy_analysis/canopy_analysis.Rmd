@@ -101,5 +101,5 @@ plot(ttops, col = "blue", pch = 20, cex = 0.5, add = TRUE)
 lines(coords)
 ```
 
-
+From this point, we have a lot of options. For example, we can compute the area of the tree top. If we have tree data readily available, we can compute tree top area and summarize by species, location, etc.
 

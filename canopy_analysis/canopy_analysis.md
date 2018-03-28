@@ -139,3 +139,5 @@ lines(coords)
 ```
 
 ![](canopy_analysis_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+From this point, we have a lot of options. For example, we can compute the area of the tree top. If we have tree data readily available, we can compute tree top area and summarize by species, location, etc.
