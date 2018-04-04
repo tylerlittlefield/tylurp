@@ -73,6 +73,8 @@ stocksm %>%
   head()
 ```
 
+**Update: See [this post](https://tylurp.rbind.io/2018/04/03/equality-matrix-a-useful-idea-for-benchmarking/) for a concise method of testing equal outputs for numerous possible solutions at once**
+
 And the _more or less_ part is important and is one of the things I learned from Jaaps answer on Stack Overflow. When measuring performance we can check to see if the output is equal among all possible solutions. We can do this with the `all.equal` function, i.e. `all.equal(x, y)` where `x` is our target object and `y` is our current object to be used for testing 'near equality' between the two:
 
 ```{r, message=FALSE}
