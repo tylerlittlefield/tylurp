@@ -1,0 +1,140 @@
+---
+title: Equality Matrix, a useful idea for benchmarking
+author: ~
+date: '2018-04-03'
+slug: equality-matrix-a-useful-idea-for-benchmarking
+categories: []
+tags: []
+---
+
+This post is essentially an extension of a previous post I [wrote](https://tylurp.rbind.io/2018/02/13/measuring-performance/). The only addition is a cool idea for testing near equality of outputs. I'm calling this an "equality matrix", a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the `all.equal` function only takes two solutions at a time.
+
+Consider the following problem: _extract all numbers in a vector that have a non zero value after the decimal._ 
+
+We could do this a few ways:
+
+
+```r
+# vector
+x <- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
+
+# create objects for testing equality of output
+integer_method <- x[as.integer(x) != x]
+trunc_method <- x[trunc(x) != x]
+round_method <- x[round(x) != x]
+mod_method <- x[x %% 1 != 0]
+floor_method <- x[floor(x) != x]
+```
+
+Now instead of testing every combination to make sure the outputs are equal we can create a matrix that tests all possible combinations at once:
+
+
+
+
+```r
+# create an equality matrix
+methods_vec <- c("integer_method", "trunc_method", "round_method", "mod_method", "floor_method")
+objs <- mget(methods_vec)
+outer(objs, objs, Vectorize(all.equal))
+```
+
+```
+##                integer_method trunc_method round_method mod_method floor_method
+## integer_method           TRUE         TRUE         TRUE       TRUE         TRUE
+## trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE
+## round_method             TRUE         TRUE         TRUE       TRUE         TRUE
+## mod_method               TRUE         TRUE         TRUE       TRUE         TRUE
+## floor_method             TRUE         TRUE         TRUE       TRUE         TRUE
+```
+
+That's it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let's benchmark :smile:
+
+
+If you've read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:
+
+
+```r
+library(ggplot2)        # plotting
+library(patchwork)      # plot multiple plots
+library(microbenchmark) # benchmarking
+library(dplyr)          # using this for pipe functionality 
+library(tidyr)          # for gather function when creating the plot I have in mind
+
+# create vectors of different sizes
+xs <- rep(x, 1e2)
+xm <- rep(x, 1e3)
+xl <- rep(x, 1e4)
+```
+
+Now we benchmark:
+
+
+```r
+# benchmark small vector
+bms_xs <- microbenchmark(
+  integer_method = xs[as.integer(xs) != xs],
+  trunc_method = xs[trunc(xs) != xs],
+  round_method = xs[round(xs) != xs],
+  mod_method = xs[xs %% 1 != 0],
+  floor_method = xs[floor(xs) != xs]
+)
+
+# benchmark medium vector
+bms_xm <- microbenchmark(
+  integer_method = xm[as.integer(xm) != xm],
+  trunc_method = xm[trunc(xm) != xm],
+  round_method = xm[round(xm) != xm],
+  mod_method = xm[xm %% 1 != 0],
+  floor_method = xm[floor(xm) != xm]
+)
+
+# benchmark large vector
+bms_xl <- microbenchmark(
+  integer_method = xl[as.integer(xl) != xl],
+  trunc_method = xl[trunc(xl) != xl],
+  round_method = xl[round(xl) != xl],
+  mod_method = xl[xl %% 1 != 0],
+  floor_method = xl[floor(xl) != xl]
+)
+```
+
+Then create the plot:
+
+
+```r
+p1 <- autoplot.microbenchmark(bms_xs) + 
+  labs(title = "Small Vector") +
+  theme(text = element_text(family = "Source Code Pro"))
+
+p2 <- autoplot.microbenchmark(bms_xm) + 
+  labs(title = "Medium Vector") +
+  theme(text = element_text(family = "Source Code Pro"))
+
+p3 <- autoplot.microbenchmark(bms_xl) + 
+  labs(title = "Large Vector") +
+  theme(text = element_text(family = "Source Code Pro"))
+
+vectors <- data.frame(
+  small = length(xs),
+  medium = length(xm),
+  large = length(xl)
+)
+
+p4 <- vectors %>% 
+  gather() %>% 
+  ggplot(aes(key, value)) +
+  geom_col(color = "black", fill = "white") +
+  labs(title = "Vector Lengths", x = "vector", y = "length") +
+  theme(text = element_text(family = "Source Code Pro"))
+
+(p4) +
+  p1 /
+  p2 /
+  p3 + plot_layout(ncol = 2, widths = c(1.5, 3))
+```
+
+<img src="/post/2018-04-03-equality-matrix-a-useful-idea-for-benchmarking_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+
+
+
