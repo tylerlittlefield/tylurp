@@ -9,7 +9,7 @@ tags: []
 
 This post is essentially an extension of a previous post I [wrote](https://tylurp.rbind.io/2018/02/13/measuring-performance/). The only addition is a cool idea for testing near equality of outputs. I'm calling this an "equality matrix", a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the `all.equal` function only takes two solutions at a time.
 
-Consider the following problem: _extract all numbers in a vector that have a non zero value after the decimal._ 
+Consider the following problem: _extract all numbers in a vector that have a non zero value after the decimal._
 
 We could do this a few ways:
 
