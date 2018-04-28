@@ -9,7 +9,7 @@ tags: []
 
 I recently needed to create folders for every file in a directory, name these folders after the file, and move the file to the correct folder. The directory I was working with had over 1,000 files so I wasn't going to do this by hand. Instead I discovered a way to automate this process using a shell script.
 
-For example, using `cd` to navigate to whatever directory we're interested in, we can then use the following:
+For example, navigate to a directory and then run the following:
 
 
 ```bash
