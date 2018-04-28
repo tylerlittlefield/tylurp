@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.26" />
 
 
-<title>About - tyluRp</title>
-<meta property="og:title" content="About - tyluRp">
+<title>File to folder - tyluRp</title>
+<meta property="og:title" content="File to folder - tyluRp">
 
 
 
@@ -16,6 +16,11 @@
 
 
 
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
 
 
 
@@ -50,19 +55,32 @@
 
   <article class="article">
     
+    <span class="article-duration">1 min read</span>
+    
 
-    <h1 class="article-title">About</h1>
+    <h1 class="article-title">File to folder</h1>
 
+    
+    <span class="article-date">2018/04/28</span>
     
 
     <div class="article-content">
-      <p>I am currently a contractor working with the Apple Maps team. Grew up in Oregon where I received my geography degree from the University of Oregon. I am interested in spatial data analysis and collection. I am also a big R useR.</p>
+      <p>I recently needed to create folders for every file in a directory, name these folders after the file, and move the file to the correct folder. The directory I was working with had over 1,000 files so I wasn&rsquo;t going to do this by hand. Instead I discovered a way to automate this process using a shell script.</p>
 
-<p>In my free time I drink a lot of coffee, watch movies, and participate in social programming.</p>
+<p>For example, using <code>cd</code> to navigate to whatever directory we&rsquo;re interested in, we can then use the following:</p>
 
-<p>Shoot me an <a href="mailto:tylurp1@gmail.com">email</a> if you have any questions or just want to say hi!</p>
+<pre><code class="language-bash">for i in *; do 
+  extension=&quot;${i##*.}&quot;
+  filename=&quot;${i%.*}&quot;
+  mkdir -p &quot;$filename/&quot;
+  mv &quot;$i&quot; &quot;$filename/&quot;
+done
+</code></pre>
 
-<p><img src="/images/about.jpg" alt="" /></p>
+<p>And for anyone using Windows, you can create a batch file (<code>.bat</code>) like so:</p>
+
+<pre><code>for %i in (*) do md &quot;%~ni&quot; &amp;&amp; move &quot;%~i&quot; &quot;%~ni&quot;
+</code></pre>
 
     </div>
   </article>
@@ -131,7 +149,22 @@
     </div>
     
 
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
 <script>

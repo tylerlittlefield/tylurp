@@ -6,10 +6,20 @@
     <description>Recent content in Posts on tyluRp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 28 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>File to folder</title>
+      <link>/2018/04/28/file-to-folder/</link>
+      <pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/04/28/file-to-folder/</guid>
+      <description>I recently needed to create folders for every file in a directory, name these folders after the file, and move the file to the correct folder. The directory I was working with had over 1,000 files so I wasn&amp;rsquo;t going to do this by hand. Instead I discovered a way to automate this process using a shell script.
+For example, using cd to navigate to whatever directory we&amp;rsquo;re interested in, we can then use the following:</description>
+    </item>
     
     <item>
       <title>Equality Matrix, a useful idea for benchmarking</title>
