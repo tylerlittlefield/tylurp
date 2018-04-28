@@ -23,7 +23,8 @@ done
 
 And for anyone using Windows, you can create a batch file (`.bat`) like so:
 
-```
+
+```bash
 for %i in (*) do md "%~ni" && move "%~i" "%~ni"
 ```
 
