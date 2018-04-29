@@ -231,8 +231,10 @@ sleepy %&gt;%
   geom_line() +
   geom_point() +
   labs(title = &quot;Sleepy Hollow&quot;) +
-  theme_bw() +
-  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+  theme_minimal() +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank())
 </code></pre>
 
 <p><img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
