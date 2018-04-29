@@ -55,7 +55,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">HaRvest data from the web</h1>
@@ -65,9 +65,17 @@
     
 
     <div class="article-content">
-      <p>There&rsquo;s a cool package called <a href="https://github.com/hadley/rvest"><code>rvest</code></a> which makes scraping data from the web pretty easy. This package is designed to work with <a href="https://github.com/tidyverse/magrittr"><code>magrittr</code></a> so users get the benefits that come along with the <code>%&gt;%</code> operator.</p>
+      
 
-<p>For example, we could read population data from a wikipedia page:</p>
+<h1 id="intro">Intro</h1>
+
+<p>There&rsquo;s a cool package called <a href="https://github.com/hadley/rvest"><code>rvest</code></a> which makes scraping data from the web pretty easy. This package is designed to work with <a href="https://github.com/tidyverse/magrittr"><code>magrittr</code></a> so users get the benefits that come along with the <code>%&gt;%</code> operator.</p>
+
+<p>Let&rsquo;s start with an example of how someone can extract a table of data from wikipedia.</p>
+
+<h2 id="sleepy-hollow-ny">Sleepy Hollow, NY</h2>
+
+<p>We start with a URL, do a bunch of stuff, and ultimately extract a clean data frame. In this example the URL points to a wikipedia page about Sleepy Hollow, New York:</p>
 
 <pre><code class="language-r">library(tidyverse)
 library(rvest)
@@ -106,6 +114,12 @@ library(rvest)
 ## 15  2016      10198
 </code></pre>
 
+<p>Notice that the pipe operator <code>%&gt;%</code> allows us to write code in a step by step fashion. Personally, I find pipe syntax intuitive and more natural but you could do this the old fashioned way if you wanted.</p>
+
+<p>This chain has 11 lines of code so let&rsquo;s go over the steps involved.</p>
+
+<h3 id="read-html"><code>read_html</code></h3>
+
 <p>We start with a URL and then call <code>read_html</code>:</p>
 
 <pre><code class="language-r">&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
@@ -118,11 +132,19 @@ library(rvest)
 ## [2] &lt;body class=&quot;mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-sub ...
 </code></pre>
 
+<p>This function is what actually gives us the html data that is then parsed to xml.</p>
+
+<h3 id="html-table"><code>html_table</code></h3>
+
 <p>After this, <code>html_table</code> parses the data into a list of data frames. Note that an additional argument <code>fill = TRUE</code> is required in this case. This is because the tables I&rsquo;m reading have inconsistent dimensions, there is at least one table that has a column with less rows than the others. To resolve this issue, we fill such instances with <code>NA</code>.</p>
+
+<h3 id="extracting-data-frames-with">Extracting data frames with <code>[[</code></h3>
 
 <p>After that, we extract the second table using <code>[[(2)</code> to extract the second element in our list of data frames, this happens to be the population data for Sleepy Hollow, NY.</p>
 
 <p>From this point we&rsquo;ve got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, we have character columns for numeric data. There are a bunch of ways we could go about doing this, many that are probably more elegant than my solution but it&rsquo;s quick and regular expressions are not one of my strengths.</p>
+
+<h3 id="data-prep">Data prep</h3>
 
 <p>First thing is to rename the columns. I want them to be lower case and short so I can call on them easily.</p>
 
@@ -238,6 +260,100 @@ sleepy %&gt;%
 </code></pre>
 
 <p><img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+
+<h1 id="managing-multiple-data-frames">Managing multiple data frames</h1>
+
+<p>Most times, there will be numerous tables on a single page. I like to handle these situations by creating a nested data frame. The idea is that you have one data frame that contains data frames. The <code>tibble</code> package has a nice function called <code>enframe</code> that can do this.</p>
+
+<h2 id="list-of-best-selling-books">List of best selling books</h2>
+
+<p>Now let&rsquo;s take a look at a page with multiple tables, read them all, and then store them into a single R object.</p>
+
+<h3 id="import">Import</h3>
+
+<pre><code class="language-r"># URL object
+books_url &lt;- &quot;https://en.wikipedia.org/wiki/List_of_best-selling_books&quot;
+</code></pre>
+
+<h3 id="extract-additional-variables">Extract additional variables</h3>
+
+<pre><code class="language-r"># Range object to call map
+range &lt;- books_url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(&quot;h3&quot;) %&gt;% 
+  .[1:16] %&gt;% 
+  .[-11] %&gt;% 
+  html_text() %&gt;% 
+  str_remove(&quot;\\[[^]]*]&quot;)
+</code></pre>
+
+<pre><code class="language-r"># Header object to call map
+header &lt;- books_url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(&quot;h2&quot;) %&gt;% 
+  .[2:4] %&gt;% 
+  html_text() %&gt;% 
+  str_remove(&quot;\\[[^]]*]&quot;) %&gt;% 
+  str_to_lower() %&gt;% 
+  rep(5) %&gt;% # luckily the data structure supports this
+  sort()
+</code></pre>
+
+<h1 id="create-nested-data-frame">Create nested data frame</h1>
+
+<pre><code class="language-r"># Create data frame
+books &lt;- books_url %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  .[2:16] %&gt;% 
+  map(rename_all, tolower) %&gt;% 
+  map(rename_all, str_remove_all, &quot;[[:punct:]]&quot;) %&gt;% 
+  map(rename_all, str_replace_all, &quot; &quot;, &quot;_&quot;) %&gt;% 
+  map(~ mutate(., approximate_sales = str_remove(approximate_sales, &quot;\\[[^]]*]&quot;))) %&gt;% 
+  map(~ mutate(., sales = str_extract(approximate_sales, &quot;[[:digit:]]+&quot;))) %&gt;% 
+  enframe(name = &quot;id&quot;) %&gt;% 
+  mutate(range = range, header = header)
+</code></pre>
+
+<h3 id="look-at-data">Look at data</h3>
+
+<pre><code class="language-r"># Counts for approximate sales, 10 million occurs most often
+books %&gt;% 
+  filter(id == 5) %&gt;% 
+  unnest() %&gt;%
+  type_convert() %&gt;% 
+  group_by(approximate_sales) %&gt;% 
+  count() %&gt;% 
+  arrange(desc(approximate_sales))
+</code></pre>
+
+<pre><code>## Parsed with column specification:
+## cols(
+##   range = col_character(),
+##   header = col_character(),
+##   book = col_character(),
+##   authors = col_character(),
+##   original_language = col_character(),
+##   approximate_sales = col_character(),
+##   sales = col_integer()
+## )
+</code></pre>
+
+<pre><code>## # A tibble: 10 x 2
+## # Groups:   approximate_sales [10]
+##    approximate_sales                       n
+##    &lt;chr&gt;                               &lt;int&gt;
+##  1 18 million (in Japan and China)         1
+##  2 16 million                              3
+##  3 15 million                             10
+##  4 14 million                              6
+##  5 13 million                              2
+##  6 12 million                              6
+##  7 11-12 million (during 20th century)     1
+##  8 11 million                              2
+##  9 10.5 million                            2
+## 10 10 million                             22
+</code></pre>
 
     </div>
   </article>

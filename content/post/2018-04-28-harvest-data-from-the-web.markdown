@@ -7,9 +7,15 @@ categories: ['programming']
 tags: []
 ---
 
-There's a cool package called [`rvest`](https://github.com/hadley/rvest) which makes scraping data from the web pretty easy. This package is designed to work with [`magrittr`](https://github.com/tidyverse/magrittr) so users get the benefits that come along with the `%>%` operator. 
+# Intro
 
-For example, we could read population data from a wikipedia page:
+There's a cool package called [`rvest`](https://github.com/hadley/rvest) which makes scraping data from the web pretty easy. This package is designed to work with [`magrittr`](https://github.com/tidyverse/magrittr) so users get the benefits that come along with the `%>%` operator.
+
+Let's start with an example of how someone can extract a table of data from wikipedia.
+
+## Sleepy Hollow, NY
+
+We start with a URL, do a bunch of stuff, and ultimately extract a clean data frame. In this example the URL points to a wikipedia page about Sleepy Hollow, New York:
 
 
 ```r
@@ -51,6 +57,12 @@ library(rvest)
 ## 15  2016      10198
 ```
 
+Notice that the pipe operator `%>%` allows us to write code in a step by step fashion. Personally, I find pipe syntax intuitive and more natural but you could do this the old fashioned way if you wanted.
+
+This chain has 11 lines of code so let's go over the steps involved.
+
+### `read_html`
+
 We start with a URL and then call `read_html`:
 
 
@@ -66,11 +78,19 @@ We start with a URL and then call `read_html`:
 ## [2] <body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-sub ...
 ```
 
+This function is what actually gives us the html data that is then parsed to xml.
+
+### `html_table` 
+
 After this, `html_table` parses the data into a list of data frames. Note that an additional argument `fill = TRUE` is required in this case. This is because the tables I'm reading have inconsistent dimensions, there is at least one table that has a column with less rows than the others. To resolve this issue, we fill such instances with `NA`.
+
+### Extracting data frames with `[[`
 
 After that, we extract the second table using `[[(2)` to extract the second element in our list of data frames, this happens to be the population data for Sleepy Hollow, NY.
 
 From this point we've got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, we have character columns for numeric data. There are a bunch of ways we could go about doing this, many that are probably more elegant than my solution but it's quick and regular expressions are not one of my strengths.
+
+### Data prep
 
 First thing is to rename the columns. I want them to be lower case and short so I can call on them easily. 
 
@@ -198,6 +218,114 @@ sleepy %>%
 ```
 
 <img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+# Managing multiple data frames
+
+Most times, there will be numerous tables on a single page. I like to handle these situations by creating a nested data frame. The idea is that you have one data frame that contains data frames. The `tibble` package has a nice function called `enframe` that can do this. 
+
+## List of best selling books
+
+Now let's take a look at a page with multiple tables, read them all, and then store them into a single R object.
+
+### Import
+
+
+```r
+# URL object
+books_url <- "https://en.wikipedia.org/wiki/List_of_best-selling_books"
+```
+
+### Extract additional variables
+
+
+```r
+# Range object to call map
+range <- books_url %>% 
+  read_html() %>% 
+  html_nodes("h3") %>% 
+  .[1:16] %>% 
+  .[-11] %>% 
+  html_text() %>% 
+  str_remove("\\[[^]]*]")
+```
+
+
+```r
+# Header object to call map
+header <- books_url %>% 
+  read_html() %>% 
+  html_nodes("h2") %>% 
+  .[2:4] %>% 
+  html_text() %>% 
+  str_remove("\\[[^]]*]") %>% 
+  str_to_lower() %>% 
+  rep(5) %>% # luckily the data structure supports this
+  sort()
+```
+
+# Create nested data frame
+
+
+```r
+# Create data frame
+books <- books_url %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  .[2:16] %>% 
+  map(rename_all, tolower) %>% 
+  map(rename_all, str_remove_all, "[[:punct:]]") %>% 
+  map(rename_all, str_replace_all, " ", "_") %>% 
+  map(~ mutate(., approximate_sales = str_remove(approximate_sales, "\\[[^]]*]"))) %>% 
+  map(~ mutate(., sales = str_extract(approximate_sales, "[[:digit:]]+"))) %>% 
+  enframe(name = "id") %>% 
+  mutate(range = range, header = header)
+```
+
+### Look at data
+
+
+```r
+# Counts for approximate sales, 10 million occurs most often
+books %>% 
+  filter(id == 5) %>% 
+  unnest() %>%
+  type_convert() %>% 
+  group_by(approximate_sales) %>% 
+  count() %>% 
+  arrange(desc(approximate_sales))
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   range = col_character(),
+##   header = col_character(),
+##   book = col_character(),
+##   authors = col_character(),
+##   original_language = col_character(),
+##   approximate_sales = col_character(),
+##   sales = col_integer()
+## )
+```
+
+```
+## # A tibble: 10 x 2
+## # Groups:   approximate_sales [10]
+##    approximate_sales                       n
+##    <chr>                               <int>
+##  1 18 million (in Japan and China)         1
+##  2 16 million                              3
+##  3 15 million                             10
+##  4 14 million                              6
+##  5 13 million                              2
+##  6 12 million                              6
+##  7 11-12 million (during 20th century)     1
+##  8 11 million                              2
+##  9 10.5 million                            2
+## 10 10 million                             22
+```
+
+
 
 
 
