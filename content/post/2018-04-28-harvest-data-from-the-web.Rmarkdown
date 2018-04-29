@@ -1,0 +1,109 @@
+---
+title: HaRvest data from the web
+author: ~
+date: '2018-04-28'
+slug: harvest-data-from-the-web
+categories: ['programming']
+tags: []
+---
+
+There's a cool package called [`rvest`](https://github.com/hadley/rvest) which makes scraping data from the web pretty easy. This package is designed to work with [`magrittr`](https://github.com/tidyverse/magrittr) so users get the benefits that come along with the `%>%` operator. 
+
+For example, we could read population data from a wikipedia page:
+
+```{r, message=FALSE}
+library(tidyverse)
+library(rvest)
+
+# Scrape population data from wikipedia 
+"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  `[[`(2) %>% 
+  set_names(c("year", "population","blank", "percentage")) %>%
+  select(year, population) %>% 
+  as_tibble() %>% 
+  filter(year != "Census") %>% 
+  mutate(year = str_replace(year, "Est. ", "")) %>% 
+  filter(year != "U.S. Decennial Census[12]") %>% 
+  type_convert()
+```
+
+We start with a URL and then call `read_html`:
+
+```{r}
+"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html()
+```
+
+After this, `html_table` parses the data into a list of data frames. Note that an additional argument `fill = TRUE` is required in this case. This is because the tables I'm reading have inconsistent dimensions, there is at least one table that has a column with less rows than the others. To resolve this issue, we fill such instances with `NA`.
+
+After that, we extract the second table using `[[(2)` to extract the second element in our list of data frames, this happens to be the population data for Sleepy Hollow, NY.
+
+From this point we've got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, we have character columns for numeric data. There are a bunch of ways we could go about doing this, many that are probably more elegant than my solution but it's quick and regular expressions are not one of my strengths.
+
+First thing is to rename the columns. I want them to be lower case and short so I can call on them easily. 
+
+```{r}
+"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  `[[`(2) %>% 
+  set_names(c("year", "population","blank", "percentage")) %>% 
+  names()
+```
+
+After this, I'm going to grab the two columns I'm interested in and then convert the data frame to a `tibble`. I want to see the data types and be reminded of them:
+
+```{r}
+"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  `[[`(2) %>% 
+  set_names(c("year", "population","blank", "percentage")) %>%
+  select(year, population) %>% 
+  as_tibble()
+```
+
+Finally, `filter` `year` to return all rows except ones that contain `"Census"` thereby removing row one. Replace the `"Est. "` from any row value in `year` with nothing, effectively removing those characters and white space. Then, `filter` once more to remove the last row and use `type_convert` to make `year` integer type and `population` numeric.
+
+```{r}
+"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  `[[`(2) %>% 
+  set_names(c("year", "population","blank", "percentage")) %>%
+  select(year, population) %>% 
+  as_tibble() %>% 
+  filter(year != "Census") %>% 
+  mutate(year = str_replace(year, "Est. ", "")) %>% 
+  filter(year != "U.S. Decennial Census[12]") %>% 
+  type_convert()
+```
+
+Make this an object and then plot the data:
+
+```{r, message=FALSE}
+sleepy <- "https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
+  read_html() %>% 
+  html_table(fill = TRUE) %>% 
+  `[[`(2) %>% 
+  set_names(c("year", "population","blank", "percentage")) %>%
+  select(year, population) %>% 
+  as_tibble() %>% 
+  filter(year != "Census") %>% 
+  mutate(year = str_replace(year, "Est. ", "")) %>% 
+  filter(year != "U.S. Decennial Census[12]") %>% 
+  type_convert()
+
+sleepy %>% 
+  ggplot(aes(year, population)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Sleepy Hollow") +
+  theme_bw() +
+  theme(text = element_text(family = "Source Code Pro"))
+```
+
+
+

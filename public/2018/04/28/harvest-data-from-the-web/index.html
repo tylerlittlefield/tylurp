@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.26" />
+
+
+<title>HaRvest data from the web - tyluRp</title>
+<meta property="og:title" content="HaRvest data from the web - tyluRp">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/ein.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">HaRvest data from the web</h1>
+
+    
+    <span class="article-date">2018/04/28</span>
+    
+
+    <div class="article-content">
+      <p>There&rsquo;s a cool package called <a href="https://github.com/hadley/rvest"><code>rvest</code></a> which makes scraping data from the web pretty easy. This package is designed to work with <a href="https://github.com/tidyverse/magrittr"><code>magrittr</code></a> so users get the benefits that come along with the <code>%&gt;%</code> operator.</p>
+
+<p>For example, we could read population data from a wikipedia page:</p>
+
+<pre><code class="language-r">library(tidyverse)
+library(rvest)
+
+# Scrape population data from wikipedia 
+&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  `[[`(2) %&gt;% 
+  set_names(c(&quot;year&quot;, &quot;population&quot;,&quot;blank&quot;, &quot;percentage&quot;)) %&gt;%
+  select(year, population) %&gt;% 
+  as_tibble() %&gt;% 
+  filter(year != &quot;Census&quot;) %&gt;% 
+  mutate(year = str_replace(year, &quot;Est. &quot;, &quot;&quot;)) %&gt;% 
+  filter(year != &quot;U.S. Decennial Census[12]&quot;) %&gt;% 
+  type_convert()
+</code></pre>
+
+<pre><code>## # A tibble: 15 x 2
+##     year population
+##    &lt;int&gt;      &lt;dbl&gt;
+##  1  1880       2684
+##  2  1890       3179
+##  3  1900       4241
+##  4  1910       5421
+##  5  1920       5927
+##  6  1930       7417
+##  7  1940       8804
+##  8  1950       8740
+##  9  1960       8818
+## 10  1970       8334
+## 11  1980       7994
+## 12  1990       8152
+## 13  2000       9212
+## 14  2010       9870
+## 15  2016      10198
+</code></pre>
+
+<p>We start with a URL and then call <code>read_html</code>:</p>
+
+<pre><code class="language-r">&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html()
+</code></pre>
+
+<pre><code>## {xml_document}
+## &lt;html class=&quot;client-nojs&quot; lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= ...
+## [2] &lt;body class=&quot;mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-sub ...
+</code></pre>
+
+<p>After this, <code>html_table</code> parses the data into a list of data frames. Note that an additional argument <code>fill = TRUE</code> is required in this case. This is because the tables I&rsquo;m reading have inconsistent dimensions, there is at least one table that has a column with less rows than the others. To resolve this issue, we fill such instances with <code>NA</code>.</p>
+
+<p>After that, we extract the second table using <code>[[(2)</code> to extract the second element in our list of data frames, this happens to be the population data for Sleepy Hollow, NY.</p>
+
+<p>From this point we&rsquo;ve got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, we have character columns for numeric data. There are a bunch of ways we could go about doing this, many that are probably more elegant than my solution but it&rsquo;s quick and regular expressions are not one of my strengths.</p>
+
+<p>First thing is to rename the columns. I want them to be lower case and short so I can call on them easily.</p>
+
+<pre><code class="language-r">&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  `[[`(2) %&gt;% 
+  set_names(c(&quot;year&quot;, &quot;population&quot;,&quot;blank&quot;, &quot;percentage&quot;)) %&gt;% 
+  names()
+</code></pre>
+
+<pre><code>## [1] &quot;year&quot;       &quot;population&quot; &quot;blank&quot;      &quot;percentage&quot;
+</code></pre>
+
+<p>After this, I&rsquo;m going to grab the two columns I&rsquo;m interested in and then convert the data frame to a <code>tibble</code>. I want to see the data types and be reminded of them:</p>
+
+<pre><code class="language-r">&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  `[[`(2) %&gt;% 
+  set_names(c(&quot;year&quot;, &quot;population&quot;,&quot;blank&quot;, &quot;percentage&quot;)) %&gt;%
+  select(year, population) %&gt;% 
+  as_tibble()
+</code></pre>
+
+<pre><code>## # A tibble: 17 x 2
+##    year                      population               
+##    &lt;chr&gt;                     &lt;chr&gt;                    
+##  1 Census                    Pop.                     
+##  2 1880                      2,684                    
+##  3 1890                      3,179                    
+##  4 1900                      4,241                    
+##  5 1910                      5,421                    
+##  6 1920                      5,927                    
+##  7 1930                      7,417                    
+##  8 1940                      8,804                    
+##  9 1950                      8,740                    
+## 10 1960                      8,818                    
+## 11 1970                      8,334                    
+## 12 1980                      7,994                    
+## 13 1990                      8,152                    
+## 14 2000                      9,212                    
+## 15 2010                      9,870                    
+## 16 Est. 2016                 10,198                   
+## 17 U.S. Decennial Census[12] U.S. Decennial Census[12]
+</code></pre>
+
+<p>Finally, <code>filter</code> <code>year</code> to return all rows except ones that contain <code>&quot;Census&quot;</code> thereby removing row one. Replace the <code>&quot;Est. &quot;</code> from any row value in <code>year</code> with nothing, effectively removing those characters and white space. Then, <code>filter</code> once more to remove the last row and use <code>type_convert</code> to make <code>year</code> integer type and <code>population</code> numeric.</p>
+
+<pre><code class="language-r">&quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  `[[`(2) %&gt;% 
+  set_names(c(&quot;year&quot;, &quot;population&quot;,&quot;blank&quot;, &quot;percentage&quot;)) %&gt;%
+  select(year, population) %&gt;% 
+  as_tibble() %&gt;% 
+  filter(year != &quot;Census&quot;) %&gt;% 
+  mutate(year = str_replace(year, &quot;Est. &quot;, &quot;&quot;)) %&gt;% 
+  filter(year != &quot;U.S. Decennial Census[12]&quot;) %&gt;% 
+  type_convert()
+</code></pre>
+
+<pre><code>## Parsed with column specification:
+## cols(
+##   year = col_integer(),
+##   population = col_number()
+## )
+</code></pre>
+
+<pre><code>## # A tibble: 15 x 2
+##     year population
+##    &lt;int&gt;      &lt;dbl&gt;
+##  1  1880       2684
+##  2  1890       3179
+##  3  1900       4241
+##  4  1910       5421
+##  5  1920       5927
+##  6  1930       7417
+##  7  1940       8804
+##  8  1950       8740
+##  9  1960       8818
+## 10  1970       8334
+## 11  1980       7994
+## 12  1990       8152
+## 13  2000       9212
+## 14  2010       9870
+## 15  2016      10198
+</code></pre>
+
+<p>Make this an object and then plot the data:</p>
+
+<pre><code class="language-r">sleepy &lt;- &quot;https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York&quot; %&gt;% 
+  read_html() %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  `[[`(2) %&gt;% 
+  set_names(c(&quot;year&quot;, &quot;population&quot;,&quot;blank&quot;, &quot;percentage&quot;)) %&gt;%
+  select(year, population) %&gt;% 
+  as_tibble() %&gt;% 
+  filter(year != &quot;Census&quot;) %&gt;% 
+  mutate(year = str_replace(year, &quot;Est. &quot;, &quot;&quot;)) %&gt;% 
+  filter(year != &quot;U.S. Decennial Census[12]&quot;) %&gt;% 
+  type_convert()
+
+sleepy %&gt;% 
+  ggplot(aes(year, population)) +
+  geom_line() +
+  geom_point() +
+  labs(title = &quot;Sleepy Hollow&quot;) +
+  theme_bw() +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+</code></pre>
+
+<p><img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//tylurp-rbind-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+<script src="https://use.fontawesome.com/efb5af9857.js"></script>
+      <footer class="footer">
+        <ul class="footer-links">
+            <li><a href="mailto:tylurp1@gmail.com"><i class="fa fa-envelope" aria-hidden="true" title="Mail to Tyler"></i><span class="sr-only">Email</span></a></li>
+            <li><a href="https://github.com/tylurp"><i class="fa fa-github" aria-hidden="true" title="Github"></i><span class="sr-only">Github</span></a></li>
+            <li><a href="https://twitter.com/tyluRp"><i class="fa fa-twitter" aria-hidden="true" title="Twitter"></i><span class="sr-only">Twitter</span></a></li>
+            <li><a href="https://stackoverflow.com/users/7362046/tylurp?tab=profile"><i class="fa fa-stack-overflow" aria-hidden="true" title="Stack Overflow"></i><span class="sr-only">Stack Overflow</span></a></li>
+            <li><a href="https://www.linkedin.com/in/tyler-littlefield-628662139/"><i class="fa fa-linkedin" aria-hidden="true" title="LinkedIn"></i><span class="sr-only">LinkedIn</span></a></li>
+            <li><a href="/"><i title="Last change"></i> Last change: 2018/04/28</a></li>
+        </ul>
+        
+          <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "tylurp-rbind-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-106175087-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
