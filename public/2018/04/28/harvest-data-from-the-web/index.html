@@ -55,7 +55,7 @@
 
   <article class="article">
     
-    <span class="article-duration">7 min read</span>
+    <span class="article-duration">11 min read</span>
     
 
     <h1 class="article-title">HaRvest data from the web</h1>
@@ -247,6 +247,14 @@ books_url &lt;- &quot;https://en.wikipedia.org/wiki/List_of_best-selling_books&q
 <li><code>&lt;table&gt;</code> data</li>
 </ol>
 
+<p>I want to extract both headlines so that I have the option to bind all these data frames into one. I sorta already have this option but if I don&rsquo;t add these variables beforehand, I will have no way of telling what I&rsquo;m looking at. No way to distinguish if this value represents a book that sold more than 100 million copies or 10 million.</p>
+
+<p>I&rsquo;ll start by grabing the text contained in <code>&lt;h3&gt;</code>. In order to do this, I need <code>html_nodes</code> to pin point the area of interest and <code>html_text</code> to grab the text inside those nodes. Additionally, I often use the &ldquo;inspect element&rdquo; feature offered by most browsers in order to find the nodes I need:</p>
+
+<p><img src="https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/html_nodes_screenshot.png" alt="" /></p>
+
+<p>Once I&rsquo;ve found the node, I run:</p>
+
 <pre><code class="language-r"># Range object to call map
 range &lt;- books_url %&gt;% 
   read_html() %&gt;% 
@@ -255,7 +263,28 @@ range &lt;- books_url %&gt;%
   .[-11] %&gt;% 
   html_text() %&gt;% 
   str_remove(&quot;\\[[^]]*]&quot;)
+
+range
 </code></pre>
+
+<pre><code>##  [1] &quot;More than 100 million copies&quot;             
+##  [2] &quot;Between 50 million and 100 million copies&quot;
+##  [3] &quot;Between 30 million and 50 million copies&quot; 
+##  [4] &quot;Between 20 million and 30 million copies&quot; 
+##  [5] &quot;Between 10 million and 20 million copies&quot; 
+##  [6] &quot;More than 100 million copies&quot;             
+##  [7] &quot;Between 50 million and 100 million copies&quot;
+##  [8] &quot;Between 30 million and 50 million copies&quot; 
+##  [9] &quot;Between 20 million and 30 million copies&quot; 
+## [10] &quot;Between 15 million and 20 million copies&quot; 
+## [11] &quot;More than 100 million copies&quot;             
+## [12] &quot;Between 50 million and 100 million copies&quot;
+## [13] &quot;Between 30 million and 50 million copies&quot; 
+## [14] &quot;Between 20 million and 30 million copies&quot; 
+## [15] &quot;Between 10 million and 20 million copies&quot;
+</code></pre>
+
+<p>Then I do the same thing for the second variable I want:</p>
 
 <pre><code class="language-r"># Header object to call map
 header &lt;- books_url %&gt;% 
@@ -267,9 +296,34 @@ header &lt;- books_url %&gt;%
   str_to_lower() %&gt;% 
   rep(5) %&gt;% # luckily the data structure supports this
   sort()
+
+header
 </code></pre>
 
-<h3 id="create-nested-data-frame">Create nested data frame</h3>
+<pre><code>##  [1] &quot;list of best-selling book series&quot;            
+##  [2] &quot;list of best-selling book series&quot;            
+##  [3] &quot;list of best-selling book series&quot;            
+##  [4] &quot;list of best-selling book series&quot;            
+##  [5] &quot;list of best-selling book series&quot;            
+##  [6] &quot;list of best-selling individual books&quot;       
+##  [7] &quot;list of best-selling individual books&quot;       
+##  [8] &quot;list of best-selling individual books&quot;       
+##  [9] &quot;list of best-selling individual books&quot;       
+## [10] &quot;list of best-selling individual books&quot;       
+## [11] &quot;list of best-selling regularly updated books&quot;
+## [12] &quot;list of best-selling regularly updated books&quot;
+## [13] &quot;list of best-selling regularly updated books&quot;
+## [14] &quot;list of best-selling regularly updated books&quot;
+## [15] &quot;list of best-selling regularly updated books&quot;
+</code></pre>
+
+<p>Note the comment I made where I repeat each element in the vector 5 times. Because the data is structured in such a way (15 tables organized by three titles, each title representing 5 tables) I can get away with doing this. This will not be the case for other examples so I&rsquo;m making a note of it in case I ever reuse this code.</p>
+
+<p>Also note that each of these objects, <code>header</code> and <code>range</code>, are the same length. This is essential because the length needs to match the length of the nested data frame that I&rsquo;m about to create.</p>
+
+<h3 id="create-the-nested-data-frame">Create the nested data frame</h3>
+
+<p>Nested data frames seem magical to me. Perhaps it&rsquo;s due to my lack of experience but I just love nested data frames. The code chunk below does all the magic and involves reading the data, selecting the tables, mapping multiple functions to each data frame in my list of data frames, <code>enframe</code> the list to create the nested data frame, and then adding the two additional variables I extracted above:</p>
 
 <pre><code class="language-r"># Create data frame
 books &lt;- books_url %&gt;% 
@@ -283,9 +337,33 @@ books &lt;- books_url %&gt;%
   map(~ mutate(., sales = str_extract(approximate_sales, &quot;[[:digit:]]+&quot;))) %&gt;% 
   enframe(name = &quot;id&quot;) %&gt;% 
   mutate(range = range, header = header)
+
+books
 </code></pre>
 
-<h3 id="look-at-data">Look at data</h3>
+<pre><code>## # A tibble: 15 x 4
+##       id value                 range                 header               
+##    &lt;int&gt; &lt;list&gt;                &lt;chr&gt;                 &lt;chr&gt;                
+##  1     1 &lt;data.frame [9 × 7]&gt;  More than 100 millio… list of best-selling…
+##  2     2 &lt;data.frame [32 × 7]&gt; Between 50 million a… list of best-selling…
+##  3     3 &lt;data.frame [25 × 6]&gt; Between 30 million a… list of best-selling…
+##  4     4 &lt;data.frame [37 × 6]&gt; Between 20 million a… list of best-selling…
+##  5     5 &lt;data.frame [55 × 6]&gt; Between 10 million a… list of best-selling…
+##  6     6 &lt;data.frame [29 × 7]&gt; More than 100 millio… list of best-selling…
+##  7     7 &lt;data.frame [22 × 7]&gt; Between 50 million a… list of best-selling…
+##  8     8 &lt;data.frame [14 × 7]&gt; Between 30 million a… list of best-selling…
+##  9     9 &lt;data.frame [31 × 7]&gt; Between 20 million a… list of best-selling…
+## 10    10 &lt;data.frame [15 × 7]&gt; Between 15 million a… list of best-selling…
+## 11    11 &lt;data.frame [5 × 6]&gt;  More than 100 millio… list of best-selling…
+## 12    12 &lt;data.frame [3 × 6]&gt;  Between 50 million a… list of best-selling…
+## 13    13 &lt;data.frame [7 × 6]&gt;  Between 30 million a… list of best-selling…
+## 14    14 &lt;data.frame [5 × 6]&gt;  Between 20 million a… list of best-selling…
+## 15    15 &lt;data.frame [11 × 6]&gt; Between 10 million a… list of best-selling…
+</code></pre>
+
+<h3 id="look-at-the-data">Look at the data</h3>
+
+<p>Now the fun starts! I have a single object that contains 15 data frames and I can easily filter by <code>id</code> to access a single table:</p>
 
 <pre><code class="language-r"># Counts for approximate sales, 10 million occurs most often
 books %&gt;% 
@@ -326,6 +404,8 @@ books %&gt;%
 </code></pre>
 
 <h1 id="conclusion">Conclusion</h1>
+
+<p>The suite of <code>tidyverse</code> packages and <code>rvest</code> seem to be a powerful combo for scraping web data. The syntax is modular, intuitive and you really only need to understand a handful of functions to get started. That being said, there are more difficult problems like reading data from websites that involve javascript where the data is not immediately accessible. Instead, the user is required to scroll down in order to reveal additional data. There are tools like <code>RSelenium</code> that tackle these problems but I have yet to dive into that.</p>
 <div class="footnotes">
 
 <hr />

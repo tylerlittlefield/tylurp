@@ -201,6 +201,14 @@ The first additional variable that I want is the headline or the title of each t
 2. `<h3>` headline, there are 15 of these and they act as the title of each table.
 3. `<table>` data
 
+I want to extract both headlines so that I have the option to bind all these data frames into one. I sorta already have this option but if I don't add these variables beforehand, I will have no way of telling what I'm looking at. No way to distinguish if this value represents a book that sold more than 100 million copies or 10 million. 
+
+I'll start by grabing the text contained in `<h3>`. In order to do this, I need `html_nodes` to pin point the area of interest and `html_text` to grab the text inside those nodes. Additionally, I often use the "inspect element" feature offered by most browsers in order to find the nodes I need:
+
+![](https://raw.githubusercontent.com/tyluRp/tylurp/master/figure/html_nodes_screenshot.png)
+
+Once I've found the node, I run:
+
 
 ```r
 # Range object to call map
@@ -211,7 +219,29 @@ range <- books_url %>%
   .[-11] %>% 
   html_text() %>% 
   str_remove("\\[[^]]*]")
+
+range
 ```
+
+```
+##  [1] "More than 100 million copies"             
+##  [2] "Between 50 million and 100 million copies"
+##  [3] "Between 30 million and 50 million copies" 
+##  [4] "Between 20 million and 30 million copies" 
+##  [5] "Between 10 million and 20 million copies" 
+##  [6] "More than 100 million copies"             
+##  [7] "Between 50 million and 100 million copies"
+##  [8] "Between 30 million and 50 million copies" 
+##  [9] "Between 20 million and 30 million copies" 
+## [10] "Between 15 million and 20 million copies" 
+## [11] "More than 100 million copies"             
+## [12] "Between 50 million and 100 million copies"
+## [13] "Between 30 million and 50 million copies" 
+## [14] "Between 20 million and 30 million copies" 
+## [15] "Between 10 million and 20 million copies"
+```
+
+Then I do the same thing for the second variable I want:
 
 
 ```r
@@ -225,9 +255,35 @@ header <- books_url %>%
   str_to_lower() %>% 
   rep(5) %>% # luckily the data structure supports this
   sort()
+
+header
 ```
 
-### Create nested data frame
+```
+##  [1] "list of best-selling book series"            
+##  [2] "list of best-selling book series"            
+##  [3] "list of best-selling book series"            
+##  [4] "list of best-selling book series"            
+##  [5] "list of best-selling book series"            
+##  [6] "list of best-selling individual books"       
+##  [7] "list of best-selling individual books"       
+##  [8] "list of best-selling individual books"       
+##  [9] "list of best-selling individual books"       
+## [10] "list of best-selling individual books"       
+## [11] "list of best-selling regularly updated books"
+## [12] "list of best-selling regularly updated books"
+## [13] "list of best-selling regularly updated books"
+## [14] "list of best-selling regularly updated books"
+## [15] "list of best-selling regularly updated books"
+```
+
+Note the comment I made where I repeat each element in the vector 5 times. Because the data is structured in such a way (15 tables organized by three titles, each title representing 5 tables) I can get away with doing this. This will not be the case for other examples so I'm making a note of it in case I ever reuse this code.
+
+Also note that each of these objects, `header` and `range`, are the same length. This is essential because the length needs to match the length of the nested data frame that I'm about to create.
+
+### Create the nested data frame
+
+Nested data frames seem magical to me. Perhaps it's due to my lack of experience but I just love nested data frames. The code chunk below does all the magic and involves reading the data, selecting the tables, mapping multiple functions to each data frame in my list of data frames, `enframe` the list to create the nested data frame, and then adding the two additional variables I extracted above:
 
 
 ```r
@@ -243,9 +299,34 @@ books <- books_url %>%
   map(~ mutate(., sales = str_extract(approximate_sales, "[[:digit:]]+"))) %>% 
   enframe(name = "id") %>% 
   mutate(range = range, header = header)
+
+books
 ```
 
-### Look at data
+```
+## # A tibble: 15 x 4
+##       id value                 range                 header               
+##    <int> <list>                <chr>                 <chr>                
+##  1     1 <data.frame [9 × 7]>  More than 100 millio… list of best-selling…
+##  2     2 <data.frame [32 × 7]> Between 50 million a… list of best-selling…
+##  3     3 <data.frame [25 × 6]> Between 30 million a… list of best-selling…
+##  4     4 <data.frame [37 × 6]> Between 20 million a… list of best-selling…
+##  5     5 <data.frame [55 × 6]> Between 10 million a… list of best-selling…
+##  6     6 <data.frame [29 × 7]> More than 100 millio… list of best-selling…
+##  7     7 <data.frame [22 × 7]> Between 50 million a… list of best-selling…
+##  8     8 <data.frame [14 × 7]> Between 30 million a… list of best-selling…
+##  9     9 <data.frame [31 × 7]> Between 20 million a… list of best-selling…
+## 10    10 <data.frame [15 × 7]> Between 15 million a… list of best-selling…
+## 11    11 <data.frame [5 × 6]>  More than 100 millio… list of best-selling…
+## 12    12 <data.frame [3 × 6]>  Between 50 million a… list of best-selling…
+## 13    13 <data.frame [7 × 6]>  Between 30 million a… list of best-selling…
+## 14    14 <data.frame [5 × 6]>  Between 20 million a… list of best-selling…
+## 15    15 <data.frame [11 × 6]> Between 10 million a… list of best-selling…
+```
+
+### Look at the data
+
+Now the fun starts! I have a single object that contains 15 data frames and I can easily filter by `id` to access a single table:
 
 
 ```r
@@ -290,5 +371,7 @@ books %>%
 ```
 
 # Conclusion
+
+The suite of `tidyverse` packages and `rvest` seem to be a powerful combo for scraping web data. The syntax is modular, intuitive and you really only need to understand a handful of functions to get started. That being said, there are more difficult problems like reading data from websites that involve javascript where the data is not immediately accessible. Instead, the user is required to scroll down in order to reveal additional data. There are tools like `RSelenium` that tackle these problems but I have yet to dive into that.
 
 
