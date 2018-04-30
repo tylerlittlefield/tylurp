@@ -11,11 +11,11 @@ tags: []
 
 There's a cool package called [`rvest`](https://github.com/hadley/rvest) which makes scraping data from the web pretty easy. This package is designed to work with [`magrittr`](https://github.com/tidyverse/magrittr) so users get the benefits that come along with the `%>%` operator.
 
-Let's start with an example of how someone can extract a table of data from wikipedia.
+I'll start with an example using a wikipedia page that points to Sleepy Hollow, New York.
 
 ## Sleepy Hollow, NY
 
-We start with a URL, do a bunch of stuff, and ultimately extract a clean data frame. In this example the URL points to a wikipedia page about Sleepy Hollow, New York:
+Below is the full code for scraping and cleaning the data:
 
 
 ```r
@@ -31,7 +31,7 @@ library(rvest)
   select(year, population) %>% 
   as_tibble() %>% 
   filter(year != "Census") %>% 
-  mutate(year = str_replace(year, "Est. ", "")) %>% 
+  mutate(year = str_remove(year, "Est. ")) %>% 
   filter(year != "U.S. Decennial Census[12]") %>% 
   type_convert()
 ```
@@ -57,13 +57,13 @@ library(rvest)
 ## 15  2016      10198
 ```
 
-Notice that the pipe operator `%>%` allows us to write code in a step by step fashion. Personally, I find pipe syntax intuitive and more natural but you could do this the old fashioned way if you wanted.
+Notice that the pipe operator `%>%` allows me to write code in a step by step fashion. Personally, I find pipe syntax intuitive and more natural but you could do this the old fashioned way if you wanted.
 
 This chain has 11 lines of code so let's go over the steps involved.
 
 ### `read_html`
 
-We start with a URL and then call `read_html`:
+I start with a URL and then call `read_html`:
 
 
 ```r
@@ -78,7 +78,7 @@ We start with a URL and then call `read_html`:
 ## [2] <body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-sub ...
 ```
 
-This function is what actually gives us the html data that is then parsed to xml.
+This function is what actually gives me the data, it reads the html and parses it to xml.
 
 ### `html_table` 
 
@@ -86,13 +86,13 @@ After this, `html_table` parses the data into a list of data frames. Note that a
 
 ### Extracting data frames with `[[`
 
-After that, we extract the second table using `[[(2)` to extract the second element in our list of data frames, this happens to be the population data for Sleepy Hollow, NY.
-
-From this point we've got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, we have character columns for numeric data. There are a bunch of ways we could go about doing this, many that are probably more elegant than my solution but it's quick and regular expressions are not one of my strengths.
+After that, I extract the second table using `[[(2)` to extract the second element in my list of data frames, this happens to be the population data for Sleepy Hollow, NY. If you don't like the `[[(2)` syntax, `.[2]` also works.
 
 ### Data prep
 
-First thing is to rename the columns. I want them to be lower case and short so I can call on them easily. 
+From this point I've got the data frame but some additional prep is needed. Rows need to be deleted and some values need characters removed so that the data types can be corrected. Currently, I have character columns for numeric data. There are a bunch of ways to go about cleaning this up, many that are probably more elegant than my solution but oh well. It's quick and regular expressions are not one of my strengths.
+
+First thing I'm gonna do is rename the columns. I want them to be lower case and short so I can call on them easily. 
 
 
 ```r
@@ -144,53 +144,9 @@ After this, I'm going to grab the two columns I'm interested in and then convert
 ## 17 U.S. Decennial Census[12] U.S. Decennial Census[12]
 ```
 
-Finally, `filter` `year` to return all rows except ones that contain `"Census"` thereby removing row one. Replace the `"Est. "` from any row value in `year` with nothing, effectively removing those characters and white space. Then, `filter` once more to remove the last row and use `type_convert` to make `year` integer type and `population` numeric.
+Finally, `filter` `year` to return all rows except ones that contain `"Census"` thereby removing row one. Remove the `"Est. "` from any row value in `year`, effectively removing those characters and white space.^[Consider using `str_trim` to remove white space.] Then, `filter` once more to remove the last row and use `type_convert` to make `year` integer type and `population` numeric.
 
-
-```r
-"https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>% 
-  read_html() %>% 
-  html_table(fill = TRUE) %>% 
-  `[[`(2) %>% 
-  set_names(c("year", "population","blank", "percentage")) %>%
-  select(year, population) %>% 
-  as_tibble() %>% 
-  filter(year != "Census") %>% 
-  mutate(year = str_replace(year, "Est. ", "")) %>% 
-  filter(year != "U.S. Decennial Census[12]") %>% 
-  type_convert()
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   year = col_integer(),
-##   population = col_number()
-## )
-```
-
-```
-## # A tibble: 15 x 2
-##     year population
-##    <int>      <dbl>
-##  1  1880       2684
-##  2  1890       3179
-##  3  1900       4241
-##  4  1910       5421
-##  5  1920       5927
-##  6  1930       7417
-##  7  1940       8804
-##  8  1950       8740
-##  9  1960       8818
-## 10  1970       8334
-## 11  1980       7994
-## 12  1990       8152
-## 13  2000       9212
-## 14  2010       9870
-## 15  2016      10198
-```
-
-Make this an object and then plot the data:
+That's it. The data is clean. I'm going to store it in an object named `sleepy` so that I can plot the data:
 
 
 ```r
@@ -202,7 +158,7 @@ sleepy <- "https://en.wikipedia.org/wiki/Sleepy_Hollow,_New_York" %>%
   select(year, population) %>% 
   as_tibble() %>% 
   filter(year != "Census") %>% 
-  mutate(year = str_replace(year, "Est. ", "")) %>% 
+  mutate(year = str_remove(year, "Est. ")) %>% 
   filter(year != "U.S. Decennial Census[12]") %>% 
   type_convert()
 
@@ -217,17 +173,19 @@ sleepy %>%
         panel.grid.major.x = element_blank())
 ```
 
-<img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="/post/2018-04-28-harvest-data-from-the-web_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 # Managing multiple data frames
 
-Most times, there will be numerous tables on a single page. I like to handle these situations by creating a nested data frame. The idea is that you have one data frame that contains data frames. The `tibble` package has a nice function called `enframe` that can do this. 
+Most cases, there will be numerous tables on a single page. I like to handle these situations by creating a nested data frame. The idea is that you have one data frame that contains data frames. The `tibble` package has a nice function called `enframe` that can do this. 
 
 ## List of best selling books
 
-Now let's take a look at a page with multiple tables, read them all, and then store them into a single R object.
+Let's take a look at a page with multiple tables, read them all, and then store them in a single data frame named `books`.
 
 ### Import
+
+Like before, I start with the URL however this time, I'm storing it as an object named `books_url`. I didn't do this in the last example because I was able to scrape the table in a single chain. This example is a little more involved. There are some additional variables that I want to grab and I need to call on this URL more than once to get them. This being the case, having an object that contains the URL makes it easier to call on and I avoid copying and pasting the URL numerous times.
 
 
 ```r
@@ -236,6 +194,12 @@ books_url <- "https://en.wikipedia.org/wiki/List_of_best-selling_books"
 ```
 
 ### Extract additional variables
+
+The first additional variable that I want is the headline or the title of each table. The structure of this page goes like this:
+
+1. `<h2>` headline, there are three of these that represent 5 data frames each. This is the first layer that organizes the 15 tables.
+2. `<h3>` headline, there are 15 of these and they act as the title of each table.
+3. `<table>` data
 
 
 ```r
@@ -263,7 +227,7 @@ header <- books_url %>%
   sort()
 ```
 
-# Create nested data frame
+### Create nested data frame
 
 
 ```r
@@ -325,7 +289,6 @@ books %>%
 ## 10 10 million                             22
 ```
 
-
-
+# Conclusion
 
 

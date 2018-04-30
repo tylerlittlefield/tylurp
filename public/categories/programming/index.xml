@@ -29,8 +29,9 @@ for i in *; do extension=&amp;quot;${i##*.</description>
       
       <guid>/2018/04/28/harvest-data-from-the-web/</guid>
       <description>Intro There&amp;rsquo;s a cool package called rvest which makes scraping data from the web pretty easy. This package is designed to work with magrittr so users get the benefits that come along with the %&amp;gt;% operator.
-Let&amp;rsquo;s start with an example of how someone can extract a table of data from wikipedia.
-Sleepy Hollow, NY We start with a URL, do a bunch of stuff, and ultimately extract a clean data frame.</description>
+I&amp;rsquo;ll start with an example using a wikipedia page that points to Sleepy Hollow, New York.
+Sleepy Hollow, NY Below is the full code for scraping and cleaning the data:
+library(tidyverse) library(rvest) # Scrape population data from wikipedia &amp;quot;https://en.</description>
     </item>
     
   </channel>
