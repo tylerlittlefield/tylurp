@@ -30,12 +30,29 @@
        url('../fonts/SourceCodePro-Regular.woff') format('woff'),
        url('../fonts/SourceCodePro-Regular.woff') format('woff');
 }
+@font-face {
+  font-family: 'Fira Code Retina';
+  font-style: normal;
+  font-weight: 400;
+  src: local('FiraCode Retina'), local('FiraCode-Retina'),
+       url('../fonts/FiraCode-Retina.woff') format('otf'),
+       url('../fonts/FiraCode-Retina.woff') format('otf');
+}
+@font-face {
+  font-family: 'Fira Sans Light';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Light'), local('FiraSans-Light'),
+       url('../fonts/FiraSans-Light.ttf') format('ttf'),
+       url('../fonts/FiraSans-Light.ttf') format('ttf');
+}
+
 body {
-  font-family: 'Merriweather', serif;
+  font-family: 'Fira Sans Light', serif;
 }
 h1, h2, h3, h4, h5, h6, .nav, .article-duration, .archive-item-link, .footer {
-  font-family: 'Proza Libre', sans-serif;
+  font-family: 'Fira Sans Light', sans-serif;
 }
 code {
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Fira Code Retina', monospace;
 }
