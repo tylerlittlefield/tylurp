@@ -31,20 +31,20 @@
        url('../fonts/SourceCodePro-Regular.woff') format('woff');
 }
 @font-face {
-  font-family: 'Fira Code Retina';
+  font-family: 'Fira Code Regular';
   font-style: normal;
   font-weight: 400;
-  src: local('FiraCode Retina'), local('FiraCode-Retina'),
-       url('../fonts/FiraCode-Retina.woff') format('otf'),
-       url('../fonts/FiraCode-Retina.woff') format('otf');
+  src: local('FiraCode Regular'), local('FiraCode-Regular'),
+       url('../fonts/FiraCode-Regular.woff2') format('woff2'),
+       url('../fonts/FiraCode-Regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Fira Sans Light';
   font-style: normal;
   font-weight: 400;
   src: local('Fira Sans Light'), local('FiraSans-Light'),
-       url('../fonts/FiraSans-Light.ttf') format('ttf'),
-       url('../fonts/FiraSans-Light.ttf') format('ttf');
+       url('../fonts/FiraSans-Light.woff2') format('woff2'),
+       url('../fonts/FiraSans-Light.woff2') format('woff2');
 }
 
 body {
@@ -54,5 +54,5 @@ h1, h2, h3, h4, h5, h6, .nav, .article-duration, .archive-item-link, .footer {
   font-family: 'Fira Sans Light', sans-serif;
 }
 code {
-  font-family: 'Fira Code Retina', monospace;
+  font-family: 'Fira Code Regular', monospace;
 }
