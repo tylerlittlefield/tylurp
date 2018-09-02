@@ -46,12 +46,20 @@
        url('../fonts/FiraSans-Light.woff2') format('woff2'),
        url('../fonts/FiraSans-Light.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Sawarabi Mincho';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Sawarabi Mincho'), local('SawarabiMincho-Regular'),
+       url('../fonts/SawarabiMincho-Regular.ttf') format('ttf'),
+       url('../fonts/SawarabiMincho-Regular.ttf') format('ttf');
+}
 
 body {
-  font-family: 'Fira Sans Light', serif;
+  font-family: 'Proza Libre', serif;
 }
 h1, h2, h3, h4, h5, h6, .nav, .article-duration, .archive-item-link, .footer {
-  font-family: 'Fira Sans Light', sans-serif;
+  font-family: 'Proza Libre', sans-serif;
 }
 code {
   font-family: 'Fira Code Regular', monospace;
