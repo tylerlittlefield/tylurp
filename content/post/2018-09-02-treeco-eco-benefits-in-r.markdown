@@ -1,0 +1,242 @@
+---
+title: 'treeco: eco benefits in R'
+author: ~
+date: '2018-09-02'
+slug: treeco-eco-benefits-in-r
+categories: []
+tags: []
+---
+
+I'm excited to say that I've developed my first R package [`treeco`](https://github.com/tyluRp/treeco), a tool for calculating the eco benefits of trees. To my suprise, it's not that difficult to actually develope a package. With tools like [`usethis`](https://github.com/r-lib/usethis) which makes the developement process easy, the main challenge is simply coming up with an idea. I probably never would have thought of `treeco` if I didn't work at software company dedicated to trees.
+
+# How it works
+
+There are currently two functions: `eco_run` and `eco_run_all`. The former calculates benefits for a single tree and the latter calculates benefits for multiple trees. 
+
+`eco_run` requires a common name, a dbh^[Diameter at breast height, see [here](https://en.wikipedia.org/wiki/Diameter_at_breast_height) for more.] value and a region code. For example:
+
+
+```r
+treeco::eco_run("Common fig", 20, "InlEmpCLM")
+```
+
+```
+##     common_name dbh benefit_value            benefit unit dollars
+##  1:  Common fig  20        0.2429     aq nox avoided   lb    0.93
+##  2:  Common fig  20        0.2623         aq nox dep   lb    1.01
+##  3:  Common fig  20        0.7716       aq ozone dep   lb    2.96
+##  4:  Common fig  20        0.0602    aq pm10 avoided   lb    0.28
+##  5:  Common fig  20        0.4079        aq pm10 dep   lb    1.89
+##  6:  Common fig  20        0.4813     aq sox avoided   lb    1.17
+##  7:  Common fig  20        0.0353         aq sox dep   lb    0.09
+##  8:  Common fig  20        0.0602     aq voc avoided   lb    0.12
+##  9:  Common fig  20        0.0000               bvoc   lb    0.00
+## 10:  Common fig  20      122.7973        co2 avoided   lb    0.41
+## 11:  Common fig  20        9.0389    co2 sequestered   lb    0.03
+## 12:  Common fig  20     1255.7516        co2 storage   lb    4.19
+## 13:  Common fig  20      189.2000        electricity  kwh   38.12
+## 14:  Common fig  20      834.7837 hydro interception  gal    4.59
+## 15:  Common fig  20     -179.4561        natural gas   lb    1.20
+```
+
+Why require the obscure region code? I wish we didn't need it but the benefits of a tree vary depending on the region. For now, users can find the region code by looking at the `money` dataset:
+
+
+```r
+treeco::money[c("region_code", "region_name")]
+```
+
+```
+##     region_code               region_name
+## 1     CaNCCoJBK Northern California Coast
+## 2     CenFlaXXX           Central Florida
+## 3     GulfCoCHS             Coastal Plain
+## 4     InlEmpCLM             Inland Empire
+## 5     InlValMOD            Inland Valleys
+## 6     InterWABQ             Interior West
+## 7     LoMidWXXX             Lower Midwest
+## 8     MidWstMSP                   Midwest
+## 9     NMtnPrFNL                     North
+## 10    NoEastXXX                 Northeast
+## 11    PacfNWLOG         Pacific Northwest
+## 12    PiedmtCLT                     South
+## 13    SoCalCSMA Southern California Coast
+## 14    SWDsrtGDL          Southwest Desert
+## 15    TpIntWBOI   Temperate Interior West
+## 16 TropicPacXXX                  Tropical
+```
+
+What about typos in the common name argument? This is something I haven't quite figured out yet. For now, users can look at the `species` dataset or just type something in and see if `eco_run` correctly guesses what the user meant. For example, we might misspell "Common fig" as "Comon fig":
+
+
+```r
+treeco::eco_run("Comon fig", 20, "InlEmpCLM")
+```
+
+```
+## Species given: [comon fig]
+## Closest match: [common fig]
+## ...
+## Using closest match
+```
+
+```
+##     common_name dbh benefit_value            benefit unit dollars
+##  1:  Common fig  20        0.2429     aq nox avoided   lb    0.93
+##  2:  Common fig  20        0.2623         aq nox dep   lb    1.01
+##  3:  Common fig  20        0.7716       aq ozone dep   lb    2.96
+##  4:  Common fig  20        0.0602    aq pm10 avoided   lb    0.28
+##  5:  Common fig  20        0.4079        aq pm10 dep   lb    1.89
+##  6:  Common fig  20        0.4813     aq sox avoided   lb    1.17
+##  7:  Common fig  20        0.0353         aq sox dep   lb    0.09
+##  8:  Common fig  20        0.0602     aq voc avoided   lb    0.12
+##  9:  Common fig  20        0.0000               bvoc   lb    0.00
+## 10:  Common fig  20      122.7973        co2 avoided   lb    0.41
+## 11:  Common fig  20        9.0389    co2 sequestered   lb    0.03
+## 12:  Common fig  20     1255.7516        co2 storage   lb    4.19
+## 13:  Common fig  20      189.2000        electricity  kwh   38.12
+## 14:  Common fig  20      834.7837 hydro interception  gal    4.59
+## 15:  Common fig  20     -179.4561        natural gas   lb    1.20
+```
+
+`eco_run_all` requires a dataset in the form of a csv, the name of the common name field, the name of the dbh field, and the region:
+
+
+```r
+file_dir <- "/Users/tylerlittlefield/Desktop/treeco demo data/trees.csv"
+
+my_trees <- treeco::eco_run_all(
+  data = file_dir,        # data directory
+  species_col = "COMMON", # name of my common name field
+  dbh_col = "EXACT_DBH",  # name of my dbh field
+  region = "InlEmpCLM"    # region
+  )
+```
+
+```
+## Time difference of 0.828387 secs
+```
+
+```r
+tibble::as_tibble(my_trees)
+```
+
+```
+## # A tibble: 99,690 x 8
+##       id scientific_name common_name   dbh benefit_value benefit unit 
+##    <int> <chr>           <chr>       <dbl>         <dbl> <chr>   <chr>
+##  1     1 Cupaniopsis an… Carrot wood    15        0.129  aq nox… lb   
+##  2     1 Cupaniopsis an… Carrot wood    15        0.242  aq nox… lb   
+##  3     1 Cupaniopsis an… Carrot wood    15        0.628  aq ozo… lb   
+##  4     1 Cupaniopsis an… Carrot wood    15        0.0317 aq pm1… lb   
+##  5     1 Cupaniopsis an… Carrot wood    15        0.350  aq pm1… lb   
+##  6     1 Cupaniopsis an… Carrot wood    15        0.254  aq sox… lb   
+##  7     1 Cupaniopsis an… Carrot wood    15        0.0243 aq sox… lb   
+##  8     1 Cupaniopsis an… Carrot wood    15        0.0317 aq voc… lb   
+##  9     1 Cupaniopsis an… Carrot wood    15       -0.569  bvoc    lb   
+## 10     1 Cupaniopsis an… Carrot wood    15       64.8    co2 av… lb   
+## # ... with 99,680 more rows, and 1 more variable: dollars <dbl>
+```
+
+Similar to `eco_run` the output follows the "tidy" data structure^[Tidy data is an opinionated approach to data analysis. See [here](http://r4ds.had.co.nz/tidy-data.html) for more information.] where: 
+
+1. Each variable has its own column 
+2. Each observation has its own row
+3. Each value has its own cell. This lets users manipulate and summarise the data easily.
+
+Once the numbers have been crunched, we can use the `my_trees` object to explore the results.
+
+
+```r
+library(dplyr)
+library(ggplot2)
+library(forcats)
+library(stringr)
+
+# Theme I'll be using for the next couple plots
+theme_treeco <- function() {
+  theme_minimal() +
+  theme(text = element_text(family = "MyriadPro-Regular"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank())
+}
+
+# Top 10 species
+my_trees %>% 
+  group_by(common_name) %>% 
+  tally() %>% 
+  top_n(10) %>% 
+  arrange(desc(n)) %>% 
+  ggplot(aes(fct_reorder(common_name, n), n)) +
+  geom_col(fill = "#7BA46C") + 
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "", y = "Count") +
+  coord_flip() +
+  theme_treeco()
+```
+
+<img src="/post/2018-09-02-treeco-eco-benefits-in-r_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+```r
+# Top 10 most valuable tree species in our inventory
+my_trees %>% 
+  group_by(common_name) %>% 
+  summarise(total_dollars = sum(dollars)) %>% 
+  top_n(10) %>% 
+  arrange(desc(total_dollars)) %>% 
+  ggplot(aes(fct_reorder(common_name, total_dollars), total_dollars)) +
+  geom_col(fill = "#7BA46C") +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(x = "", y = "Total Dollars") +
+  coord_flip() +
+  theme_treeco()
+```
+
+<img src="/post/2018-09-02-treeco-eco-benefits-in-r_files/figure-html/unnamed-chunk-5-2.png" width="672" />
+
+```r
+# Total CO2 benefits
+# Total CO2 benefits
+my_trees %>% 
+  filter(str_detect(benefit, "co2")) %>% 
+  group_by(benefit) %>% 
+  summarise(total_benefits = sum(benefit_value)) %>% 
+  ggplot(aes(fct_reorder(benefit, total_benefits), total_benefits)) +
+  geom_col(fill = "#7BA46C") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "", y = "Total Pounds") +
+  coord_flip() +
+  theme_treeco()
+```
+
+<img src="/post/2018-09-02-treeco-eco-benefits-in-r_files/figure-html/unnamed-chunk-5-3.png" width="672" />
+
+There are many other variables to play around with. Each tree has 15, they are:
+
+1. aq nox avoided
+2. aq nox dep
+3. aq ozone dep
+4. aq pm10 avoided 
+5. aq pm10 dep
+6. aq sox avoided
+7. aq sox dep
+8. aq voc avoided 
+9. bvoc
+10. co2 avoided
+11. co2 sequestered
+12. co2 storage
+13. electricity
+14. hydro interception 
+15. natural gas
+
+More information on these benefits can be found at Davey Trees benefit [calculator](http://www.treebenefits.com/calculator/) which I have been using to "spot check" trees and confirm that the numbers `treeco` gives are accurate. In fact, I owe a lot to Davey Trees, OpenStreetMap, and (above all) i-Tree for making `treeco` possible.
+
+OpenStreetMap has their source code hosted on github and is written in the Go language. This was a great resource and allowed me to translate some of the important bits to R. 
+
+i-Tree is essentially the "standard" eco reporting tool that Davey, OpenTreeMap and `treeco` are built upon. The benefit values are interpolated from values originally found in (I believe) i-Tree Streets. So without this data, we wouldn't be able to extract benefit values.
+
+# Future plans
+
+Overall, I'm pretty happy with `treeco`. There are some issues with it and you can find them in the issues page on github, but it's at a point where I can use it and make my own custom eco benefit reports. In the future, I'm hoping to make this package more user friendly and ultimately, usable for anyone. This means the code needs to be refined much more, it needs to be robust and be able to handle (or ideally, resolve) errors elegantly. I would also like to include `rmarkdown` in the package and have some `eco_report` function that creates a benefit report. Lastly (and this sorta relates the the first point), I want to break down the code into smaller, bite sized functions. I've already started working on this but it is a work in progress at the moment. 
+
+That's all for now! I will update this post or maybe create a new one once there have been significant updates. If you happen to test out the package and find issues or possible enhancements, please file one on github!
