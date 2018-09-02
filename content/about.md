@@ -3,7 +3,7 @@ title: "About"
 date: "2016-05-05T21:48:51-07:00"
 ---
 
-I am currently a contractor working with the Apple Maps team. Grew up in Oregon where I received my geography degree from the University of Oregon. I am interested in spatial data analysis and collection. I am also a big R useR.
+I am currently working with the ArborPro team, a software company that designs tree inventory software for arborists. I grew up in Oregon but have been living in California since 2016. I am interested in spatial data and rstats.
 
 In my free time I drink a lot of coffee, watch movies, and participate in social programming.
 

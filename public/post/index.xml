@@ -6,20 +6,10 @@
     <description>Recent content in Posts on tyluRp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 28 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Rscript</title>
-      <link>/2018/07/11/rscript/</link>
-      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/07/11/rscript/</guid>
-      <description>Quick one. Never thought about running R scripts in terminal but was plesantly suprised that it’s super easy to do this.
-archey ## ## ### User: tylerlittlefield ## #### Hostname: Tylers-MacBook-Pro ## ### Distro: OS X 10.13.5 ## ####### ####### Kernel: Darwin ## ###################### Uptime: 2 days ## ##################### Shell: /bin/zsh ## #################### Terminal: xterm-256color ## #################### CPU: Intel Core i7-4750HQ CPU @ 2.00GHz ## ##################### Memory: 8 GB ## ###################### Disk: 28% ## #################### Battery: 38.</description>
-    </item>
     
     <item>
       <title>File to folder</title>
