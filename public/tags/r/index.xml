@@ -6,10 +6,20 @@
     <description>Recent content in R on tyluRp</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>treeco: eco benefits in R</title>
+      <link>/2018/09/02/treeco-eco-benefits-in-r/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/02/treeco-eco-benefits-in-r/</guid>
+      <description>Update: I&amp;rsquo;ve added a pkgdown site for this package, lots more info can be found at https://treeco.netlify.com/
+I&amp;rsquo;m excited to say that I&amp;rsquo;ve developed my first R package treeco, a tool for calculating the eco benefits of trees. To my suprise, it&amp;rsquo;s not that difficult to actually develope a package. With tools like usethis which makes the developement process easy, the main challenge is simply coming up with an idea.</description>
+    </item>
     
     <item>
       <title>drake: build workflows with R</title>
