@@ -65,7 +65,9 @@
     
 
     <div class="article-content">
-      <p>This post is essentially an extension of a previous post I <a href="https://tylurp.rbind.io/2018/02/13/measuring-performance/">wrote</a>. The only addition is a cool idea for testing near equality of outputs. I&rsquo;m calling this an &ldquo;equality matrix&rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the <code>all.equal</code> function only takes two solutions at a time.</p>
+      <p>Credit to BrodieG: <a href="https://stackoverflow.com/questions/27325005">https://stackoverflow.com/questions/27325005</a></p>
+
+<p>This post is essentially an extension of a previous post I <a href="https://tylurp.rbind.io/2018/02/13/measuring-performance/">wrote</a>. The only addition is a cool idea for testing near equality of outputs. I&rsquo;m calling this an &ldquo;equality matrix&rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the <code>all.equal</code> function only takes two solutions at a time.</p>
 
 <p>Consider the following problem: <em>extract all numbers in a vector that have a non zero value after the decimal.</em></p>
 
@@ -104,11 +106,11 @@ outer(objs, objs, Vectorize(all.equal))
 
 <pre><code class="language-r">library(ggplot2)        # plotting
 library(patchwork)      # plot multiple plots
-library(microbenchmark) # benchmarking
 library(dplyr)          # using this for pipe functionality 
 library(tidyr)          # for gather function when creating the plot I have in mind
 
 # create vectors of different sizes
+x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
 xs &lt;- rep(x, 1e2)
 xm &lt;- rep(x, 1e3)
 xl &lt;- rep(x, 1e4)
@@ -117,7 +119,7 @@ xl &lt;- rep(x, 1e4)
 <p>Now we benchmark:</p>
 
 <pre><code class="language-r"># benchmark small vector
-bms_xs &lt;- microbenchmark(
+bms_xs &lt;- bench::mark(
   integer_method = xs[as.integer(xs) != xs],
   trunc_method = xs[trunc(xs) != xs],
   round_method = xs[round(xs) != xs],
@@ -126,7 +128,7 @@ bms_xs &lt;- microbenchmark(
 )
 
 # benchmark medium vector
-bms_xm &lt;- microbenchmark(
+bms_xm &lt;- bench::mark(
   integer_method = xm[as.integer(xm) != xm],
   trunc_method = xm[trunc(xm) != xm],
   round_method = xm[round(xm) != xm],
@@ -135,7 +137,7 @@ bms_xm &lt;- microbenchmark(
 )
 
 # benchmark large vector
-bms_xl &lt;- microbenchmark(
+bms_xl &lt;- bench::mark(
   integer_method = xl[as.integer(xl) != xl],
   trunc_method = xl[trunc(xl) != xl],
   round_method = xl[round(xl) != xl],
@@ -146,15 +148,15 @@ bms_xl &lt;- microbenchmark(
 
 <p>Then create the plot:</p>
 
-<pre><code class="language-r">p1 &lt;- autoplot.microbenchmark(bms_xs) + 
+<pre><code class="language-r">p1 &lt;- autoplot(bms_xs) + 
   labs(title = &quot;Small Vector&quot;) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
-p2 &lt;- autoplot.microbenchmark(bms_xm) + 
+p2 &lt;- autoplot(bms_xm) + 
   labs(title = &quot;Medium Vector&quot;) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
-p3 &lt;- autoplot.microbenchmark(bms_xl) + 
+p3 &lt;- autoplot(bms_xl) + 
   labs(title = &quot;Large Vector&quot;) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
@@ -171,10 +173,7 @@ p4 &lt;- vectors %&gt;%
   labs(title = &quot;Vector Lengths&quot;, x = &quot;vector&quot;, y = &quot;length&quot;) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
-(p4) +
-  p1 /
-  p2 /
-  p3 + plot_layout(ncol = 2, widths = c(1.5, 3))
+p1 / p2 / p3 
 </code></pre>
 
 <p><img src="/post/2018-04-03-equality-matrix-a-useful-idea-for-benchmarking_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>

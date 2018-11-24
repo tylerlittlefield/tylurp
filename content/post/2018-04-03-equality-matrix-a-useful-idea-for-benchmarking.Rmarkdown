@@ -7,6 +7,8 @@ categories: []
 tags: []
 ---
 
+Credit to BrodieG: https://stackoverflow.com/questions/27325005
+
 This post is essentially an extension of a previous post I [wrote](https://tylurp.rbind.io/2018/02/13/measuring-performance/). The only addition is a cool idea for testing near equality of outputs. I'm calling this an "equality matrix", a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the `all.equal` function only takes two solutions at a time.
 
 Consider the following problem: _extract all numbers in a vector that have a non zero value after the decimal._
@@ -46,11 +48,11 @@ If you've read my previous post on benchmarking, this should all be familiar. Fi
 ```{r, message=FALSE}
 library(ggplot2)        # plotting
 library(patchwork)      # plot multiple plots
-library(microbenchmark) # benchmarking
 library(dplyr)          # using this for pipe functionality 
 library(tidyr)          # for gather function when creating the plot I have in mind
 
 # create vectors of different sizes
+x <- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
 xs <- rep(x, 1e2)
 xm <- rep(x, 1e3)
 xl <- rep(x, 1e4)
@@ -60,7 +62,7 @@ Now we benchmark:
 
 ```{r}
 # benchmark small vector
-bms_xs <- microbenchmark(
+bms_xs <- bench::mark(
   integer_method = xs[as.integer(xs) != xs],
   trunc_method = xs[trunc(xs) != xs],
   round_method = xs[round(xs) != xs],
@@ -69,7 +71,7 @@ bms_xs <- microbenchmark(
 )
 
 # benchmark medium vector
-bms_xm <- microbenchmark(
+bms_xm <- bench::mark(
   integer_method = xm[as.integer(xm) != xm],
   trunc_method = xm[trunc(xm) != xm],
   round_method = xm[round(xm) != xm],
@@ -78,7 +80,7 @@ bms_xm <- microbenchmark(
 )
 
 # benchmark large vector
-bms_xl <- microbenchmark(
+bms_xl <- bench::mark(
   integer_method = xl[as.integer(xl) != xl],
   trunc_method = xl[trunc(xl) != xl],
   round_method = xl[round(xl) != xl],
@@ -89,16 +91,16 @@ bms_xl <- microbenchmark(
 
 Then create the plot:
 
-```{r, message=FALSE}
-p1 <- autoplot.microbenchmark(bms_xs) + 
+```{r, message=FALSE, fig.height=15}
+p1 <- autoplot(bms_xs) + 
   labs(title = "Small Vector") +
   theme(text = element_text(family = "Source Code Pro"))
 
-p2 <- autoplot.microbenchmark(bms_xm) + 
+p2 <- autoplot(bms_xm) + 
   labs(title = "Medium Vector") +
   theme(text = element_text(family = "Source Code Pro"))
 
-p3 <- autoplot.microbenchmark(bms_xl) + 
+p3 <- autoplot(bms_xl) + 
   labs(title = "Large Vector") +
   theme(text = element_text(family = "Source Code Pro"))
 
@@ -115,10 +117,7 @@ p4 <- vectors %>%
   labs(title = "Vector Lengths", x = "vector", y = "length") +
   theme(text = element_text(family = "Source Code Pro"))
 
-(p4) +
-  p1 /
-  p2 /
-  p3 + plot_layout(ncol = 2, widths = c(1.5, 3))
+p1 / p2 / p3 
 ```
 
 

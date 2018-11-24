@@ -50,7 +50,8 @@ library(tidyverse) library(rvest) # Scrape population data from wikipedia &amp;q
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/04/03/equality-matrix-a-useful-idea-for-benchmarking/</guid>
-      <description>This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
+      <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
     </item>
     
     <item>
