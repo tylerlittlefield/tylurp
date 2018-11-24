@@ -81,7 +81,7 @@ I discovered this package on Stack Overflow as someone measured the performance 
       
       <guid>/2018/01/30/reproducibility/</guid>
       <description>“Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.”
- If you’ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it’s often overlooked by newcombers. To be brief, a great reproducible example should be:
+ If you’ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it’s often overlooked. To be brief, a great reproducible example should be:
 Minimal – Provide the least amount of code needed to reproduce the problem.</description>
     </item>
     

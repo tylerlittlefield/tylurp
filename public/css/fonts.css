@@ -15,44 +15,12 @@
        url('../fonts/lato-v11-latin-regular.woff') format('woff');
 }
 @font-face {
-  font-family: 'Proza Libre';
-  font-style: normal;
-  font-weight: 400;
-  src: local('ProzaLibre'), local('ProzaLibre-Regular'),
-       url('../fonts/ProzaLibre-Regular.woff') format('woff'),
-       url('../fonts/ProzaLibre-Regular.woff') format('woff');
-}
-@font-face {
-  font-family: 'Source Code Pro';
-  font-style: normal;
-  font-weight: 400;
-  src: local('SourceCodePro Regular'), local('SourceCodePro-Regular'),
-       url('../fonts/SourceCodePro-Regular.woff') format('woff'),
-       url('../fonts/SourceCodePro-Regular.woff') format('woff');
-}
-@font-face {
   font-family: 'Fira Code Regular';
   font-style: normal;
   font-weight: 400;
   src: local('FiraCode Regular'), local('FiraCode-Regular'),
        url('../fonts/FiraCode-Regular.woff2') format('woff2'),
        url('../fonts/FiraCode-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Fira Sans Light';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Fira Sans Light'), local('FiraSans-Light'),
-       url('../fonts/FiraSans-Light.woff2') format('woff2'),
-       url('../fonts/FiraSans-Light.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Sawarabi Mincho';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Sawarabi Mincho'), local('SawarabiMincho-Regular'),
-       url('../fonts/SawarabiMincho-Regular.ttf') format('ttf'),
-       url('../fonts/SawarabiMincho-Regular.ttf') format('ttf');
 }
 
 body {
