@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on tyluRp</title>
+    <title>Tags on Sedata</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on tyluRp</description>
+    <description>Recent content in Tags on Sedata</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 02 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <language>en</language>
+    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>R</title>
       <link>/tags/r/</link>
-      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Shiny</title>
+      <link>/tags/shiny/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/shiny/</guid>
       <description></description>
     </item>
     

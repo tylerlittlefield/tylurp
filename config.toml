@@ -1,33 +1,44 @@
 baseurl = "/"
-languageCode = "en-us"
-title = "tyluRp"
-theme = "hugo-lithium-theme"
-googleAnalytics = "UA-106175087-1"
-disqusShortname = "tylurp-rbind-io"
+title = "Sedata"
+author = "Tyler Littlefield"
+canonifyurls = false
+languagecode = "en"
+theme = "hugo-tanka"
+enableEmoji = false
+
+googleAnalytics = ""
+disqusShortname = ""
+disable_mathjax = false
+
+pygmentsstyle      = "vs"
+pygmentscodefences = true
+
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
-enableEmoji = true
-
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
-
-[[menu.main]]
-    name = "About"
-    url = "/about/"
 
 [params]
-    description = "A website built through Hugo and blogdown."
+  sitename = "Sedata"
 
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.11.0"
-    highlightjsCDN = "//cdn.bootcss.com"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
-
-    MathJaxCDN = "//cdn.bootcss.com"
-    MathJaxVersion = "2.7.1"
-
-    [params.logo]
-    url = "ein.png"
-    width = 50
-    height = 50
-    alt = "Logo"
+[[menu.main]]
+    name = "fa fa-github"
+    url = "https://github.com/tylurp"
+    weight = 1
+[[menu.main]]
+    name = "fa fa-linkedin"
+    url = "https://www.linkedin.com/in/tyler-littlefield-628662139/"
+    weight = 2
+[[menu.main]]
+    name = "fa fa-stack-overflow"
+    url = "https://stackoverflow.com/users/7362046/tylurp?tab=profile"
+    weight = 3
+[[menu.main]]
+    name = "fa fa-twitter"
+    url = "https://twitter.com/tyluRp"
+    weight = 4
+[[menu.main]]
+    name = "fa fa-paper-plane"
+    url = "mailto:tylurp1@gmail.com"
+    weight = 5
+[[menu.main]]
+    name = "fa fa-info"
+    url = "/about/"
+    weight = 6

@@ -1,12 +1,11 @@
 ---
-title: "About"
-date: "2016-05-05T21:48:51-07:00"
+title: About
+author: Tyler Littlefield
+date: 2018-01-30
 ---
 
-I am currently working with the ArborPro team, a software company that designs tree inventory software for arborists. I grew up in Oregon but have been living in California since 2016. I am interested in spatial data and rstats.
+My name is Tyler Littlefield. I typically write about R programming here. If I'm feeling adventurous I may write something about Javascript. 
 
-In my free time I drink a lot of coffee, watch movies, and participate in social programming.
+I consider myself a hobbyist programmer because I don't have any formal training or educational background yet I find programming to be entertaining and I get immense satisfaction from doing it. 
 
-Shoot me an [email](mailto:tylurp1@gmail.com) if you have any questions or just want to say hi!
-
-![](/images/about.jpg)
+In college, most of my work involved spatial data problems using point and click GIS software like QGIS or ArcGIS. Towards the end of my senior year I took a class on geographic data science using R and found this language to be very intuitive for reasons that are beyond me. Maybe one day I'll understand but for now, I write.
