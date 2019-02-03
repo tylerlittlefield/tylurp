@@ -6,8 +6,8 @@ languagecode = "en"
 theme = "hugo-tanka"
 enableEmoji = false
 
-googleAnalytics = ""
-disqusShortname = ""
+googleAnalytics = "UA-106175087-1"
+disqusShortname = "tylurp-rbind-io"
 disable_mathjax = false
 
 pygmentsstyle      = "vs"
