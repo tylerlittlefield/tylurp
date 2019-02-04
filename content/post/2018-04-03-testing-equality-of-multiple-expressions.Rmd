@@ -3,8 +3,8 @@ title: Testing Equality of Multiple Expressions
 author: Tyler Littlefield
 date: '2018-04-03'
 slug: testing-equality-of-multiple-expressions
-categories: []
-tags: []
+categories: ['r']
+tags: ['r']
 ---
 
 Credit to BrodieG: https://stackoverflow.com/questions/27325005
@@ -102,19 +102,6 @@ p2 <- autoplot(bms_xm) +
 
 p3 <- autoplot(bms_xl) + 
   labs(title = "Large Vector") +
-  theme(text = element_text(family = "Source Code Pro"))
-
-vectors <- data.frame(
-  small = length(xs),
-  medium = length(xm),
-  large = length(xl)
-)
-
-p4 <- vectors %>% 
-  gather() %>% 
-  ggplot(aes(key, value)) +
-  geom_col(color = "black", fill = "white") +
-  labs(title = "Vector Lengths", x = "vector", y = "length") +
   theme(text = element_text(family = "Source Code Pro"))
 
 p1 / p2 / p3 

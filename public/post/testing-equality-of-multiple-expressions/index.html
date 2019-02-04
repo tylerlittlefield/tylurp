@@ -134,19 +134,6 @@ p3 &lt;- autoplot(bms_xl) +
   labs(title = &quot;Large Vector&quot;) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
-vectors &lt;- data.frame(
-  small = length(xs),
-  medium = length(xm),
-  large = length(xl)
-)
-
-p4 &lt;- vectors %&gt;% 
-  gather() %&gt;% 
-  ggplot(aes(key, value)) +
-  geom_col(color = &quot;black&quot;, fill = &quot;white&quot;) +
-  labs(title = &quot;Vector Lengths&quot;, x = &quot;vector&quot;, y = &quot;length&quot;) +
-  theme(text = element_text(family = &quot;Source Code Pro&quot;))
-
 p1 / p2 / p3 </code></pre>
 <p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 

@@ -22,6 +22,16 @@ In a nutshell, shiny modules allow users to write composable shiny code. Little 
     </item>
     
     <item>
+      <title>Testing Equality of Multiple Expressions</title>
+      <link>/post/testing-equality-of-multiple-expressions/</link>
+      <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/testing-equality-of-multiple-expressions/</guid>
+      <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
+    </item>
+    
+    <item>
       <title>Reproducibility</title>
       <link>/post/reproducibility/</link>
       <pubDate>Tue, 30 Jan 2018 00:00:00 +0000</pubDate>
