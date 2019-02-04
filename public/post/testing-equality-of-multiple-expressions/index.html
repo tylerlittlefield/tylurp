@@ -75,13 +75,13 @@ floor_method &lt;- x[floor(x) != x]</code></pre>
 <pre class="r"><code># create an equality matrix
 methods_vec &lt;- c(&quot;integer_method&quot;, &quot;trunc_method&quot;, &quot;round_method&quot;, &quot;mod_method&quot;, &quot;floor_method&quot;)
 objs &lt;- mget(methods_vec)
-outer(objs, objs, Vectorize(all.equal))</code></pre>
-<pre><code>##                integer_method trunc_method round_method mod_method floor_method
-## integer_method           TRUE         TRUE         TRUE       TRUE         TRUE
-## trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE
-## round_method             TRUE         TRUE         TRUE       TRUE         TRUE
-## mod_method               TRUE         TRUE         TRUE       TRUE         TRUE
-## floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</code></pre>
+outer(objs, objs, Vectorize(all.equal))
+#&gt;                integer_method trunc_method round_method mod_method floor_method
+#&gt; integer_method           TRUE         TRUE         TRUE       TRUE         TRUE
+#&gt; trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE
+#&gt; round_method             TRUE         TRUE         TRUE       TRUE         TRUE
+#&gt; mod_method               TRUE         TRUE         TRUE       TRUE         TRUE
+#&gt; floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</code></pre>
 <p>That’s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let’s benchmark :smile:</p>
 <p>If you’ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
 <pre class="r"><code>library(ggplot2)        # plotting
@@ -135,7 +135,7 @@ p3 &lt;- autoplot(bms_xl) +
   theme(text = element_text(family = &quot;Source Code Pro&quot;))
 
 p1 / p2 / p3 </code></pre>
-<p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
 
   </div>
 

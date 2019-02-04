@@ -7,6 +7,16 @@ categories: ['r']
 tags: ['r']
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  dpi = 300
+)
+```
+
 Credit to BrodieG: https://stackoverflow.com/questions/27325005
 
 This post is essentially an extension of a previous post I [wrote](https://tylurp.rbind.io/2018/02/13/measuring-performance/). The only addition is a cool idea for testing near equality of outputs. I'm calling this an "equality matrix", a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the `all.equal` function only takes two solutions at a time.
@@ -106,7 +116,3 @@ p3 <- autoplot(bms_xl) +
 
 p1 / p2 / p3 
 ```
-
-
-
-
