@@ -123,16 +123,13 @@ bms_xl &lt;- bench::mark(
 )</code></pre>
 <p>Then create the plot:</p>
 <pre class="r"><code>p1 &lt;- autoplot(bms_xs) + 
-  labs(title = &quot;Small Vector&quot;) +
-  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+  labs(title = &quot;Small Vector&quot;)
 
 p2 &lt;- autoplot(bms_xm) + 
-  labs(title = &quot;Medium Vector&quot;) +
-  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+  labs(title = &quot;Medium Vector&quot;)
 
 p3 &lt;- autoplot(bms_xl) + 
-  labs(title = &quot;Large Vector&quot;) +
-  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+  labs(title = &quot;Large Vector&quot;)
 
 p1 / p2 / p3 </code></pre>
 <p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>

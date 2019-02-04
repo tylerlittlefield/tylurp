@@ -103,16 +103,13 @@ Then create the plot:
 
 ```{r, message=FALSE, fig.height=15}
 p1 <- autoplot(bms_xs) + 
-  labs(title = "Small Vector") +
-  theme(text = element_text(family = "Source Code Pro"))
+  labs(title = "Small Vector")
 
 p2 <- autoplot(bms_xm) + 
-  labs(title = "Medium Vector") +
-  theme(text = element_text(family = "Source Code Pro"))
+  labs(title = "Medium Vector")
 
 p3 <- autoplot(bms_xl) + 
-  labs(title = "Large Vector") +
-  theme(text = element_text(family = "Source Code Pro"))
+  labs(title = "Large Vector")
 
 p1 / p2 / p3 
 ```
