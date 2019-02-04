@@ -95,40 +95,27 @@ xs &lt;- rep(x, 1e2)
 xm &lt;- rep(x, 1e3)
 xl &lt;- rep(x, 1e4)</code></pre>
 <p>Now we benchmark:</p>
-<pre class="r"><code># benchmark small vector
-bms_xs &lt;- bench::mark(
-  integer_method = xs[as.integer(xs) != xs],
-  trunc_method = xs[trunc(xs) != xs],
-  round_method = xs[round(xs) != xs],
-  mod_method = xs[xs %% 1 != 0],
-  floor_method = xs[floor(xs) != xs]
-)
+<pre class="r"><code>i &lt;- list(xs, xm, xl)
 
-# benchmark medium vector
-bms_xm &lt;- bench::mark(
-  integer_method = xm[as.integer(xm) != xm],
-  trunc_method = xm[trunc(xm) != xm],
-  round_method = xm[round(xm) != xm],
-  mod_method = xm[xm %% 1 != 0],
-  floor_method = xm[floor(xm) != xm]
-)
+bench_all &lt;- function(i) {
+  bench::mark(
+    integer_method = i[as.integer(i) != i],
+    trunc_method = i[trunc(i) != i],
+    round_method = i[round(i) != i],
+    mod_method = i[i %% 1 != 0],
+    floor_method = i[floor(i) != i]
+  )
+}
 
-# benchmark large vector
-bms_xl &lt;- bench::mark(
-  integer_method = xl[as.integer(xl) != xl],
-  trunc_method = xl[trunc(xl) != xl],
-  round_method = xl[round(xl) != xl],
-  mod_method = xl[xl %% 1 != 0],
-  floor_method = xl[floor(xl) != xl]
-)</code></pre>
+results &lt;- lapply(i, bench_all)</code></pre>
 <p>Then create the plot:</p>
-<pre class="r"><code>p1 &lt;- autoplot(bms_xs) + 
+<pre class="r"><code>p1 &lt;- autoplot(results[[1]]) + 
   labs(title = &quot;Small Vector&quot;)
 
-p2 &lt;- autoplot(bms_xm) + 
+p2 &lt;- autoplot(results[[2]]) + 
   labs(title = &quot;Medium Vector&quot;)
 
-p3 &lt;- autoplot(bms_xl) + 
+p3 &lt;- autoplot(results[[3]]) + 
   labs(title = &quot;Large Vector&quot;)
 
 p1 / p2 / p3 </code></pre>
