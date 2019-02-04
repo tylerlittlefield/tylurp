@@ -1,5 +1,5 @@
 baseurl = "/"
-title = "Sedata"
+title = "Tyler's Blog"
 author = "Tyler Littlefield"
 canonifyurls = false
 languagecode = "en"
@@ -16,7 +16,7 @@ pygmentscodefences = true
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [params]
-  sitename = "Sedata"
+  sitename = "Tyler's Blog"
 
 [[menu.main]]
     name = "fa fa-github"

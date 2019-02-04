@@ -1,0 +1,102 @@
+---
+title: Testing Equality of Multiple Expressions
+author: Tyler Littlefield
+date: '2018-04-03'
+slug: testing-equality-of-multiple-expressions
+categories: []
+tags: []
+---
+
+
+
+<p>Credit to BrodieG: <a href="https://stackoverflow.com/questions/27325005" class="uri">https://stackoverflow.com/questions/27325005</a></p>
+<p>This post is essentially an extension of a previous post I <a href="https://tylurp.rbind.io/2018/02/13/measuring-performance/">wrote</a>. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the <code>all.equal</code> function only takes two solutions at a time.</p>
+<p>Consider the following problem: <em>extract all numbers in a vector that have a non zero value after the decimal.</em></p>
+<p>We could do this a few ways:</p>
+<pre class="r"><code># vector
+x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
+
+# create objects for testing equality of output
+integer_method &lt;- x[as.integer(x) != x]
+trunc_method &lt;- x[trunc(x) != x]
+round_method &lt;- x[round(x) != x]
+mod_method &lt;- x[x %% 1 != 0]
+floor_method &lt;- x[floor(x) != x]</code></pre>
+<p>Now instead of testing every combination to make sure the outputs are equal we can create a matrix that tests all possible combinations at once:</p>
+<pre class="r"><code># create an equality matrix
+methods_vec &lt;- c(&quot;integer_method&quot;, &quot;trunc_method&quot;, &quot;round_method&quot;, &quot;mod_method&quot;, &quot;floor_method&quot;)
+objs &lt;- mget(methods_vec)
+outer(objs, objs, Vectorize(all.equal))</code></pre>
+<pre><code>##                integer_method trunc_method round_method mod_method floor_method
+## integer_method           TRUE         TRUE         TRUE       TRUE         TRUE
+## trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE
+## round_method             TRUE         TRUE         TRUE       TRUE         TRUE
+## mod_method               TRUE         TRUE         TRUE       TRUE         TRUE
+## floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</code></pre>
+<p>That’s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let’s benchmark :smile:</p>
+<p>If you’ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
+<pre class="r"><code>library(ggplot2)        # plotting
+library(patchwork)      # plot multiple plots
+library(dplyr)          # using this for pipe functionality 
+library(tidyr)          # for gather function when creating the plot I have in mind
+
+# create vectors of different sizes
+x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
+xs &lt;- rep(x, 1e2)
+xm &lt;- rep(x, 1e3)
+xl &lt;- rep(x, 1e4)</code></pre>
+<p>Now we benchmark:</p>
+<pre class="r"><code># benchmark small vector
+bms_xs &lt;- bench::mark(
+  integer_method = xs[as.integer(xs) != xs],
+  trunc_method = xs[trunc(xs) != xs],
+  round_method = xs[round(xs) != xs],
+  mod_method = xs[xs %% 1 != 0],
+  floor_method = xs[floor(xs) != xs]
+)
+
+# benchmark medium vector
+bms_xm &lt;- bench::mark(
+  integer_method = xm[as.integer(xm) != xm],
+  trunc_method = xm[trunc(xm) != xm],
+  round_method = xm[round(xm) != xm],
+  mod_method = xm[xm %% 1 != 0],
+  floor_method = xm[floor(xm) != xm]
+)
+
+# benchmark large vector
+bms_xl &lt;- bench::mark(
+  integer_method = xl[as.integer(xl) != xl],
+  trunc_method = xl[trunc(xl) != xl],
+  round_method = xl[round(xl) != xl],
+  mod_method = xl[xl %% 1 != 0],
+  floor_method = xl[floor(xl) != xl]
+)</code></pre>
+<p>Then create the plot:</p>
+<pre class="r"><code>p1 &lt;- autoplot(bms_xs) + 
+  labs(title = &quot;Small Vector&quot;) +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+
+p2 &lt;- autoplot(bms_xm) + 
+  labs(title = &quot;Medium Vector&quot;) +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+
+p3 &lt;- autoplot(bms_xl) + 
+  labs(title = &quot;Large Vector&quot;) +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+
+vectors &lt;- data.frame(
+  small = length(xs),
+  medium = length(xm),
+  large = length(xl)
+)
+
+p4 &lt;- vectors %&gt;% 
+  gather() %&gt;% 
+  ggplot(aes(key, value)) +
+  geom_col(color = &quot;black&quot;, fill = &quot;white&quot;) +
+  labs(title = &quot;Vector Lengths&quot;, x = &quot;vector&quot;, y = &quot;length&quot;) +
+  theme(text = element_text(family = &quot;Source Code Pro&quot;))
+
+p1 / p2 / p3 </code></pre>
+<p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>

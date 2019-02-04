@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>/post/testing-equality-of-multiple-expressions/</loc>
+    <lastmod>2018-04-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/about/</loc>
     <lastmod>2018-01-30T00:00:00+00:00</lastmod>
   </url>
@@ -41,12 +46,6 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/shiny/</loc>
     <lastmod>2019-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -54,6 +53,12 @@
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2019-02-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
     <lastmod>2019-02-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Sedata</title>
+    <title>Posts on Tyler&#39;s Blog</title>
     <link>/post/</link>
-    <description>Recent content in Posts on Sedata</description>
+    <description>Recent content in Posts on Tyler&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
@@ -19,6 +19,16 @@
       <guid>/post/modular-shiny-code/</guid>
       <description>Intro In 2016, Garrett Grolemond gave a talk at the very first Shiny Developer Conference in Palo Alto, California. The first slide in his presentation read in big bold letters, “Writing Big Apps, How to use Shiny Modules”. You can find the slides here and a video of the talk here.
 In a nutshell, shiny modules allow users to write composable shiny code. Little bite size pieces of code that can be reused and brought together to work as a whole.</description>
+    </item>
+    
+    <item>
+      <title>Testing Equality of Multiple Expressions</title>
+      <link>/post/testing-equality-of-multiple-expressions/</link>
+      <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/testing-equality-of-multiple-expressions/</guid>
+      <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
     </item>
     
     <item>
