@@ -196,7 +196,8 @@ server &lt;- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui, server)</code></pre>
-<p>However, another option would be to use a <code>global.R</code> file which is my preferred method of loading libraries and sourcing functions/modules in a shiny app. The <code>global.R</code> file is ran before the shiny app and so you can have a “start up” script that contains everything necessary to make the app start. Keep in mind that this requires the app be split into <code>ui.R</code> and <code>server.R</code>. So in my final modularized shiny app, <code>global.R</code> looks like this:</p>
+<p>However, another option would be to use a <code>global.R</code> file which is my preferred method of loading libraries and sourcing functions/modules in a shiny app. The <code>global.R</code> file is ran before the shiny app and so you can have a “start up” script that contains everything necessary to make the app start. Keep in mind that this requires the app be split into <code>ui.R</code> and <code>server.R</code>.</p>
+<p>In my final modularized shiny app, <code>global.R</code> looks like this:</p>
 <pre class="r"><code>library(shiny)    # app framework
 library(ggplot2)  # plotting
 library(ggsci)    # color scales
