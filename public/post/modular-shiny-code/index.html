@@ -54,7 +54,7 @@
   <h1> Modular Shiny Code </h1>
 
   <div id=sub-header>
-    Tyler Littlefield · 2019/02/03 · 6 minute read
+    Tyler Littlefield · 2019/02/03 · 7 minute read
   </div>
 
   <div class="entry-content">
@@ -68,12 +68,12 @@
 <p>I mean R is a functional programming language, just make functions! Well, the problem stems from the fact that shiny input and output IDs all share a global namespace. As a consequence, these IDs must be unique when creating functions that produce inputs and outputs otherwise, the IDs collide. This problem of providing spaces for names logically and without collision is solved by shiny modules. In other words, shiny modules adds namespacing to shiny! This is why functions aren’t enough. See Joe Cheng’s post <a href="https://shiny.rstudio.com/articles/modules.html"><strong>here</strong></a> as he eloquently explains the namespace problem with shiny. For even more detail on namespaces, see Hadley Wickham’s namespace chapter in his R packages book <a href="http://r-pkgs.had.co.nz/namespace.html"><strong>here</strong></a>.</p>
 <p>Oh and by the way, this is why you see tidyverse conflicts when loading the package, because certain tidy packages are overriding other packages. The tidyverse is stealing names so to speak and it’s letting you know.</p>
 <pre class="r"><code>library(tidyverse)
-#&gt; ── Attaching packages ───────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+#&gt; ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 #&gt; ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
 #&gt; ✔ tibble  2.0.1     ✔ dplyr   0.7.8
 #&gt; ✔ tidyr   0.8.2     ✔ stringr 1.3.1
 #&gt; ✔ readr   1.1.1     ✔ forcats 0.3.0
-#&gt; ── Conflicts ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #&gt; ✖ dplyr::filter() masks stats::filter()
 #&gt; ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
@@ -166,7 +166,7 @@ srv_SelectEvent &lt;- function(input, output, session) {
 </div>
 <div id="using-the-module" class="section level3">
 <h3>Using the module</h3>
-<p>Consider that the chunk of code below is saved in a folder called “modules”. We can make that module accessible to <code>app.R</code> by sourcing it with the <code>source</code> function. In my example, which I will link to in a moment, I’ve created two folders: <code>functions</code> and <code>modules</code>. I source all my functions and modules by placing these lines of code after loading all the necessary packages:</p>
+<p>Consider that the chunk of code above is saved in a folder called “modules”. We can make that module accessible to <code>app.R</code> by sourcing it with the <code>source</code> function. In one example, consider that I have created two folders: <code>functions</code> and <code>modules</code>. I can source all my functions and modules by placing these lines of code after loading all the necessary packages:</p>
 <pre class="r"><code># list all module files
 modules &lt;- list.files(&#39;modules&#39;, full.names = TRUE)
 
@@ -187,7 +187,7 @@ imports &lt;- c(modules, functions)
 sapply(imports, source)
 
 ui &lt;- fluidPage(
-  column(width = 8, ui_SelectEvent(&quot;event&quot;))
+  ui_SelectEvent(&quot;event&quot;)
 )
 
 server &lt;- function(input, output, session) {
@@ -196,13 +196,43 @@ server &lt;- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui, server)</code></pre>
-<p>To be continued…</p>
+<p>However, another option would be to use a <code>global.R</code> file which is my preferred method of loading libraries and sourcing functions/modules in a shiny app. The <code>global.R</code> file is ran before the shiny app and so you can have a “start up” script that contains everything necessary to make the app start. Keep in mind that this requires the app be split into <code>ui.R</code> and <code>server.R</code>. So in my final modularized shiny app, <code>global.R</code> looks like this:</p>
+<pre class="r"><code>library(shiny)    # app framework
+library(ggplot2)  # plotting
+library(ggsci)    # color scales
+library(forcats)  # reordering factors
+library(jsonlite) # easy json to dataframe
+library(brewr)    # homebrew json api wrapper
+library(readr)    # convert datatypes easily
+library(curl)     # need so shiny wont complain
+library(glue)     # better paste0
+library(cli)      # console tools
+library(crayon)   # console colors
+
+modules &lt;- list.files(&#39;modules&#39;, full.names = TRUE)
+functions &lt;- list.files(&#39;functions&#39;, full.names = TRUE)
+imports &lt;- c(modules, functions)
+sapply(imports, source)</code></pre>
+<p>The structure of my project looks like this <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</p>
+<pre><code>#&gt; brewr-shiny-modules
+#&gt; ├─brewr-shiny-modules.Rproj
+#&gt; ├─ui.R
+#&gt; ├─server.R
+#&gt; ├─global.R
+#&gt; ├─functions
+#&gt; │ ├─brewr_plot.R
+#&gt; │ └─transform_data.R
+#&gt; └─modules
+#&gt;   ├─selectDays.R
+#&gt;   ├─selectEvent.R
+#&gt;   └─sliderRange.R</code></pre>
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
 <li id="fn1"><p><a href="https://shiny.rstudio.com/articles/modules.html" class="uri">https://shiny.rstudio.com/articles/modules.html</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Tree console diagram made with <a href="https://github.com/r-lib/cli">cli</a> package.<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 

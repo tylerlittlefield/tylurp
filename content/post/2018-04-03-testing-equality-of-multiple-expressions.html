@@ -35,10 +35,9 @@ outer(objs, objs, Vectorize(all.equal))
 #&gt; floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</code></pre>
 <p>That’s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let’s benchmark :smile:</p>
 <p>If you’ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
-<pre class="r"><code>library(ggplot2)        # plotting
-library(patchwork)      # plot multiple plots
-library(dplyr)          # using this for pipe functionality 
-library(tidyr)          # for gather function when creating the plot I have in mind
+<pre class="r"><code>library(ggplot2)   # plotting
+library(patchwork) # plot multiple plots
+library(dplyr)     # using this for pipe functionality 
 
 # create vectors of different sizes
 x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)

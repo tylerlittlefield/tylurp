@@ -138,7 +138,7 @@ Again, I'm more or less rehashing what's already been written by Joe Cheng so I 
 
 ### Using the module
 
-Consider that the chunk of code below is saved in a folder called "modules". We can make that module accessible to `app.R` by sourcing it with the `source` function. In my example, which I will link to in a moment, I've created two folders: `functions` and `modules`. I source all my functions and modules by placing these lines of code after loading all the necessary packages:
+Consider that the chunk of code above is saved in a folder called "modules". We can make that module accessible to `app.R` by sourcing it with the `source` function. In one example, consider that I have created two folders: `functions` and `modules`. I can source all my functions and modules by placing these lines of code after loading all the necessary packages:
 
 ```{r, eval=FALSE}
 # list all module files
@@ -165,7 +165,7 @@ imports <- c(modules, functions)
 sapply(imports, source)
 
 ui <- fluidPage(
-  column(width = 8, ui_SelectEvent("event"))
+  ui_SelectEvent("event")
 )
 
 server <- function(input, output, session) {
@@ -176,5 +176,43 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-To be continued...
+However, another option would be to use a `global.R` file which is my preferred method of loading libraries and sourcing functions/modules in a shiny app. The `global.R` file is ran before the shiny app and so you can have a "start up" script that contains everything necessary to make the app start. Keep in mind that this requires the app be split into `ui.R` and `server.R`. So in my final modularized shiny app, `global.R` looks like this:
+
+```r
+library(shiny)    # app framework
+library(ggplot2)  # plotting
+library(ggsci)    # color scales
+library(forcats)  # reordering factors
+library(jsonlite) # easy json to dataframe
+library(brewr)    # homebrew json api wrapper
+library(readr)    # convert datatypes easily
+library(curl)     # need so shiny wont complain
+library(glue)     # better paste0
+library(cli)      # console tools
+library(crayon)   # console colors
+
+modules <- list.files('modules', full.names = TRUE)
+functions <- list.files('functions', full.names = TRUE)
+imports <- c(modules, functions)
+sapply(imports, source)
+```
+
+The structure of my project looks like this ^[Tree console diagram made with [cli](https://github.com/r-lib/cli) package.]:
+
+```{r, echo=FALSE}
+data <- data.frame(
+  stringsAsFactors = FALSE,
+  package = c("brewr-shiny-modules", "brewr-shiny-modules.Rproj", "ui.R", "server.R", "global.R",
+              "functions", "modules", "brewr_plot.R", "transform_data.R", "selectDays.R", "selectEvent.R",
+              "sliderRange.R"),
+  dependencies = I(list(c("brewr-shiny-modules.Rproj", "ui.R", "server.R", "global.R", "functions",
+                          "modules"), character(0), character(0), character(0), character(0), 
+    c("brewr_plot.R", "transform_data.R"), c("selectDays.R", "selectEvent.R", "sliderRange.R"), character(0),
+    character(0), character(0), character(0), character(0)
+  ))
+)
+
+data[[1]][[1]] <- crayon::black(crayon::bold(data[[1]][[1]]))
+cli::tree(data, root = data[[1]][[1]])
+```
 
