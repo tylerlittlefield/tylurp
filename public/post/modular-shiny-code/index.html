@@ -68,12 +68,12 @@
 <p>I mean R is a functional programming language, just make functions! Well, the problem stems from the fact that shiny input and output IDs all share a global namespace. As a consequence, these IDs must be unique when creating functions that produce inputs and outputs otherwise, the IDs collide. This problem of providing spaces for names logically and without collision is solved by shiny modules. In other words, shiny modules adds namespacing to shiny! This is why functions aren’t enough. See Joe Cheng’s post <a href="https://shiny.rstudio.com/articles/modules.html"><strong>here</strong></a> as he eloquently explains the namespace problem with shiny. For even more detail on namespaces, see Hadley Wickham’s namespace chapter in his R packages book <a href="http://r-pkgs.had.co.nz/namespace.html"><strong>here</strong></a>.</p>
 <p>Oh and by the way, this is why you see tidyverse conflicts when loading the package, because certain tidy packages are overriding other packages. The tidyverse is stealing names so to speak and it’s letting you know.</p>
 <pre class="r"><code>library(tidyverse)
-#&gt; ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+#&gt; ── Attaching packages ────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 #&gt; ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
 #&gt; ✔ tibble  2.0.1     ✔ dplyr   0.7.8
 #&gt; ✔ tidyr   0.8.2     ✔ stringr 1.3.1
 #&gt; ✔ readr   1.1.1     ✔ forcats 0.3.0
-#&gt; ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; ── Conflicts ───────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #&gt; ✖ dplyr::filter() masks stats::filter()
 #&gt; ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
@@ -227,6 +227,15 @@ sapply(imports, source)</code></pre>
 #&gt;   ├─selectDays.R
 #&gt;   ├─selectEvent.R
 #&gt;   └─sliderRange.R</code></pre>
+<p>You can find the source code <a href="https://github.com/tyluRp/brewr-shiny-modules"><strong>here</strong></a>.</p>
+</div>
+<div id="careful-design" class="section level3">
+<h3>Careful Design</h3>
+<p>If used carefully, shiny modules are a great way to organize, manage, and debug your application. If used without care, shiny modules can seem like more work than is necessary. This isn’t a critique on shiny modules, it’s more so an idea that rings true to most programming projects in general. Without thoughtful decisions about the modules design, we invite unnecessary problems to the application. One problem might be implicit interactions between modules that makes the application difficult to decipher.</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>If you’re developing a large shiny application, consider implementing shiny modules to save yourself from giant, unreadable scripts. The benefits are plenty worth it and if designed thoughfully, will save yourself time in the future by reusing modules for other parts of the app or for future projects.</p>
 </div>
 </div>
 <div class="footnotes">

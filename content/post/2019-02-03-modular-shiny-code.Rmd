@@ -218,3 +218,14 @@ data[[1]][[1]] <- crayon::black(crayon::bold(data[[1]][[1]]))
 cli::tree(data, root = data[[1]][[1]])
 ```
 
+You can find the source code [**here**](https://github.com/tyluRp/brewr-shiny-modules).
+
+### Careful Design
+
+If used carefully, shiny modules are a great way to organize, manage, and debug your application. If used without care, shiny modules can seem like more work than is necessary. This isn't a critique on shiny modules, it's more so an idea that rings true to most programming projects in general. Without thoughtful decisions about the modules design, we invite unnecessary problems to the application. One problem might be implicit interactions between modules that makes the application difficult to decipher.
+
+### Conclusion
+
+If you're developing a large shiny application, consider implementing shiny modules to save yourself from giant, unreadable scripts. The benefits are plenty worth it and if designed thoughfully, will save yourself time in the future by reusing modules for other parts of the app or for future projects.
+
+
