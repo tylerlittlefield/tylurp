@@ -4,7 +4,7 @@ author: Tyler Littlefield
 date: 2018-01-30
 ---
 
-My name is Tyler Littlefield. I typically write about R programming here. If I'm feeling adventurous I may write something about Javascript. 
+My name is Tyler Littlefield. I typically write about R programming here. If I'm feeling adventurous I may write something unrelated to R. 
 
 I consider myself a hobbyist programmer because I don't have any formal training or educational background yet I find programming to be entertaining and I get immense satisfaction from doing it. 
 
