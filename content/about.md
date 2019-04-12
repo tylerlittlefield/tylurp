@@ -6,6 +6,6 @@ date: 2018-01-30
 
 My name is Tyler Littlefield. I typically write about R programming here. If I'm feeling adventurous I may write something unrelated to R. 
 
-I consider myself a hobbyist programmer because I don't have any formal training or educational background yet I find programming to be entertaining and I get immense satisfaction from doing it. 
+I'm a hobbyist programmer interested in data analysis, data visualization, and building #rstats [tools](https://github.com/tyluRp).
 
-In college, most of my work involved spatial data problems using point and click GIS software like QGIS or ArcGIS. Towards the end of my senior year I took a class on geographic data science using R and found this language to be very intuitive for reasons that are beyond me. Maybe one day I'll understand but for now, I write.
+In college, most of my work involved spatial data problems using point and click GIS software like QGIS or ArcGIS. Towards the end of my senior year I took a class on geographic data science using R and found this language to be very intuitive for reasons that are beyond me. 
