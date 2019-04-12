@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<script src="https://use.fontawesome.com/efb5af9857.js"></script>
+<link rel="stylesheet" href="/css/code/github.css" rel="stylesheet" id="theme-stylesheet">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <title>
+    
+    
+     My First CRAN Package 
+    
+  </title>
+  <link rel="canonical" href="/post/my-first-cran-package/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/">Tyler&#39;s Blog</a></h1>
+  <ul>
+    
+    <li><a href="https://github.com/tylurp" class="fa fa-github"></a></li>
+    
+    <li><a href="https://www.linkedin.com/in/tyler-littlefield-628662139/" class="fa fa-linkedin"></a></li>
+    
+    <li><a href="https://stackoverflow.com/users/7362046/tylurp?tab=profile" class="fa fa-stack-overflow"></a></li>
+    
+    <li><a href="https://twitter.com/tyluRp" class="fa fa-twitter"></a></li>
+    
+    <li><a href="mailto:tylurp1@gmail.com" class="fa fa-paper-plane"></a></li>
+    
+    <li><a href="/about/" class="fa fa-info"></a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> My First CRAN Package </h1>
+
+  <div id=sub-header>
+     · 2019/04/12 · 3 minute read
+  </div>
+
+  <div class="entry-content">
+    <p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-2-1.png" width="100%" /></p>
+<blockquote>
+<p>Thanks, your package is on its way to CRAN.</p>
+</blockquote>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>I am really excited to announce (12 days late) that <a href="https://cran.r-project.org/web/packages/lisa/index.html"><code>lisa</code></a> is on CRAN, my first R package available on the <a href="https://cran.r-project.org/">Comprehensive R Archive Network</a>! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.</p>
+<p>Anyway, <code>lisa</code> is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists. These palettes were made by designers, artists, museum curators, and masters of color theory. You can view them all at <a href="http://colorlisa.com/">colorlisa</a>, a beautiful website created by Ryan McGuire.</p>
+</div>
+<div id="package-details" class="section level2">
+<h2>Package Details</h2>
+<p>The <code>lisa</code> package contains a list of palettes, a dataset containing palette information and a function for calling and modifying palettes:</p>
+<pre class="r"><code>str(lisa[1])
+#&gt; List of 1
+#&gt;  $ JosefAlbers: &#39;lisa_palette&#39; chr [1:5] &quot;#D77186&quot; &quot;#61A2DA&quot; &quot;#6CB7DA&quot; &quot;#b5b5b3&quot; ...
+#&gt;   ..- attr(*, &quot;name&quot;)= chr &quot;JosefAlbers&quot;
+#&gt;   ..- attr(*, &quot;work&quot;)= chr &quot;Adobe (Variant): Luminous Day&quot;
+
+head(artwork)
+#&gt;              artist          palette                              work
+#&gt; 1      Josef Albers      JosefAlbers     Adobe (Variant): Luminous Day
+#&gt; 2      Josef Albers    JosefAlbers_1 Homage to the Square (La Tehuana)
+#&gt; 3 Gretchen Albrecht GretchenAlbrecht                      Golden Cloud
+#&gt; 4       Billy Apple       BillyApple                           Rainbow
+#&gt; 5       Per Arnoldi       PerArnoldi                              Spar
+#&gt; 6      Milton Avery      MiltonAvery        Bicycle Rider By The Loire
+
+lisa_palette(&quot;JosefAlbers&quot;, 2, &quot;discrete&quot;)
+#&gt; [1] &quot;#D77186&quot; &quot;#61A2DA&quot;</code></pre>
+<p>There are also two S3 methods, one for printing and one for plotting objects of class <code>lisa_palette</code>:</p>
+<pre class="r"><code>class(lisa$`Jean-MichelBasquiat`)
+#&gt; [1] &quot;lisa_palette&quot; &quot;character&quot;
+
+plot(lisa$`Jean-MichelBasquiat`)</code></pre>
+<p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-4-1.png" width="100%" /></p>
+<p>That’s pretty much it! Currently, <code>ggplot2</code> usage requires something like <code>scale_color_manual</code>. I’ve thought about including custom <code>ggplot2</code> color functions, similiar to what <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paletteer</code></a> does but have put this on hold, maybe the next release.</p>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(mtcars, aes(mpg, disp)) + 
+  geom_point(aes(col = factor(gear)), size = 3) + 
+  scale_color_manual(values = lisa$`Jean-MichelBasquiat`) + 
+  theme_bw()</code></pre>
+<p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-5-1.png" width="100%" /></p>
+</div>
+<div id="cran-submission-process" class="section level2">
+<h2>CRAN Submission Process</h2>
+<p>I submitted the package, got rejected with correction comments, resubmitted, and the package was on CRAN the next day. This all took a total of 5 days. My first submission was rejected because I had redundant wording and didn’t include a reference to colorlisa. Redundant wording was things like <em>“This is an <strong>R</strong> package…”</em>. This type of wording in the description is considered redundant because the user already knows its an R package.</p>
+</div>
+<div id="takeaways" class="section level2">
+<h2>Takeaways</h2>
+<p>If you’re like me and want to submit a package to CRAN for the first time I would recommend a couple things:</p>
+<ol style="list-style-type: decimal">
+<li><code>devtools</code> and <code>usethis</code> are necessary! They actually aren’t but they make the development process much easier and enjoyable. I submitted my pacakge using <code>devtools::release</code> which introduced me to a whole bunch of checks that I hadn’t thought of. For example, spell check, rhub, and more.</li>
+<li>Test your code with <code>testthat</code>, check coverage with <code>covr</code>, continously integrate your code with services like travis-ci and appveyor.</li>
+<li>When possible, make your package <a href="http://www.tinyverse.org/">lightweight</a>, the less dependencies the better.</li>
+<li>Tweet about your package! No one will use it if they don’t know it exists.</li>
+<li>Read relevant sections of <a href="https://r-pkgs.org/" class="uri">https://r-pkgs.org/</a></li>
+</ol>
+</div>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/post/modular-shiny-code/">&laquo; Modular Shiny Code</a>
+    
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'tylurp-rbind-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-106175087-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+</body>
+</html>
+

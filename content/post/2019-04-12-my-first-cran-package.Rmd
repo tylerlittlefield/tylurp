@@ -1,0 +1,76 @@
+---
+title: My First CRAN Package
+author: ~
+date: '2019-04-12'
+slug: my-first-cran-package
+categories: ['r']
+tags: ['devel']
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+```
+
+```{r, results='hide', echo=FALSE, fig.height=1}
+library(lisa)
+set.seed(23)
+par(mfrow = c(1, 3))
+lapply(sample(lisa, 3), plot)
+```
+
+> Thanks, your package is on its way to CRAN.
+
+## Introduction
+
+I am really excited to announce (12 days late) that [`lisa`](https://cran.r-project.org/web/packages/lisa/index.html) is on CRAN, my first R package available on the [Comprehensive R Archive Network](https://cran.r-project.org/)! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
+
+Anyway, `lisa` is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists. These palettes were made by designers, artists, museum curators, and masters of color theory. You can view them all at [colorlisa](http://colorlisa.com/), a beautiful website created by Ryan McGuire.
+
+## Package Details
+
+The `lisa` package contains a list of palettes, a dataset containing palette information and a function for calling and modifying palettes:
+
+```{r}
+str(lisa[1])
+
+head(artwork)
+
+lisa_palette("JosefAlbers", 2, "discrete")
+```
+
+There are also two S3 methods, one for printing and one for plotting objects of class `lisa_palette`:
+
+```{r, fig.height=1}
+class(lisa$`Jean-MichelBasquiat`)
+
+plot(lisa$`Jean-MichelBasquiat`)
+```
+
+That's pretty much it! Currently, `ggplot2` usage requires something like `scale_color_manual`. I've thought about including custom `ggplot2` color functions, similiar to what [`paletteer`](https://github.com/EmilHvitfeldt/paletteer) does but have put this on hold, maybe the next release.
+
+```{r fig.height=4}
+library(ggplot2)
+
+ggplot(mtcars, aes(mpg, disp)) + 
+  geom_point(aes(col = factor(gear)), size = 3) + 
+  scale_color_manual(values = lisa$`Jean-MichelBasquiat`) + 
+  theme_bw()
+```
+
+## CRAN Submission Process
+
+I submitted the package, got rejected with correction comments, resubmitted, and the package was on CRAN the next day. This all took a total of 5 days. My first submission was rejected because I had redundant wording and didn't include a reference to colorlisa. Redundant wording was things like _"This is an **R** package..."_. This type of wording in the description is considered redundant because the user already knows its an R package. 
+
+## Takeaways
+
+If you're like me and want to submit a package to CRAN for the first time I would recommend a couple things:
+
+1. `devtools` and `usethis` are necessary! They actually aren't but they make the development process much easier and enjoyable. I submitted my pacakge using `devtools::release` which introduced me to a whole bunch of checks that I hadn't thought of. For example, spell check, rhub, and more.
+2. Test your code with `testthat`, check coverage with `covr`, continously integrate your code with services like travis-ci and appveyor.
+3. When possible, make your package [lightweight](http://www.tinyverse.org/), the less dependencies the better.
+4. Tweet about your package! No one will use it if they don't know it exists.
+5. Read relevant sections of https://r-pkgs.org/

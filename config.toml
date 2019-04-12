@@ -4,7 +4,6 @@ author = "Tyler Littlefield"
 canonifyurls = false
 languagecode = "en"
 theme = "hugo-tanka"
-enableEmoji = false
 
 googleAnalytics = "UA-106175087-1"
 disqusShortname = "tylurp-rbind-io"

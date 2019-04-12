@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Tyler&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>My First CRAN Package</title>
+      <link>/post/my-first-cran-package/</link>
+      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/my-first-cran-package/</guid>
+      <description>Thanks, your package is on its way to CRAN.
+ Introduction I am really excited to announce (12 days late) that lisa is on CRAN, my first R package available on the Comprehensive R Archive Network! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
+Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists.</description>
+    </item>
     
     <item>
       <title>Modular Shiny Code</title>
