@@ -1,0 +1,110 @@
+---
+title: Iteration the Easy Way
+author: ~
+date: '2019-09-01'
+slug: iteration
+categories: ['r']
+tags: ['r']
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  dpi = 300
+)
+```
+
+I do not come from a computer science background but my guess is that base R's `apply` family of functions stand out as something strange. This strangeness might be because for loops are explicit and make it clear what's going on, so why obfuscate the logic?
+
+But on the other hand, I think you could argue that while the logic might be clear, the intent isn't, at least not immediately. This might be one reason functions like `lapply` exist, because at it's heart R is a functional programming language and R users value _functionals_ because they express the intent and allow us to think functionally.
+
+Take the example below, we take every element in a list `mylist` and convert it to uppercase.
+
+```{r example 1 data}
+mylist <- list(
+  a = letters[1:10],
+  b = letters[11:20]
+)
+
+mylist
+```
+
+With `lapply` we would do something like:
+
+```{r example 1 lapply}
+lapply(mylist, toupper)
+```
+
+With a for loop we would do something like:
+
+```{r example 1 loop}
+for (i in seq_along(mylist)) {
+  mylist[[i]] <- toupper(mylist[[i]])
+}
+
+mylist
+```
+
+With `lapply` we are taking a function as input and applying it to every list element. It can be read as, applying the `toupper` function to everything in my list. With the for loop, we immediatly understand iteration is happening but we must decipher the logic to identify the intent, this becomes more difficult with larger or nested for loops.
+
+The concept of functionals, a function that takes a function as input, is powerful and has dramatically changed the way I've written R code. Prior to this realization, I would tirelessly write for loops to capture everything I need from a list and there were 2 problems with this:
+
+1. I would cram as much functionality as I could into a single loop, i.e. sort each vector, take the top 3 values, compute the mean, assign to another object, take that object and multiply it by this other object, etc. The intent would degrade and the loop would become a, _"just do everything and solve all my problems"_ loop.
+2. Coming back to the loop is difficult to understand and I often never reused them.
+
+Now, point 1 isn't necessarily the for loops fault, it's my fault for cramming everything into a single loop. But maybe there is something to say about why I chose this approach in the first place. For me, I think it was something along the lines of, _"I'm already iterating, why step outside of the loop when I can carry on."_ And maybe this is why I embrace the `apply` functions, because they force me to think about the intent in small, bite sized steps. 
+
+Of course, you could fall into the same trap and just make giant, convoluted functions and feed them to `lapply`. Yet, for some reason, I never had this problem. Perhaps this has to do with the fact that you must name your function and if you can't come up with a sensible name, it's clear your function is doing too much.
+
+Another idea I've come to love is, _"if you can do it once, you can iterate."_ When I need to iterate over something, I use the following workflow:
+
+1. Take the first element, i.e. `mylist[[1]]`.
+2. Write some code to get what you need, no functions or anything, just a script.
+3. Wrap that code into meaningful functions that have a clear intent.
+4. Feed those functions to `lapply`!
+
+For example, let's say we have a list and for every element in that list we want to sort and then convert to uppercase. We could easily do this for the first element like so:
+
+```{r example 2}
+mylist <- list(
+  a = sample(letters, 10),
+  b = sample(letters, 10)
+)
+
+mylist2 <- mylist[[1]]
+mylist2 <- sort(mylist2)[1:3]
+toupper(mylist2)
+```
+
+Now we wrap our sorting logic into a function:
+
+```{r my_sort function}
+my_sort <- function(x, n) {
+  sort(x)[1:n]
+}
+```
+
+Finally, we take our function and feed it to `lapply`. Since we can do it to one element, we can do it to the rest:
+
+```{r lapply with my_sort function}
+mylist <- lapply(mylist, my_sort, n = 3)
+lapply(mylist, toupper)
+```
+
+This approach to iteration has been a life saver as I no longer worry about the logic of capturing everything in my list, I just worry about how the logic can be applied to a single element. 
+
+While we haven't covered the `purrr` package and pipes, I'd like to share one example of how enjoyable iteration can be when combined with pipes:
+
+```{r iteration with pipes, message=FALSE}
+library(dplyr)
+library(purrr)
+
+mylist %>% 
+  map(my_sort, 3) %>% 
+  map(toupper)
+```
+
+This could be read as, _"I take my list **then** map my sorting function **then** map the toupper function."_ I find that pipes make the intent even more clear as the step by step based syntax is familiar to many.

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<script src="https://use.fontawesome.com/efb5af9857.js"></script>
+<link rel="stylesheet" href="/css/code/github.css" rel="stylesheet" id="theme-stylesheet">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <title>
+    
+    
+     Iteration the Easy Way 
+    
+  </title>
+  <link rel="canonical" href="/post/iteration/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/">Tyler&#39;s Blog</a></h1>
+  <ul>
+    
+    <li><a href="https://github.com/tylurp" class="fa fa-github"></a></li>
+    
+    <li><a href="https://www.linkedin.com/in/tyler-littlefield-628662139/" class="fa fa-linkedin"></a></li>
+    
+    <li><a href="https://stackoverflow.com/users/7362046/tylurp?tab=profile" class="fa fa-stack-overflow"></a></li>
+    
+    <li><a href="https://twitter.com/tyluRp" class="fa fa-twitter"></a></li>
+    
+    <li><a href="mailto:tylurp1@gmail.com" class="fa fa-paper-plane"></a></li>
+    
+    <li><a href="/about/" class="fa fa-info"></a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> Iteration the Easy Way </h1>
+
+  <div id=sub-header>
+     · 2019/09/01 · 5 minute read
+  </div>
+
+  <div class="entry-content">
+    <p>I do not come from a computer science background but my guess is that base R’s <code>apply</code> family of functions stand out as something strange. This strangeness might be because for loops are explicit and make it clear what’s going on, so why obfuscate the logic?</p>
+<p>But on the other hand, I think you could argue that while the logic might be clear, the intent isn’t, at least not immediately. This might be one reason functions like <code>lapply</code> exist, because at it’s heart R is a functional programming language and R users value <em>functionals</em> because they express the intent and allow us to think functionally.</p>
+<p>Take the example below, we take every element in a list <code>mylist</code> and convert it to uppercase.</p>
+<pre class="r"><code>mylist &lt;- list(
+  a = letters[1:10],
+  b = letters[11:20]
+)
+
+mylist
+#&gt; $a
+#&gt;  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot;
+#&gt; 
+#&gt; $b
+#&gt;  [1] &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot; &quot;r&quot; &quot;s&quot; &quot;t&quot;</code></pre>
+<p>With <code>lapply</code> we would do something like:</p>
+<pre class="r"><code>lapply(mylist, toupper)
+#&gt; $a
+#&gt;  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot;
+#&gt; 
+#&gt; $b
+#&gt;  [1] &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot; &quot;R&quot; &quot;S&quot; &quot;T&quot;</code></pre>
+<p>With a for loop we would do something like:</p>
+<pre class="r"><code>for (i in seq_along(mylist)) {
+  mylist[[i]] &lt;- toupper(mylist[[i]])
+}
+
+mylist
+#&gt; $a
+#&gt;  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot;
+#&gt; 
+#&gt; $b
+#&gt;  [1] &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot; &quot;R&quot; &quot;S&quot; &quot;T&quot;</code></pre>
+<p>With <code>lapply</code> we are taking a function as input and applying it to every list element. It can be read as, applying the <code>toupper</code> function to everything in my list. With the for loop, we immediatly understand iteration is happening but we must decipher the logic to identify the intent, this becomes more difficult with larger or nested for loops.</p>
+<p>The concept of functionals, a function that takes a function as input, is powerful and has dramatically changed the way I’ve written R code. Prior to this realization, I would tirelessly write for loops to capture everything I need from a list and there were 2 problems with this:</p>
+<ol style="list-style-type: decimal">
+<li>I would cram as much functionality as I could into a single loop, i.e. sort each vector, take the top 3 values, compute the mean, assign to another object, take that object and multiply it by this other object, etc. The intent would degrade and the loop would become a, <em>“just do everything and solve all my problems”</em> loop.</li>
+<li>Coming back to the loop is difficult to understand and I often never reused them.</li>
+</ol>
+<p>Now, point 1 isn’t necessarily the for loops fault, it’s my fault for cramming everything into a single loop. But maybe there is something to say about why I chose this approach in the first place. For me, I think it was something along the lines of, <em>“I’m already iterating, why step outside of the loop when I can carry on.”</em> And maybe this is why I embrace the <code>apply</code> functions, because they force me to think about the intent in small, bite sized steps.</p>
+<p>Of course, you could fall into the same trap and just make giant, convoluted functions and feed them to <code>lapply</code>. Yet, for some reason, I never had this problem. Perhaps this has to do with the fact that you must name your function and if you can’t come up with a sensible name, it’s clear your function is doing too much.</p>
+<p>Another idea I’ve come to love is, <em>“if you can do it once, you can iterate.”</em> When I need to iterate over something, I use the following workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Take the first element, i.e. <code>mylist[[1]]</code>.</li>
+<li>Write some code to get what you need, no functions or anything, just a script.</li>
+<li>Wrap that code into meaningful functions that have a clear intent.</li>
+<li>Feed those functions to <code>lapply</code>!</li>
+</ol>
+<p>For example, let’s say we have a list and for every element in that list we want to sort and then convert to uppercase. We could easily do this for the first element like so:</p>
+<pre class="r"><code>mylist &lt;- list(
+  a = sample(letters, 10),
+  b = sample(letters, 10)
+)
+
+mylist2 &lt;- mylist[[1]]
+mylist2 &lt;- sort(mylist2)[1:3]
+toupper(mylist2)
+#&gt; [1] &quot;G&quot; &quot;H&quot; &quot;I&quot;</code></pre>
+<p>Now we wrap our sorting logic into a function:</p>
+<pre class="r"><code>my_sort &lt;- function(x, n) {
+  sort(x)[1:n]
+}</code></pre>
+<p>Finally, we take our function and feed it to <code>lapply</code>. Since we can do it to one element, we can do it to the rest:</p>
+<pre class="r"><code>mylist &lt;- lapply(mylist, my_sort, n = 3)
+lapply(mylist, toupper)
+#&gt; $a
+#&gt; [1] &quot;G&quot; &quot;H&quot; &quot;I&quot;
+#&gt; 
+#&gt; $b
+#&gt; [1] &quot;B&quot; &quot;C&quot; &quot;D&quot;</code></pre>
+<p>This approach to iteration has been a life saver as I no longer worry about the logic of capturing everything in my list, I just worry about how the logic can be applied to a single element.</p>
+<p>While we haven’t covered the <code>purrr</code> package and pipes, I’d like to share one example of how enjoyable iteration can be when combined with pipes:</p>
+<pre class="r"><code>library(dplyr)
+library(purrr)
+
+mylist %&gt;% 
+  map(my_sort, 3) %&gt;% 
+  map(toupper)
+#&gt; $a
+#&gt; [1] &quot;G&quot; &quot;H&quot; &quot;I&quot;
+#&gt; 
+#&gt; $b
+#&gt; [1] &quot;B&quot; &quot;C&quot; &quot;D&quot;</code></pre>
+<p>This could be read as, <em>“I take my list <strong>then</strong> map my sorting function <strong>then</strong> map the toupper function.”</em> I find that pipes make the intent even more clear as the step by step based syntax is familiar to many.</p>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/post/my-first-cran-package/">&laquo; My First CRAN Package</a>
+    
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'tylurp-rbind-io';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-106175087-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+</body>
+</html>
+
