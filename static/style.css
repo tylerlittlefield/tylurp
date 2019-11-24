@@ -3,6 +3,7 @@
 
 pre code {
   font-size: .7rem;
+  white-space: pre;
 }
 
 code { 
