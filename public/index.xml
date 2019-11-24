@@ -47,7 +47,7 @@ Anyway, lisa is a color palette pacakge, it provides R users with 128 color pale
       <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/showcase/</guid>
-      <description>Header 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec interdum metus. Aenean rutrum ligula sodales ex auctor, sed tempus dui mollis. Curabitur ipsum dui, aliquet nec commodo at, tristique eget ante. Donec quis dolor nec nunc mollis interdum vel in purus. Sed vitae leo scelerisque, sollicitudin elit sed, congue ante. In augue nisl, vestibulum commodo est a, tristique porttitor est. Proin laoreet iaculis ornare. Nullam ut neque quam.</description>
+      <description>R Packages  lisa: 128 color palettes, published on CRAN. RVerbalExpressions: Construct regular expressions using intuitive grammar, published on CRAN. ucimlr: Data package with 20 handpicked datasets from the famous UCI Machine Learning Repository. exoplants: API wrappers around NASA&amp;rsquo;s Exoplanet Archive, currently pending peer review by the ROpenSci organization.  Shiny  shinytemplate: An opinionated template to skip the boring stuff and start developing fast, work in progress, find the current version here.</description>
     </item>
     
     <item>
