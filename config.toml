@@ -43,10 +43,10 @@ googleAnalytics = "UA-106175087-1"
         identifier = "about"
         name = "About"
         url = "/about"
-    #  [[languages.en.menu.main]]
-    #    identifier = "showcase"
-    #    name = "Showcase"
-    #    url = "/showcase"
+      [[languages.en.menu.main]]
+        identifier = "showcase"
+        name = "Showcase"
+        url = "/showcase"
       [[languages.en.menu.main]]
         identifier = "archive"
         name = "Archive"
