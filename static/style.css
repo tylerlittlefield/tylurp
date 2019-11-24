@@ -4,6 +4,7 @@
 pre code {
   font-size: .7rem;
   white-space: pre;
+  word-wrap: inherit;
 }
 
 code { 
