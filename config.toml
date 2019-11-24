@@ -10,7 +10,7 @@ googleAnalytics = "UA-106175087-1"
   # "light" or "dark"
   defaultTheme = "light"
   # if you set this to 0, only submenu trigger will be visible
-  showMenuItems = 2
+  showMenuItems = 1
   # Enable to show reading time in minutes for posts
   showReadingTime = false
 
@@ -47,3 +47,11 @@ googleAnalytics = "UA-106175087-1"
     #    identifier = "showcase"
     #    name = "Showcase"
     #    url = "/showcase"
+      [[languages.en.menu.main]]
+        identifier = "archive"
+        name = "Archive"
+        url = "/archive"
+      [[languages.en.menu.main]]
+        identifier = "rstudio"
+        name = "RStudio"
+        url = "https://www.tylerlittlefield.com/rstudio"
