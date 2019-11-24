@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on Tyler&#39;s Blog</title>
+    <title>r on tyler littlefield</title>
     <link>/tags/r/</link>
-    <description>Recent content in R on Tyler&#39;s Blog</description>
+    <description>Recent content in r on tyler littlefield</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 01 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
@@ -18,38 +18,7 @@
       
       <guid>/post/iteration/</guid>
       <description>I do not come from a computer science background but my guess is that base R’s apply family of functions stand out as something strange. This strangeness might be because for loops are explicit and make it clear what’s going on, so why obfuscate the logic?
-But on the other hand, I think you could argue that while the logic might be clear, the intent isn’t, at least not immediately. This might be one reason functions like lapply exist, because at it’s heart R is a functional programming language and R users value functionals because they express the intent and allow us to think functionally.</description>
-    </item>
-    
-    <item>
-      <title>Modular Shiny Code</title>
-      <link>/post/modular-shiny-code/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/post/modular-shiny-code/</guid>
-      <description>Intro In 2016, Garrett Grolemond gave a talk at the very first Shiny Developer Conference in Palo Alto, California. The first slide in his presentation read in big bold letters, “Writing Big Apps, How to use Shiny Modules”. You can find the slides here and a video of the talk here.
-In a nutshell, shiny modules allow users to write composable shiny code. Little bite size pieces of code that can be reused and brought together to work as a whole.</description>
-    </item>
-    
-    <item>
-      <title>Testing Equality of Multiple Expressions</title>
-      <link>/post/testing-equality-of-multiple-expressions/</link>
-      <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/testing-equality-of-multiple-expressions/</guid>
-      <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
-    </item>
-    
-    <item>
-      <title>Reproducibility</title>
-      <link>/post/reproducibility/</link>
-      <pubDate>Tue, 30 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/reproducibility/</guid>
-      <description>Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.
- If you&amp;rsquo;ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it&amp;rsquo;s often overlooked. To be brief, a great reproducible example should be:
- Minimal &amp;ndash; Provide the least amount of code needed to reproduce the problem.</description>
+But on the other hand, I think you could argue that while the logic might be clear, the intent isn’t, at least not immediately.</description>
     </item>
     
   </channel>

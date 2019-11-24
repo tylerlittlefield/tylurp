@@ -1,43 +1,49 @@
 baseurl = "/"
-title = "Tyler's Blog"
-author = "Tyler Littlefield"
-canonifyurls = false
-languagecode = "en"
-theme = "hugo-tanka"
-
+languageCode = "en-us"
+theme = "hugo-theme-hello-friend"
+paginate = 5
 googleAnalytics = "UA-106175087-1"
-disqusShortname = "tylurp-rbind-io"
-disable_mathjax = false
-
-pygmentsstyle      = "vs"
-pygmentscodefences = true
-
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [params]
-  sitename = "Tyler's Blog"
+  # dir name of your blog content (default is `content/posts`)
+  contentTypeName = "post"
+  # "light" or "dark"
+  defaultTheme = "light"
+  # if you set this to 0, only submenu trigger will be visible
+  showMenuItems = 2
+  # Enable to show reading time in minutes for posts
+  showReadingTime = false
 
-[[menu.main]]
-    name = "fa fa-github"
-    url = "https://github.com/tylurp"
-    weight = 1
-[[menu.main]]
-    name = "fa fa-linkedin"
-    url = "https://www.linkedin.com/in/tyler-littlefield-628662139/"
-    weight = 2
-[[menu.main]]
-    name = "fa fa-stack-overflow"
-    url = "https://stackoverflow.com/users/7362046/tylurp?tab=profile"
-    weight = 3
-[[menu.main]]
-    name = "fa fa-twitter"
-    url = "https://twitter.com/tyluRp"
-    weight = 4
-[[menu.main]]
-    name = "fa fa-paper-plane"
-    url = "mailto:tylurp1@gmail.com"
-    weight = 5
-[[menu.main]]
-    name = "fa fa-info"
-    url = "/about/"
-    weight = 6
+[languages]
+  [languages.en]
+    title = "tyler littlefield"
+    subtitle = ""
+    keywords = ""
+    copyright = ""
+    menuMore = "Show more"
+    writtenBy = "Written by"
+    readMore = "Read more"
+    readOtherPosts = "Read other posts"
+    newerPosts = "Newer posts"
+    olderPosts = "Older posts"
+    minuteReadingTime = "min read"
+    dateFormatSingle = "2006-01-02"
+    dateFormatList = "2006-01-02"
+
+    [languages.en.params.logo]
+      logoText = "tyler littlefield"
+      logoHomeLink = "/"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
+
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "About"
+        url = "/about"
+    #  [[languages.en.menu.main]]
+    #    identifier = "showcase"
+    #    name = "Showcase"
+    #    url = "/showcase"

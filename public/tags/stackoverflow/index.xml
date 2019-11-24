@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>stackoverflow on tyler littlefield</title>
+    <link>/tags/stackoverflow/</link>
+    <description>Recent content in stackoverflow on tyler littlefield</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 30 Jan 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/stackoverflow/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Reproducibility</title>
+      <link>/post/reproducibility/</link>
+      <pubDate>Tue, 30 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/reproducibility/</guid>
+      <description>Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.
+ If you&amp;rsquo;ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it&amp;rsquo;s often overlooked. To be brief, a great reproducible example should be:
+ Minimal &amp;ndash; Provide the least amount of code needed to reproduce the problem.</description>
+    </item>
+    
+  </channel>
+</rss>
