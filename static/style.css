@@ -7,6 +7,10 @@ pre code {
   word-wrap: inherit;
 }
 
+pre {
+  word-wrap: inherit;
+}
+
 code { 
   font-family: 'Fira Code', monospace; 
 }
