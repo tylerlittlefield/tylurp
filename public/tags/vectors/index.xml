@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vectors on tyler littlefield</title>
+    <link>/tags/vectors/</link>
+    <description>Recent content in vectors on tyler littlefield</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Nov 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/vectors/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Comparing Sets</title>
+      <link>/post/comparing-sets/</link>
+      <pubDate>Sun, 24 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/comparing-sets/</guid>
+      <description>Introduction The task of comparing sets (unique vectors) is a common one, we often want to confirm whether two things are the same or not. For example, we might rewrite a function to make it run faster, in this case we want to make sure that the new and old function output the same result. On the other hand, we might rewrite a function to fix a bug, in this context we want to make sure the output of the new function is different, potentially resolving the bug and producing the correct output.</description>
+    </item>
+    
+  </channel>
+</rss>

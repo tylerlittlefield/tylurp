@@ -13,7 +13,7 @@ googleAnalytics = "UA-106175087-1"
   showMenuItems = 1
   # Enable to show reading time in minutes for posts
   showReadingTime = false
-
+  
 [languages]
   [languages.en]
     title = "tyler littlefield"

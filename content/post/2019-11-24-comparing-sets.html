@@ -1,0 +1,60 @@
+---
+title: Comparing Sets
+author: ~
+date: '2019-11-24'
+slug: comparing-sets
+categories: ['rstats']
+tags: ['rstats', 'vectors', 'sets']
+---
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>The task of comparing sets (unique vectors) is a common one, we often want to confirm whether two things are the same or not. For example, we might rewrite a function to make it run faster, in this case we want to make sure that the new and old function output the same result. On the other hand, we might rewrite a function to fix a bug, in this context we want to make sure the output of the new function is different, potentially resolving the bug and producing the correct output. In this post, I’ll go over a little function I made for comparing sets but before I do, let’s get some terminology out of the way:</p>
+<ul>
+<li><strong>Sets:</strong> A set is basically a unique vector.</li>
+<li><strong>Vectors:</strong> A vector is just a series of values that share the same type (character, logical, etc.).</li>
+</ul>
+<p>We must keep in mind whether or not our method of comparison is sufficient on unique values. If we want to confirm two vectors are the same, duplicates and all, you wouldn’t want to use a function like <code>setdiff</code> for example. This is why the terminology above is important.</p>
+</div>
+<div id="compare" class="section level2">
+<h2>Compare</h2>
+<p>Recently, I needed to come up with a function to compare one set to another set and output the the difference. The goal is to say something like:</p>
+<blockquote>
+<p>These values are in the current output but not the older/pre-existing output.</p>
+</blockquote>
+<p>Since I am only concerned in the unique values, <code>setdiff</code> sounds like a good approach to this problem with one caveat… I constantly forget how <code>setdiff</code> works. It is comparing what <strong>x</strong> doesn’t have in <strong>y</strong>? The other way around? My inability to remember is what prompted the creation of a function I call <code>compare</code> and it seems others share my experience.</p>
+{{% tweet "1197634755430367235" %}}
+<p>The function is dead simple, store some common set functions in a list with each list elements name describing the output.</p>
+<pre class="r"><code>compare &lt;- function(x, y) {
+  list(
+    &quot;These values are in X but not Y&quot; = setdiff(x, y),
+    &quot;These values are in Y but not X&quot; = setdiff(y, x),
+    &quot;These values are shared between X and Y&quot; = intersect(x, y),
+    &quot;Combined, X and Y return these values&quot; = union(x, y)
+  )
+}</code></pre>
+<p>Now, if we want to compare two sets:</p>
+<ul>
+<li>1, 2, 3, 4</li>
+<li>3, 4, 5, 6</li>
+</ul>
+<p>We just plug those sets into <code>compare</code>:</p>
+<pre class="r"><code>x &lt;- 1:4
+y &lt;- 3:6
+
+compare(x, y)
+#&gt; $`These values are in X but not Y`
+#&gt; [1] 1 2
+#&gt; 
+#&gt; $`These values are in Y but not X`
+#&gt; [1] 5 6
+#&gt; 
+#&gt; $`These values are shared between X and Y`
+#&gt; [1] 3 4
+#&gt; 
+#&gt; $`Combined, X and Y return these values`
+#&gt; [1] 1 2 3 4 5 6</code></pre>
+<p>That’s it! No more googling what the output of <code>setdiff</code> is giving me, just read the name of the list element to be reminded.</p>
+</div>
