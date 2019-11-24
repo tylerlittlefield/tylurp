@@ -68,6 +68,21 @@
   </url>
   
   <url>
+    <loc>/tags/modular/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/modular-shiny-code/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/shiny/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/testing/</loc>
     <lastmod>2018-04-03T00:00:00+00:00</lastmod>
   </url>

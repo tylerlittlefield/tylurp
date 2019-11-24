@@ -42,6 +42,16 @@ Anyway, lisa is a color palette pacakge, it provides R users with 128 color pale
     </item>
     
     <item>
+      <title>Modular Shiny Code</title>
+      <link>/post/modular-shiny-code/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/modular-shiny-code/</guid>
+      <description>Intro In 2016, Garrett Grolemond gave a talk at the very first Shiny Developer Conference in Palo Alto, California. The first slide in his presentation read in big bold letters, “Writing Big Apps, How to use Shiny Modules”. You can find the slides here and a video of the talk here.
+In a nutshell, shiny modules allow users to write composable shiny code. Little bite size pieces of code that can be reused and brought together to work as a whole.</description>
+    </item>
+    
+    <item>
       <title>Testing Equality of Multiple Expressions</title>
       <link>/post/testing-equality-of-multiple-expressions/</link>
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
