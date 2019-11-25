@@ -3,6 +3,13 @@ If you want to include any custom html just before </head>, put it in /layouts/p
 Do not put anything in this file - it's only here so that hugo won't throw an error if /layouts/partials/extended_head.html doesn't exist.
 -->
 
+<!-- Highlight.js + Zenburn -->
 <link rel="stylesheet" href="{{"css/code/zenburn.css" | absURL}}" rel="stylesheet" id="theme-stylesheet">
 <script src="{{ "js/highlight.pack.js" | absURL }}"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
