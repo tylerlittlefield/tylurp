@@ -9,7 +9,7 @@ title: Showcase
 * [lisa](https://github.com/tyluRp/lisa): 128 color palettes, published on [CRAN](https://cran.r-project.org/web/packages/lisa/index.html).
 * [RVerbalExpressions](https://github.com/VerbalExpressions/RVerbalExpressions): Construct regular expressions using intuitive grammar, published on [CRAN](https://cran.r-project.org/web/packages/RVerbalExpressions/index.html).
 * [ucimlr](https://github.com/tyluRp/ucimlr): Data package with 20 handpicked datasets from the famous UCI Machine Learning Repository.
-* [exoplants](https://github.com/tyluRp/exoplanets): API wrappers around [NASA's Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/index.html), currently pending peer review by the ROpenSci organization.
+* [exoplanets](https://github.com/tyluRp/exoplanets): API wrappers around [NASA's Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/index.html), currently pending peer review by the ROpenSci organization.
 
 ## Shiny
 
