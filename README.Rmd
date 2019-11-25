@@ -16,4 +16,9 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-A blogdown site using the [hello-friend](https://github.com/panr/hugo-theme-hello-friend) theme. Previously deployed with netlify, now exploring nginx and digital ocean to host shiny applications and a personal rstudio server.
+A blogdown site using the [hello-friend](https://github.com/panr/hugo-theme-hello-friend) theme. Previously deployed with netlify, now exploring nginx and digitalocean to host shiny applications and a personal rstudio server.
+
+```{r, echo=FALSE}
+knitr::include_graphics("static/img/site-demo.png")
+```
+

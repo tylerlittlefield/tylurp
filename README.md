@@ -9,5 +9,7 @@
 
 A blogdown site using the
 [hello-friend](https://github.com/panr/hugo-theme-hello-friend) theme.
-Previously deployed with netlify, now exploring nginx and digital ocean
+Previously deployed with netlify, now exploring nginx and digitalocean
 to host shiny applications and a personal rstudio server.
+
+![](static/img/site-demo.png)<!-- -->
