@@ -1,6 +1,6 @@
 ---
 title: About
-author: Tyler Littlefield
+author: ~
 date: 2018-01-30
 ---
 
