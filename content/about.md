@@ -9,3 +9,7 @@ My name is Tyler Littlefield. I typically write about R programming here. If I'm
 I'm a hobbyist programmer interested in data analysis, data visualization, and building #rstats [tools](https://github.com/tyluRp).
 
 In college, most of my work involved spatial data problems using point and click GIS software like QGIS or ArcGIS. Towards the end of my senior year I took a class on geographic data science using R and found this language to be very intuitive for reasons that are beyond me. 
+
+I currently live in Irvine California with my partner Jenny, our rabbit Lucas, our cat Toulouse, and our dog Ollie.
+
+:couple::rabbit2::cat2::dog2:

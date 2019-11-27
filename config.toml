@@ -3,6 +3,7 @@ languageCode = "en-us"
 theme = "hugo-theme-hello-friend"
 paginate = 5
 googleAnalytics = "UA-106175087-1"
+enableEmoji = true
 
 [params]
   # dir name of your blog content (default is `content/posts`)
