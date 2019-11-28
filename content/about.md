@@ -12,4 +12,4 @@ In college, most of my work involved spatial data problems using point and click
 
 I currently live in Irvine California with my partner Jenny, our rabbit Lucas, our cat Toulouse, and our dog Ollie.
 
-:couple::rabbit2::cat2::dog2:
+# :couple::rabbit::cat::dog2:
