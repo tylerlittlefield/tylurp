@@ -9,6 +9,7 @@ title: Showcase
 * [`lisa`](https://github.com/tyluRp/lisa): 128 color palettes, published on [CRAN](https://cran.r-project.org/web/packages/lisa/index.html).
 * [`RVerbalExpressions`](https://github.com/VerbalExpressions/RVerbalExpressions): Construct regular expressions using intuitive grammar, published on [CRAN](https://cran.r-project.org/web/packages/RVerbalExpressions/index.html).
 * [`vov`](https://github.com/tyluRp/vov): A wrapper around the [vov.css](https://github.com/vaibhav111tandon/vov.css) library, published on [CRAN](https://cran.r-project.org/web/packages/vov/index.html). Takes the CSS and wraps it into functions for easy CSS animations in shiny, see a demo of the package [here](https://tylerlittlefield.com/shiny/tyler/vov/).
+* [`shinynotyf`](https://github.com/tyluRp/shinynotyf): Shiny notifications, a wrapper around [Notyf](https://github.com/caroso1222/notyf). Demonstration of making R communicate with javascript. Demo the package [here](https://tylerlittlefield.com/shiny/tyler/shinynotyf-demo/).
 * [`ucimlr`](https://github.com/tyluRp/ucimlr): Data package with 20 handpicked datasets from the famous UCI Machine Learning Repository.
 * [`exoplanets`](https://github.com/tyluRp/exoplanets): API wrappers around [NASA's Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/index.html), currently pending peer review by the ROpenSci organization.
 * [`hackr`](https://github.com/tyluRp/hackr): A wrapper around the Hacker News API.
