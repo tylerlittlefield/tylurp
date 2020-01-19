@@ -18,7 +18,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   
 [languages]
   [languages.en]
-    title = "tylerlittlefield"
+    title = "Tyler Littlefield"
     subtitle = ""
     keywords = ""
     copyright = ""
