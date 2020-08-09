@@ -51,7 +51,7 @@ mylist
 <p>Of course, you could fall into the same trap and just make giant, convoluted functions and feed them to <code>lapply</code>. Yet, for some reason, I never had this problem. Perhaps this has to do with the fact that you must name your function and if you can’t come up with a sensible name, it’s clear your function is doing too much.</p>
 <p>Another idea I’ve come to love is, <em>“if you can do it once, you can iterate.”</em> When I need to iterate over something, I use the following workflow:</p>
 <ol style="list-style-type: decimal">
-<li>Take the first element, i.e. <code>mylist[[1]]</code>.</li>
+<li>Take the first element, i.e. <code>mylist[[1]]</code>.</li>
 <li>Write some code to get what you need, no functions or anything, just a script.</li>
 <li>Wrap that code into meaningful functions that have a clear intent.</li>
 <li>Feed those functions to <code>lapply</code>!</li>
@@ -65,7 +65,7 @@ mylist
 mylist2 &lt;- mylist[[1]]
 mylist2 &lt;- sort(mylist2)[1:3]
 toupper(mylist2)
-#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;E&quot;</code></pre>
+#&gt; [1] &quot;B&quot; &quot;D&quot; &quot;H&quot;</code></pre>
 <p>Now we wrap our sorting logic into a function:</p>
 <pre class="r"><code>my_sort &lt;- function(x, n) {
   sort(x)[1:n]
@@ -74,10 +74,10 @@ toupper(mylist2)
 <pre class="r"><code>mylist &lt;- lapply(mylist, my_sort, n = 3)
 lapply(mylist, toupper)
 #&gt; $a
-#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;E&quot;
+#&gt; [1] &quot;B&quot; &quot;D&quot; &quot;H&quot;
 #&gt; 
 #&gt; $b
-#&gt; [1] &quot;A&quot; &quot;C&quot; &quot;E&quot;</code></pre>
+#&gt; [1] &quot;A&quot; &quot;D&quot; &quot;F&quot;</code></pre>
 <p>This approach to iteration has been a life saver as I no longer worry about the logic of capturing everything in my list, I just worry about how the logic can be applied to a single element.</p>
 <p>While we haven’t covered the <code>purrr</code> package and pipes, I’d like to share one example of how enjoyable iteration can be when combined with pipes:</p>
 <pre class="r"><code>library(dplyr)
@@ -87,8 +87,8 @@ mylist %&gt;%
   map(my_sort, 3) %&gt;% 
   map(toupper)
 #&gt; $a
-#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;E&quot;
+#&gt; [1] &quot;B&quot; &quot;D&quot; &quot;H&quot;
 #&gt; 
 #&gt; $b
-#&gt; [1] &quot;A&quot; &quot;C&quot; &quot;E&quot;</code></pre>
+#&gt; [1] &quot;A&quot; &quot;D&quot; &quot;F&quot;</code></pre>
 <p>This could be read as, <em>“I take my list <strong>then</strong> map my sorting function <strong>then</strong> map the toupper function.”</em> I find that pipes make the intent even more clear as the step by step based syntax is familiar to many.</p>
