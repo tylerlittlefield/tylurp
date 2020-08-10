@@ -1,321 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.1" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-      <title>My First CRAN Package :: Tyler Littlefield</title>
     
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Thanks, your package is on its way to CRAN.
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My first CRAN package - ~/tylerlittlefield">
+    <meta name="twitter:description" content="Thanks, your package is on its way to CRAN.
  Introduction I am really excited to announce (12 days late) that lisa is on CRAN, my first R package available on the Comprehensive R Archive Network! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
-Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists."/>
-<meta name="keywords" content=""/>
-<meta name="robots" content="noodp"/>
-<link rel="canonical" href="/post/my-first-cran-package/" />
-
-
-
-
-
-<link rel="stylesheet" href="/assets/style.css">
-
-
-<link rel="stylesheet" href="/style.css">
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
-<link rel="shortcut icon" href="/img/favicon.png">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="My First CRAN Package"/>
-<meta name="twitter:description" content="Thanks, your package is on its way to CRAN.
+Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists.">
+    <meta name="twitter:site" content="/">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:image" content="/images/avatar.jpeg">
+    
+    
+    <meta property="og:locale" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="My first CRAN package - ~/tylerlittlefield">
+    <meta property="og:description" content="Thanks, your package is on its way to CRAN.
  Introduction I am really excited to announce (12 days late) that lisa is on CRAN, my first R package available on the Comprehensive R Archive Network! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
-Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists."/>
+Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists.">
+    <meta property="og:url" content="/post/my-first-cran-package/">
+    <meta property="og:site_name" content="~/tylerlittlefield">
+    <meta property="og:image" content="/images/avatar.jpeg">
+    
+    <title>My first CRAN package - ~/tylerlittlefield</title>
 
-
-
-<meta property="og:title" content="My First CRAN Package" />
-<meta property="og:description" content="Thanks, your package is on its way to CRAN.
+    <meta name="author" content="Tyler Littlefield">
+    <meta name="description" content="Thanks, your package is on its way to CRAN.
  Introduction I am really excited to announce (12 days late) that lisa is on CRAN, my first R package available on the Comprehensive R Archive Network! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
-Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/my-first-cran-package/" />
-<meta property="article:published_time" content="2019-04-12T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-04-12T00:00:00+00:00" /><meta property="og:site_name" content="Tyler Littlefield" />
+Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists.">
 
-
-
-
-
-
-<link rel="stylesheet" href="/css/code/zenburn.css" rel="stylesheet" id="theme-stylesheet">
-<script src="/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-
-  </head>
-  <body class="">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
     
-      
-        
-          <li><a href="/about">About</a></li>
-        
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">
-            Show more
-            <span class="menu__sub-inner-more-trigger-icon"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-          </li>
+    
 
-          <ul class="menu__sub-inner-more hidden">
+    
+    
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/chroma.dracula.css">
+</head>
+<body class="font-serif bg-gray-200 border-t-4 border-blue-500 antialiased">
+    <div class="w-full p-6 md:w-2/3 md:px-0 md:mx-auto xl:w-2/5">
+        <header class="mb-6">
             
-              
-                <li><a href="/archive">Archive</a></li>
-              
+            <div class="mb-6 md:flex md:items-center">
+                
+<div>
+    <a class="text-lg mb-8 inline-block" href="/">&larr; Back Home</a>
+
+    
+    
+    <h1 class="text-4xl font-bold">My first CRAN package</h1>
+    <time datetime="2019-02-12 00:00:00 UTC">12 Feb 2019</time>
+    
+    
+    
+    <ol class="mt-4">
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/rstats">rstats</a>
+        </li>
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/package">package</a>
+        </li>
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/development">development</a>
+        </li>
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/cran">CRAN</a>
+        </li>
+        
+    </ol>
+    
+</div>
+
+            </div>
+
             
-              
-                <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-              
             
-              
-                <li><a href="/showcase">Showcase</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-  </ul>
+        </header>
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="/archive">Archive</a></li>
-      
-    
-      
-        <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-      
-    
-      
-        <li><a href="/showcase">Showcase</a></li>
-      
-    
-  </ul>
-</nav>
-
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-
-      </span>
-    </span>
-  </span>
-</header>
-
-
-      <div class="content">
         
-  <div class="post">
-    <h2 class="post-title"><a href="/post/my-first-cran-package/">My First CRAN Package</a></h2>
-    <div class="post-meta">
-      
-        <span class="post-date">
-            2019-04-12
-        </span>
-      
-      
-      
-    </div>
-
-    
-      <span class="post-tags">
         
-          #<a href="/tags/rstats/">rstats</a>&nbsp;
-        
-          #<a href="/tags/package/">package</a>&nbsp;
-        
-          #<a href="/tags/development/">development</a>&nbsp;
-        
-          #<a href="/tags/cran/">CRAN</a>&nbsp;
-        
-      </span>
+<article class="mb-12">
     
 
-    
+<p><img src="/post/2019-02-12-my-first-cran-package_files/figure-html/unnamed-chunk-2-1.png" width="100%" /></p>
 
-    <div class="post-content">
-      
-
-
-<p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-2-1.png" width="100%" /></p>
 <blockquote>
 <p>Thanks, your package is on its way to CRAN.</p>
 </blockquote>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+
+<h2 id="introduction">Introduction</h2>
+
 <p>I am really excited to announce (12 days late) that <a href="https://cran.r-project.org/web/packages/lisa/index.html"><code>lisa</code></a> is on CRAN, my first R package available on the <a href="https://cran.r-project.org/">Comprehensive R Archive Network</a>! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.</p>
+
 <p>Anyway, <code>lisa</code> is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists. These palettes were made by designers, artists, museum curators, and masters of color theory. You can view them all at <a href="http://colorlisa.com/">colorlisa</a>, a beautiful website created by Ryan McGuire.</p>
-</div>
-<div id="package-details" class="section level2">
-<h2>Package Details</h2>
+
+<h2 id="package-details">Package Details</h2>
+
 <p>The <code>lisa</code> package contains a list of palettes, a dataset containing palette information and a function for calling and modifying palettes:</p>
-<pre class="r"><code>str(lisa[1])
-#&gt; List of 1
-#&gt;  $ JosefAlbers: &#39;lisa_palette&#39; chr [1:5] &quot;#D77186&quot; &quot;#61A2DA&quot; &quot;#6CB7DA&quot; &quot;#b5b5b3&quot; ...
-#&gt;   ..- attr(*, &quot;name&quot;)= chr &quot;JosefAlbers&quot;
-#&gt;   ..- attr(*, &quot;work&quot;)= chr &quot;Adobe (Variant): Luminous Day&quot;
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">str</span><span class="p">(</span><span class="n">lisa[1]</span><span class="p">)</span>
+<span class="c1">#&gt; List of 1</span>
+<span class="c1">#&gt;  $ JosefAlbers: &#39;lisa_palette&#39; chr [1:5] &#34;#D77186&#34; &#34;#61A2DA&#34; &#34;#6CB7DA&#34; &#34;#b5b5b3&#34; ...</span>
+<span class="c1">#&gt;   ..- attr(*, &#34;name&#34;)= chr &#34;JosefAlbers&#34;</span>
+<span class="c1">#&gt;   ..- attr(*, &#34;work&#34;)= chr &#34;Adobe (Variant): Luminous Day&#34;</span>
 
-head(artwork)
-#&gt;              artist          palette                              work
-#&gt; 1      Josef Albers      JosefAlbers     Adobe (Variant): Luminous Day
-#&gt; 2      Josef Albers    JosefAlbers_1 Homage to the Square (La Tehuana)
-#&gt; 3 Gretchen Albrecht GretchenAlbrecht                      Golden Cloud
-#&gt; 4       Billy Apple       BillyApple                           Rainbow
-#&gt; 5       Per Arnoldi       PerArnoldi                              Spar
-#&gt; 6      Milton Avery      MiltonAvery        Bicycle Rider By The Loire
+<span class="nf">head</span><span class="p">(</span><span class="n">artwork</span><span class="p">)</span>
+<span class="c1">#&gt;              artist          palette                              work</span>
+<span class="c1">#&gt; 1      Josef Albers      JosefAlbers     Adobe (Variant): Luminous Day</span>
+<span class="c1">#&gt; 2      Josef Albers    JosefAlbers_1 Homage to the Square (La Tehuana)</span>
+<span class="c1">#&gt; 3 Gretchen Albrecht GretchenAlbrecht                      Golden Cloud</span>
+<span class="c1">#&gt; 4       Billy Apple       BillyApple                           Rainbow</span>
+<span class="c1">#&gt; 5       Per Arnoldi       PerArnoldi                              Spar</span>
+<span class="c1">#&gt; 6      Milton Avery      MiltonAvery        Bicycle Rider By The Loire</span>
 
-lisa_palette(&quot;JosefAlbers&quot;, 2, &quot;discrete&quot;)
-#&gt; [1] &quot;#D77186&quot; &quot;#61A2DA&quot;</code></pre>
+<span class="nf">lisa_palette</span><span class="p">(</span><span class="s">&#34;JosefAlbers&#34;</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#34;discrete&#34;</span><span class="p">)</span>
+<span class="c1">#&gt; [1] &#34;#D77186&#34; &#34;#61A2DA&#34;</span></code></pre></div>
 <p>There are also two S3 methods, one for printing and one for plotting objects of class <code>lisa_palette</code>:</p>
-<pre class="r"><code>class(lisa$`Jean-MichelBasquiat`)
-#&gt; [1] &quot;lisa_palette&quot; &quot;character&quot;
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">class</span><span class="p">(</span><span class="n">lisa</span><span class="o">$</span><span class="n">`Jean-MichelBasquiat`</span><span class="p">)</span>
+<span class="c1">#&gt; [1] &#34;lisa_palette&#34; &#34;character&#34;</span>
 
-plot(lisa$`Jean-MichelBasquiat`)</code></pre>
-<p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-4-1.png" width="100%" /></p>
-<p>That’s pretty much it! Currently, <code>ggplot2</code> usage requires something like <code>scale_color_manual</code>. I’ve thought about including custom <code>ggplot2</code> color functions, similiar to what <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paletteer</code></a> does but have put this on hold, maybe the next release.</p>
-<pre class="r"><code>library(ggplot2)
+<span class="nf">plot</span><span class="p">(</span><span class="n">lisa</span><span class="o">$</span><span class="n">`Jean-MichelBasquiat`</span><span class="p">)</span></code></pre></div>
+<p><img src="/post/2019-02-12-my-first-cran-package_files/figure-html/unnamed-chunk-4-1.png" width="100%" /></p>
 
-ggplot(mtcars, aes(mpg, disp)) + 
-  geom_point(aes(col = factor(gear)), size = 3) + 
-  scale_color_manual(values = lisa$`Jean-MichelBasquiat`) + 
-  theme_bw()</code></pre>
-<p><img src="/post/2019-04-12-my-first-cran-package_files/figure-html/unnamed-chunk-5-1.png" width="100%" /></p>
-</div>
-<div id="cran-submission-process" class="section level2">
-<h2>CRAN Submission Process</h2>
-<p>I submitted the package, got rejected with correction comments, resubmitted, and the package was on CRAN the next day. This all took a total of 5 days. My first submission was rejected because I had redundant wording and didn’t include a reference to colorlisa. Redundant wording was things like <em>“This is an <strong>R</strong> package…”</em>. This type of wording in the description is considered redundant because the user already knows its an R package.</p>
-</div>
-<div id="takeaways" class="section level2">
-<h2>Takeaways</h2>
-<p>If you’re like me and want to submit a package to CRAN for the first time I would recommend a couple things:</p>
-<ol style="list-style-type: decimal">
-<li><code>devtools</code> and <code>usethis</code> are necessary! They actually aren’t but they make the development process much easier and enjoyable. I submitted my pacakge using <code>devtools::release</code> which introduced me to a whole bunch of checks that I hadn’t thought of. For example, spell check, rhub, and more.</li>
+<p>That&rsquo;s pretty much it! Currently, <code>ggplot2</code> usage requires something like <code>scale_color_manual</code>. I&rsquo;ve thought about including custom <code>ggplot2</code> color functions, similiar to what <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paletteer</code></a> does but have put this on hold, maybe the next release.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">mpg</span><span class="p">,</span> <span class="n">disp</span><span class="p">))</span> <span class="o">+</span> 
+  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">col</span> <span class="o">=</span> <span class="nf">factor</span><span class="p">(</span><span class="n">gear</span><span class="p">)),</span> <span class="n">size</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="n">lisa</span><span class="o">$</span><span class="n">`Jean-MichelBasquiat`</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">theme_bw</span><span class="p">()</span></code></pre></div>
+<p><img src="/post/2019-02-12-my-first-cran-package_files/figure-html/unnamed-chunk-5-1.png" width="100%" /></p>
+
+<h2 id="cran-submission-process">CRAN Submission Process</h2>
+
+<p>I submitted the package, got rejected with correction comments, resubmitted, and the package was on CRAN the next day. This all took a total of 5 days. My first submission was rejected because I had redundant wording and didn&rsquo;t include a reference to colorlisa. Redundant wording was things like <em>&ldquo;This is an <strong>R</strong> package&hellip;&rdquo;</em>. This type of wording in the description is considered redundant because the user already knows its an R package.</p>
+
+<h2 id="takeaways">Takeaways</h2>
+
+<p>If you&rsquo;re like me and want to submit a package to CRAN for the first time I would recommend a couple things:</p>
+
+<ol>
+<li><code>devtools</code> and <code>usethis</code> are necessary! They actually aren&rsquo;t but they make the development process much easier and enjoyable. I submitted my pacakge using <code>devtools::release</code> which introduced me to a whole bunch of checks that I hadn&rsquo;t thought of. For example, spell check, rhub, and more.</li>
 <li>Test your code with <code>testthat</code>, check coverage with <code>covr</code>, continously integrate your code with services like travis-ci and appveyor.</li>
 <li>When possible, make your package <a href="http://www.tinyverse.org/">lightweight</a>, the less dependencies the better.</li>
-<li>Tweet about your package! No one will use it if they don’t know it exists.</li>
-<li>Read relevant sections of <a href="https://r-pkgs.org/" class="uri">https://r-pkgs.org/</a></li>
+<li>Tweet about your package! No one will use it if they don&rsquo;t know it exists.</li>
+<li>Read relevant sections of <a href="https://r-pkgs.org/">https://r-pkgs.org/</a></li>
 </ol>
-</div>
 
-    </div>
-    
-      <div class="pagination">
-        <div class="pagination__title">
-          <span class="pagination__title-h">Read other posts</span>
-          <hr />
-        </div>
-        <div class="pagination__buttons">
-          
-            <span class="button previous">
-              <a href="/post/iteration/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Iteration the Easy Way</span>
-              </a>
-            </span>
-          
-          
-            <span class="button next">
-              <a href="/post/testing-equality-of-multiple-expressions/">
-                <span class="button__text">Testing Equality of Multiple Expressions</span>
-                <span class="button__icon">→</span>
-              </a>
-            </span>
-          
-        </div>
-      </div>
-    
 
     
-
-    </div>
-
-      </div>
-
-      
-        <footer class="footer">
-  <div class="footer__inner">
-    
-      <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-      <div class="copyright">
-        <span>© 2020 Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span>
-        <span>Theme created by <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span>
-      </div>
-    
-  </div>
-</footer>
-
-<script src="/assets/main.js"></script>
-<script src="/assets/prism.js"></script>
+</article>
 
 
-      
+        <footer>
+            <p>
+                &copy; 2020. Proudly made with 💕 with <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://tailwindcss.com/" target="_blank">TailwindCSS</a>.
+            </p>
+        </footer>
     </div>
 
     
-      
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -329,6 +186,5 @@ if (!doNotTrack) {
 }
 </script>
 
-    
-  </body>
+</body>
 </html>

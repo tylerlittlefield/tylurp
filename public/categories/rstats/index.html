@@ -1,399 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.1" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-      <title>rstats :: Tyler Littlefield</title>
     
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<meta name="robots" content="noodp"/>
-<link rel="canonical" href="/categories/rstats/" />
-
-
-
-
-
-<link rel="stylesheet" href="/assets/style.css">
-
-
-<link rel="stylesheet" href="/style.css">
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
-<link rel="shortcut icon" href="/img/favicon.png">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="rstats"/>
-<meta name="twitter:description" content=""/>
-
-
-
-<meta property="og:title" content="rstats" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/categories/rstats/" />
-
-<meta property="og:updated_time" content="2019-11-24T00:00:00+00:00" /><meta property="og:site_name" content="Tyler Littlefield" />
-
-
-
-<link rel="alternate" type="application/rss+xml" href="/categories/rstats/index.xml" title="Tyler Littlefield" />
-
-
-
-<link rel="stylesheet" href="/css/code/zenburn.css" rel="stylesheet" id="theme-stylesheet">
-<script src="/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-
-  </head>
-  <body class="">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="rstats - ~/tylerlittlefield">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:site" content="/">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:image" content="/">
     
-      
-        
-          <li><a href="/about">About</a></li>
-        
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">
-            Show more
-            <span class="menu__sub-inner-more-trigger-icon"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-          </li>
+    
+    <meta property="og:locale" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="rstats - ~/tylerlittlefield">
+    <meta property="og:description" content="">
+    <meta property="og:url" content="/categories/rstats/">
+    <meta property="og:site_name" content="~/tylerlittlefield">
+    <meta property="og:image" content="/">
+    
+    <title>rstats - ~/tylerlittlefield</title>
 
-          <ul class="menu__sub-inner-more hidden">
+    <meta name="author" content="">
+    <meta name="description" content="">
+
+    
+    
+    <link rel="alternate" href="/categories/rstats/index.xml" type="application/rss+xml" title="~/tylerlittlefield">
+    
+
+    
+    
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/chroma.dracula.css">
+</head>
+<body class="font-serif bg-gray-200 border-t-4 border-blue-500 antialiased">
+    <div class="w-full p-6 md:w-2/3 md:px-0 md:mx-auto xl:w-2/5">
+        <header class="mb-6">
             
-              
-                <li><a href="/archive">Archive</a></li>
-              
+            <div class="mb-6 md:flex md:items-center">
+                
+                    <div>
+                        <a class="text-lg mb-8 inline-block" href="/">&larr; Back Home</a>
+
+                        <h1 class="text-4xl font-bold">rstats</h1>
+                    </div>
+                
+            </div>
+
             
-              
-                <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-              
             
-              
-                <li><a href="/showcase">Showcase</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-  </ul>
+        </header>
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="/archive">Archive</a></li>
-      
-    
-      
-        <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-      
-    
-      
-        <li><a href="/showcase">Showcase</a></li>
-      
-    
-  </ul>
-</nav>
+        
+        
+<section class="mb-24">
+    <div>
+    <h2 class="text-3xl font-bold mb-2">2019</h2>
 
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-
-      </span>
-    </span>
-  </span>
-</header>
-
-
-      <div class="content">
-        
-  <div class="posts">
-    
-    
-
-    
-    
-    
-
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/comparing-sets/">Comparing Sets</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2019-11-24
-          </span>
-        
-        
-        
-      </div>
-
-
-      
-        <span class="post-tags">
-          
-            #<a href="/tags/rstats/">rstats</a>&nbsp;
-          
-            #<a href="/tags/vectors/">vectors</a>&nbsp;
-          
-            #<a href="/tags/sets/">sets</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          
-            Introduction The task of comparing sets (unique vectors) is a common one, we often want to confirm whether two things are the same or not. For example, we might rewrite a function to make it run faster, in this case we want to make sure that the new and old function output the same result. On the other hand, we might rewrite a function to fix a bug, in this context we want to make sure the output of the new function is different, potentially resolving the bug and producing the correct output.
-          
-        
-      </div>
-      <div><a class="read-more button" href="/post/comparing-sets/">Read more →</a></div>
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/iteration/">Iteration the Easy Way</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2019-09-01
-          </span>
-        
-        
-        
-      </div>
-
-
-      
-        <span class="post-tags">
-          
-            #<a href="/tags/rstats/">rstats</a>&nbsp;
-          
-            #<a href="/tags/iteration/">iteration</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          
-            I do not come from a computer science background but my guess is that base R’s apply family of functions stand out as something strange. This strangeness might be because for loops are explicit and make it clear what’s going on, so why obfuscate the logic?
-But on the other hand, I think you could argue that while the logic might be clear, the intent isn’t, at least not immediately.
-          
-        
-      </div>
-      <div><a class="read-more button" href="/post/iteration/">Read more →</a></div>
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/my-first-cran-package/">My First CRAN Package</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2019-04-12
-          </span>
-        
-        
-        
-      </div>
-
-
-      
-        <span class="post-tags">
-          
-            #<a href="/tags/rstats/">rstats</a>&nbsp;
-          
-            #<a href="/tags/package/">package</a>&nbsp;
-          
-            #<a href="/tags/development/">development</a>&nbsp;
-          
-            #<a href="/tags/cran/">CRAN</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          
-            Thanks, your package is on its way to CRAN.
- Introduction I am really excited to announce (12 days late) that lisa is on CRAN, my first R package available on the Comprehensive R Archive Network! This was a pretty big deal for me because I have wanted to submit something to CRAN for a couple of years now.
-Anyway, lisa is a color palette pacakge, it provides R users with 128 color palettes based on artwork from the worlds greatest artists.
-          
-        
-      </div>
-      <div><a class="read-more button" href="/post/my-first-cran-package/">Read more →</a></div>
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/testing-equality-of-multiple-expressions/">Testing Equality of Multiple Expressions</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-04-03
-          </span>
-        
-        
-        
-      </div>
-
-
-      
-        <span class="post-tags">
-          
-            #<a href="/tags/rstats/">rstats</a>&nbsp;
-          
-            #<a href="/tags/testing/">testing</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          
-            Credit to BrodieG: <a href="https://stackoverflow.com/questions/27325005">https://stackoverflow.com/questions/27325005</a>
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.
-          
-        
-      </div>
-      <div><a class="read-more button" href="/post/testing-equality-of-multiple-expressions/">Read more →</a></div>
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/reproducibility/">Reproducibility</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-01-30
-          </span>
-        
-        
-        
-      </div>
-
-
-      
-        <span class="post-tags">
-          
-            #<a href="/tags/rstats/">rstats</a>&nbsp;
-          
-            #<a href="/tags/stackoverflow/">stackoverflow</a>&nbsp;
-          
-            #<a href="/tags/social-programming/">social programming</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          
-            Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example.
- If you&rsquo;ve ever asked a question on Stack Overflow (SO), you may recognize the quote above. This is because reproducibility is incredibly important when asking programming questions and it&rsquo;s often overlooked. To be brief, a great reproducible example should be:
- Minimal &ndash; Provide the least amount of code needed to reproduce the problem.
-          
-        
-      </div>
-      <div><a class="read-more button" href="/post/reproducibility/">Read more →</a></div>
-    </div>
-    
-    <div class="pagination">
-  <div class="pagination__buttons">
-    
-    
-  </div>
+    <ol>
+        <li class="mb-6 md:flex md:flex-row">
+            <time class=" block md:flex-l-24" datetime="2019-11-24 00:00:00 UTC">Nov 24</time>
+            <a class="text-lg md:ml-12" href="/post/comparing-sets/">Comparing sets</a>
+        </li><li class="mb-6 md:flex md:flex-row">
+            <time class=" block md:flex-l-24" datetime="2019-02-12 00:00:00 UTC">Feb 12</time>
+            <a class="text-lg md:ml-12" href="/post/my-first-cran-package/">My first CRAN package</a>
+        </li>
+    </ol>
 </div>
 
-  </div>
+    <div>
+    <h2 class="text-3xl font-bold mb-2">2018</h2>
 
-      </div>
+    <ol>
+        <li class="mb-6 md:flex md:flex-row">
+            <time class=" block md:flex-l-24" datetime="2018-04-03 00:00:00 UTC">Apr 03</time>
+            <a class="text-lg md:ml-12" href="/post/testing-equality-of-multiple-expressions/">Testing equality of multiple expressions</a>
+        </li><li class="mb-6 md:flex md:flex-row">
+            <time class=" block md:flex-l-24" datetime="2018-01-30 00:00:00 UTC">Jan 30</time>
+            <a class="text-lg md:ml-12" href="/post/reproducibility/">Reproducibility</a>
+        </li><li class="mb-6 md:flex md:flex-row">
+            <time class=" block md:flex-l-24" datetime="2018-01-30 00:00:00 UTC">Jan 30</time>
+            <a class="text-lg md:ml-12" href="/post/about-me/">About me</a>
+        </li>
+    </ol>
+</div>
 
-      
-        <footer class="footer">
-  <div class="footer__inner">
     
-      <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-      <div class="copyright">
-        <span>© 2020 Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span>
-        <span>Theme created by <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span>
-      </div>
-    
-  </div>
-</footer>
-
-<script src="/assets/main.js"></script>
-<script src="/assets/prism.js"></script>
+</section>
 
 
-      
+        <footer>
+            <p>
+                &copy; 2020. Proudly made with 💕 with <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://tailwindcss.com/" target="_blank">TailwindCSS</a>.
+            </p>
+        </footer>
     </div>
 
     
-      
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -407,6 +120,5 @@ if (!doNotTrack) {
 }
 </script>
 
-    
-  </body>
+</body>
 </html>

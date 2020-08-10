@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>development on Tyler Littlefield</title>
+    <title>development on ~/tylerlittlefield</title>
     <link>/tags/development/</link>
-    <description>Recent content in development on Tyler Littlefield</description>
+    <description>Recent content in development on ~/tylerlittlefield</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 12 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/development/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>My First CRAN Package</title>
+      <title>My first CRAN package</title>
       <link>/post/my-first-cran-package/</link>
-      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/my-first-cran-package/</guid>
       <description>Thanks, your package is on its way to CRAN.

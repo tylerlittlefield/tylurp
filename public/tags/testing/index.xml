@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>testing on Tyler Littlefield</title>
+    <title>testing on ~/tylerlittlefield</title>
     <link>/tags/testing/</link>
-    <description>Recent content in testing on Tyler Littlefield</description>
+    <description>Recent content in testing on ~/tylerlittlefield</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Apr 2018 00:00:00 +0000</lastBuildDate>
@@ -12,13 +12,13 @@
     
     
     <item>
-      <title>Testing Equality of Multiple Expressions</title>
+      <title>Testing equality of multiple expressions</title>
       <link>/post/testing-equality-of-multiple-expressions/</link>
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/testing-equality-of-multiple-expressions/</guid>
       <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
     </item>
     
   </channel>

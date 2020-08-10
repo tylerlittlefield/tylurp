@@ -5,6 +5,7 @@ date: '2018-01-30'
 slug: reproducibility
 categories: ['rstats']
 tags: ['rstats', 'stackoverflow', 'social programming']
+description: ''
 ---
 
 > _Welcome to SO. In order to answer your question, please provide a minimal, complete, and verifiable example._

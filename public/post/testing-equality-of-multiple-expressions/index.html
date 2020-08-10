@@ -1,316 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.1" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-      <title>Testing Equality of Multiple Expressions :: Tyler Littlefield</title>
     
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all."/>
-<meta name="keywords" content=""/>
-<meta name="robots" content="noodp"/>
-<link rel="canonical" href="/post/testing-equality-of-multiple-expressions/" />
-
-
-
-
-
-<link rel="stylesheet" href="/assets/style.css">
-
-
-<link rel="stylesheet" href="/style.css">
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
-<link rel="shortcut icon" href="/img/favicon.png">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Testing Equality of Multiple Expressions"/>
-<meta name="twitter:description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all."/>
-
-
-
-<meta property="og:title" content="Testing Equality of Multiple Expressions" />
-<meta property="og:description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/testing-equality-of-multiple-expressions/" />
-<meta property="article:published_time" content="2018-04-03T00:00:00+00:00" />
-<meta property="article:modified_time" content="2018-04-03T00:00:00+00:00" /><meta property="og:site_name" content="Tyler Littlefield" />
-
-
-
-
-
-
-<link rel="stylesheet" href="/css/code/zenburn.css" rel="stylesheet" id="theme-stylesheet">
-<script src="/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-
-  </head>
-  <body class="">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Testing equality of multiple expressions - ~/tylerlittlefield">
+    <meta name="twitter:description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.">
+    <meta name="twitter:site" content="/">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:image" content="/images/avatar.jpeg">
     
-      
-        
-          <li><a href="/about">About</a></li>
-        
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">
-            Show more
-            <span class="menu__sub-inner-more-trigger-icon"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-          </li>
+    
+    <meta property="og:locale" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Testing equality of multiple expressions - ~/tylerlittlefield">
+    <meta property="og:description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.">
+    <meta property="og:url" content="/post/testing-equality-of-multiple-expressions/">
+    <meta property="og:site_name" content="~/tylerlittlefield">
+    <meta property="og:image" content="/images/avatar.jpeg">
+    
+    <title>Testing equality of multiple expressions - ~/tylerlittlefield</title>
 
-          <ul class="menu__sub-inner-more hidden">
+    <meta name="author" content="Tyler Littlefield">
+    <meta name="description" content="Credit to BrodieG: https://stackoverflow.com/questions/27325005
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.">
+
+    
+    
+
+    
+    
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/chroma.dracula.css">
+</head>
+<body class="font-serif bg-gray-200 border-t-4 border-blue-500 antialiased">
+    <div class="w-full p-6 md:w-2/3 md:px-0 md:mx-auto xl:w-2/5">
+        <header class="mb-6">
             
-              
-                <li><a href="/archive">Archive</a></li>
-              
+            <div class="mb-6 md:flex md:items-center">
+                
+<div>
+    <a class="text-lg mb-8 inline-block" href="/">&larr; Back Home</a>
+
+    
+    
+    <h1 class="text-4xl font-bold">Testing equality of multiple expressions</h1>
+    <time datetime="2018-04-03 00:00:00 UTC">03 Apr 2018</time>
+    
+    
+    
+    <ol class="mt-4">
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/rstats">rstats</a>
+        </li>
+        
+        <li class="inline-block">
+            <a class="border-none text-gray-800 text-xs bg-gray-400 hover:bg-gray-600 hover:text-white rounded-sm px-3 py-1" href="/tags/testing">testing</a>
+        </li>
+        
+    </ol>
+    
+</div>
+
+            </div>
+
             
-              
-                <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-              
             
-              
-                <li><a href="/showcase">Showcase</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-  </ul>
+        </header>
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="/archive">Archive</a></li>
-      
-    
-      
-        <li><a href="https://www.tylerlittlefield.com/rstudio">RStudio</a></li>
-      
-    
-      
-        <li><a href="/showcase">Showcase</a></li>
-      
-    
-  </ul>
-</nav>
-
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-
-      </span>
-    </span>
-  </span>
-</header>
-
-
-      <div class="content">
         
-  <div class="post">
-    <h2 class="post-title"><a href="/post/testing-equality-of-multiple-expressions/">Testing Equality of Multiple Expressions</a></h2>
-    <div class="post-meta">
-      
-        <span class="post-date">
-            2018-04-03
-        </span>
-      
-      
-      
-    </div>
-
-    
-      <span class="post-tags">
         
-          #<a href="/tags/rstats/">rstats</a>&nbsp;
-        
-          #<a href="/tags/testing/">testing</a>&nbsp;
-        
-      </span>
-    
+<article class="mb-12">
+    <p>Credit to BrodieG: <a href="https://stackoverflow.com/questions/27325005">https://stackoverflow.com/questions/27325005</a></p>
 
-    
+<p>This post is essentially an extension of a previous post I <a href="https://tylurp.rbind.io/2018/02/13/measuring-performance/">wrote</a>. The only addition is a cool idea for testing near equality of outputs. I&rsquo;m calling this an &ldquo;equality matrix&rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the <code>all.equal</code> function only takes two solutions at a time.</p>
 
-    <div class="post-content">
-      
-
-
-<p>Credit to BrodieG: <a href="https://stackoverflow.com/questions/27325005" class="uri">https://stackoverflow.com/questions/27325005</a></p>
-<p>This post is essentially an extension of a previous post I <a href="https://tylurp.rbind.io/2018/02/13/measuring-performance/">wrote</a>. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the <code>all.equal</code> function only takes two solutions at a time.</p>
 <p>Consider the following problem: <em>extract all numbers in a vector that have a non zero value after the decimal.</em></p>
+
 <p>We could do this a few ways:</p>
-<pre class="r"><code># vector
-x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
-
-# create objects for testing equality of output
-integer_method &lt;- x[as.integer(x) != x]
-trunc_method &lt;- x[trunc(x) != x]
-round_method &lt;- x[round(x) != x]
-mod_method &lt;- x[x %% 1 != 0]
-floor_method &lt;- x[floor(x) != x]</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># vector</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">0.0</span><span class="p">,</span> <span class="m">0.5</span><span class="p">,</span> <span class="m">1.000</span><span class="p">,</span> <span class="m">1.5</span><span class="p">,</span> <span class="m">1.6</span><span class="p">,</span> <span class="m">1.7</span><span class="p">,</span> <span class="m">1.75</span><span class="p">,</span> <span class="m">2.0</span><span class="p">,</span> <span class="m">2.4</span><span class="p">,</span> <span class="m">2.5</span><span class="p">,</span> <span class="m">3.0</span><span class="p">,</span> <span class="m">74.0</span><span class="p">)</span>
+<span class="c1"># create objects for testing equality of output</span>
+<span class="n">integer_method</span> <span class="o">&lt;-</span> <span class="n">x</span><span class="nf">[as.integer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">x]</span>
+<span class="n">trunc_method</span> <span class="o">&lt;-</span> <span class="n">x</span><span class="nf">[trunc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">x]</span>
+<span class="n">round_method</span> <span class="o">&lt;-</span> <span class="n">x</span><span class="nf">[round</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">x]</span>
+<span class="n">mod_method</span> <span class="o">&lt;-</span> <span class="n">x[x</span> <span class="o">%%</span> <span class="m">1</span> <span class="o">!=</span> <span class="m">0</span><span class="n">]</span>
+<span class="n">floor_method</span> <span class="o">&lt;-</span> <span class="n">x</span><span class="nf">[floor</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">x]</span></code></pre></div>
 <p>Now instead of testing every combination to make sure the outputs are equal we can create a matrix that tests all possible combinations at once:</p>
-<pre class="r"><code># create an equality matrix
-methods_vec &lt;- c(&quot;integer_method&quot;, &quot;trunc_method&quot;, &quot;round_method&quot;, &quot;mod_method&quot;, &quot;floor_method&quot;)
-objs &lt;- mget(methods_vec)
-outer(objs, objs, Vectorize(all.equal))
-#&gt;                integer_method trunc_method round_method mod_method floor_method
-#&gt; integer_method           TRUE         TRUE         TRUE       TRUE         TRUE
-#&gt; trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE
-#&gt; round_method             TRUE         TRUE         TRUE       TRUE         TRUE
-#&gt; mod_method               TRUE         TRUE         TRUE       TRUE         TRUE
-#&gt; floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</code></pre>
-<p>That’s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let’s benchmark 😄</p>
-<p>If you’ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
-<pre class="r"><code>library(ggplot2)   # plotting
-library(patchwork) # plot multiple plots
-library(dplyr)     # using this for pipe functionality 
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># create an equality matrix</span>
+<span class="n">methods_vec</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;integer_method&#34;</span><span class="p">,</span> <span class="s">&#34;trunc_method&#34;</span><span class="p">,</span> <span class="s">&#34;round_method&#34;</span><span class="p">,</span> <span class="s">&#34;mod_method&#34;</span><span class="p">,</span> <span class="s">&#34;floor_method&#34;</span><span class="p">)</span>
+<span class="n">objs</span> <span class="o">&lt;-</span> <span class="nf">mget</span><span class="p">(</span><span class="n">methods_vec</span><span class="p">)</span>
+<span class="nf">outer</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">objs</span><span class="p">,</span> <span class="nf">Vectorize</span><span class="p">(</span><span class="n">all.equal</span><span class="p">))</span>
+<span class="c1">#&gt;                integer_method trunc_method round_method mod_method floor_method</span>
+<span class="c1">#&gt; integer_method           TRUE         TRUE         TRUE       TRUE         TRUE</span>
+<span class="c1">#&gt; trunc_method             TRUE         TRUE         TRUE       TRUE         TRUE</span>
+<span class="c1">#&gt; round_method             TRUE         TRUE         TRUE       TRUE         TRUE</span>
+<span class="c1">#&gt; mod_method               TRUE         TRUE         TRUE       TRUE         TRUE</span>
+<span class="c1">#&gt; floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</span></code></pre></div>
+<p>That&rsquo;s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let&rsquo;s benchmark 😄</p>
 
-# create vectors of different sizes
-x &lt;- c(0.0, 0.5, 1.000, 1.5, 1.6, 1.7, 1.75, 2.0, 2.4, 2.5, 3.0, 74.0)
-xs &lt;- rep(x, 1e2)
-xm &lt;- rep(x, 1e3)
-xl &lt;- rep(x, 1e4)</code></pre>
+<p>If you&rsquo;ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>                       <span class="c1"># plotting</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">patchwork</span><span class="p">)</span>                     <span class="c1"># plot multiple plots</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">,</span> <span class="n">warn.conflicts</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span> <span class="c1"># using this for pipe functionality </span>
+<span class="c1"># create vectors of different sizes</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">0.0</span><span class="p">,</span> <span class="m">0.5</span><span class="p">,</span> <span class="m">1.000</span><span class="p">,</span> <span class="m">1.5</span><span class="p">,</span> <span class="m">1.6</span><span class="p">,</span> <span class="m">1.7</span><span class="p">,</span> <span class="m">1.75</span><span class="p">,</span> <span class="m">2.0</span><span class="p">,</span> <span class="m">2.4</span><span class="p">,</span> <span class="m">2.5</span><span class="p">,</span> <span class="m">3.0</span><span class="p">,</span> <span class="m">74.0</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e2</span><span class="p">)</span>
+<span class="n">xm</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e3</span><span class="p">)</span>
+<span class="n">xl</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e4</span><span class="p">)</span></code></pre></div>
 <p>Now we benchmark:</p>
-<pre class="r"><code>i &lt;- list(xs, xm, xl)
-
-bench_all &lt;- function(i) {
-  bench::mark(
-    integer_method = i[as.integer(i) != i],
-    trunc_method = i[trunc(i) != i],
-    round_method = i[round(i) != i],
-    mod_method = i[i %% 1 != 0],
-    floor_method = i[floor(i) != i]
-  )
-}
-
-results &lt;- lapply(i, bench_all)</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">i</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">xm</span><span class="p">,</span> <span class="n">xl</span><span class="p">)</span>
+<span class="n">bench_all</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">bench</span><span class="o">::</span><span class="nf">mark</span><span class="p">(</span>
+    <span class="n">integer_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[as.integer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
+    <span class="n">trunc_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[trunc</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
+    <span class="n">round_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[round</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
+    <span class="n">mod_method</span> <span class="o">=</span> <span class="n">i[i</span> <span class="o">%%</span> <span class="m">1</span> <span class="o">!=</span> <span class="m">0</span><span class="n">]</span><span class="p">,</span>
+    <span class="n">floor_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[floor</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+<span class="n">results</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bench_all</span><span class="p">)</span></code></pre></div>
 <p>Then create the plot:</p>
-<pre class="r"><code>p1 &lt;- autoplot(results[[1]]) + 
-  labs(title = &quot;Small Vector&quot;)
-
-p2 &lt;- autoplot(results[[2]]) + 
-  labs(title = &quot;Medium Vector&quot;)
-
-p3 &lt;- autoplot(results[[3]]) + 
-  labs(title = &quot;Large Vector&quot;)
-
-p1 / p2 / p3 </code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">p1</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[1]]</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Small Vector&#34;</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[2]]</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Medium Vector&#34;</span><span class="p">)</span>
+<span class="n">p3</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[3]]</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Large Vector&#34;</span><span class="p">)</span>
+<span class="n">p1</span> <span class="o">/</span> <span class="n">p2</span> <span class="o">/</span> <span class="n">p3</span> </code></pre></div>
 <p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
 
-    </div>
-    
-      <div class="pagination">
-        <div class="pagination__title">
-          <span class="pagination__title-h">Read other posts</span>
-          <hr />
-        </div>
-        <div class="pagination__buttons">
-          
-            <span class="button previous">
-              <a href="/post/my-first-cran-package/">
-                <span class="button__icon">←</span>
-                <span class="button__text">My First CRAN Package</span>
-              </a>
-            </span>
-          
-          
-            <span class="button next">
-              <a href="/post/reproducibility/">
-                <span class="button__text">Reproducibility</span>
-                <span class="button__icon">→</span>
-              </a>
-            </span>
-          
-        </div>
-      </div>
-    
 
     
-
-    </div>
-
-      </div>
-
-      
-        <footer class="footer">
-  <div class="footer__inner">
-    
-      <a href="/" class="logo" style="text-decoration: none;">
-  
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367"/>
-</svg>
-</span>
-    <span class="logo__text">tyler littlefield</span>
-    <span class="logo__cursor"></span>
-  
-</a>
-
-      <div class="copyright">
-        <span>© 2020 Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span>
-        <span>Theme created by <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span>
-      </div>
-    
-  </div>
-</footer>
-
-<script src="/assets/main.js"></script>
-<script src="/assets/prism.js"></script>
+</article>
 
 
-      
+        <footer>
+            <p>
+                &copy; 2020. Proudly made with 💕 with <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://tailwindcss.com/" target="_blank">TailwindCSS</a>.
+            </p>
+        </footer>
     </div>
 
     
-      
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -324,6 +168,5 @@ if (!doNotTrack) {
 }
 </script>
 
-    
-  </body>
+</body>
 </html>

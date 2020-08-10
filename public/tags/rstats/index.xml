@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rstats on Tyler Littlefield</title>
+    <title>rstats on ~/tylerlittlefield</title>
     <link>/tags/rstats/</link>
-    <description>Recent content in rstats on Tyler Littlefield</description>
+    <description>Recent content in rstats on ~/tylerlittlefield</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 24 Nov 2019 00:00:00 +0000</lastBuildDate>
@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Comparing Sets</title>
+      <title>Comparing sets</title>
       <link>/post/comparing-sets/</link>
       <pubDate>Sun, 24 Nov 2019 00:00:00 +0000</pubDate>
       
@@ -21,19 +21,9 @@
     </item>
     
     <item>
-      <title>Iteration the Easy Way</title>
-      <link>/post/iteration/</link>
-      <pubDate>Sun, 01 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/post/iteration/</guid>
-      <description>I do not come from a computer science background but my guess is that base R’s apply family of functions stand out as something strange. This strangeness might be because for loops are explicit and make it clear what’s going on, so why obfuscate the logic?
-But on the other hand, I think you could argue that while the logic might be clear, the intent isn’t, at least not immediately.</description>
-    </item>
-    
-    <item>
-      <title>My First CRAN Package</title>
+      <title>My first CRAN package</title>
       <link>/post/my-first-cran-package/</link>
-      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/my-first-cran-package/</guid>
       <description>Thanks, your package is on its way to CRAN.
@@ -42,13 +32,13 @@ Anyway, lisa is a color palette pacakge, it provides R users with 128 color pale
     </item>
     
     <item>
-      <title>Testing Equality of Multiple Expressions</title>
+      <title>Testing equality of multiple expressions</title>
       <link>/post/testing-equality-of-multiple-expressions/</link>
       <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/testing-equality-of-multiple-expressions/</guid>
       <description>Credit to BrodieG: https://stackoverflow.com/questions/27325005
-This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I’m calling this an “equality matrix”, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
+This post is essentially an extension of a previous post I wrote. The only addition is a cool idea for testing near equality of outputs. I&amp;rsquo;m calling this an &amp;ldquo;equality matrix&amp;rdquo;, a matrix of methods that displays whether or not they are equal to each other. One use case is benchmarking. As we benchmark multiple solutions to a single problem, testing whether or not the outputs are equal becomes more time consuming as the all.</description>
     </item>
     
     <item>
