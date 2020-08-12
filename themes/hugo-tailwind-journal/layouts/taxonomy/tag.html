@@ -1,13 +1,13 @@
 {{ define "content" }}
 <section class="mb-24">
     <ul class="-mx-2">
-        {{ range .Pages -}}
+        {{ range .Data.Pages }}
         <li>
             <a href="{{ .RelPermalink }}">
                 {{ .Title }}
             </a>
         </li>
-        {{- end }}
+        {{ end }}
     </ul>
 </section>
 {{ end }}
