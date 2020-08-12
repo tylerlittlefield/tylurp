@@ -109,38 +109,7 @@ This post is essentially an extension of a previous post I wrote. The only addit
 <span class="c1">#&gt; round_method             TRUE         TRUE         TRUE       TRUE         TRUE</span>
 <span class="c1">#&gt; mod_method               TRUE         TRUE         TRUE       TRUE         TRUE</span>
 <span class="c1">#&gt; floor_method             TRUE         TRUE         TRUE       TRUE         TRUE</span></code></pre></div>
-<p>That&rsquo;s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely. For fun, let&rsquo;s benchmark 😄</p>
-
-<p>If you&rsquo;ve read my previous post on benchmarking, this should all be familiar. First we load the necessary libraries and then we create vectors of different size to test how each solution handles small, medium, and large data:</p>
-<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>                       <span class="c1"># plotting</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">patchwork</span><span class="p">)</span>                     <span class="c1"># plot multiple plots</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">,</span> <span class="n">warn.conflicts</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span> <span class="c1"># using this for pipe functionality </span>
-<span class="c1"># create vectors of different sizes</span>
-<span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">0.0</span><span class="p">,</span> <span class="m">0.5</span><span class="p">,</span> <span class="m">1.000</span><span class="p">,</span> <span class="m">1.5</span><span class="p">,</span> <span class="m">1.6</span><span class="p">,</span> <span class="m">1.7</span><span class="p">,</span> <span class="m">1.75</span><span class="p">,</span> <span class="m">2.0</span><span class="p">,</span> <span class="m">2.4</span><span class="p">,</span> <span class="m">2.5</span><span class="p">,</span> <span class="m">3.0</span><span class="p">,</span> <span class="m">74.0</span><span class="p">)</span>
-<span class="n">xs</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e2</span><span class="p">)</span>
-<span class="n">xm</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e3</span><span class="p">)</span>
-<span class="n">xl</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">1e4</span><span class="p">)</span></code></pre></div>
-<p>Now we benchmark:</p>
-<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">i</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">xm</span><span class="p">,</span> <span class="n">xl</span><span class="p">)</span>
-<span class="n">bench_all</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">bench</span><span class="o">::</span><span class="nf">mark</span><span class="p">(</span>
-    <span class="n">integer_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[as.integer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
-    <span class="n">trunc_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[trunc</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
-    <span class="n">round_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[round</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span><span class="p">,</span>
-    <span class="n">mod_method</span> <span class="o">=</span> <span class="n">i[i</span> <span class="o">%%</span> <span class="m">1</span> <span class="o">!=</span> <span class="m">0</span><span class="n">]</span><span class="p">,</span>
-    <span class="n">floor_method</span> <span class="o">=</span> <span class="n">i</span><span class="nf">[floor</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="n">i]</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-<span class="n">results</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bench_all</span><span class="p">)</span></code></pre></div>
-<p>Then create the plot:</p>
-<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">p1</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[1]]</span><span class="p">)</span> <span class="o">+</span> 
-  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Small Vector&#34;</span><span class="p">)</span>
-<span class="n">p2</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[2]]</span><span class="p">)</span> <span class="o">+</span> 
-  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Medium Vector&#34;</span><span class="p">)</span>
-<span class="n">p3</span> <span class="o">&lt;-</span> <span class="nf">autoplot</span><span class="p">(</span><span class="n">results[[3]]</span><span class="p">)</span> <span class="o">+</span> 
-  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Large Vector&#34;</span><span class="p">)</span>
-<span class="n">p1</span> <span class="o">/</span> <span class="n">p2</span> <span class="o">/</span> <span class="n">p3</span> </code></pre></div>
-<p><img src="/post/2018-04-03-testing-equality-of-multiple-expressions_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
+<p>That&rsquo;s it! With just a few lines of code we can test the equality of multiple solutions and print the result nicely.</p>
 
 
     

@@ -24,6 +24,7 @@ We must keep in mind whether or not our method of comparison considers unique va
 Recently, I needed to come up with a function to compare one set to another set and output the the difference. The goal is to say something like:
 
 > These values are in the current output but not the older/pre-existing output. 
+
 Since I am only concerned in the unique values, `setdiff` sounds like a good approach to this problem. However, there is one caveat... I constantly forget how `setdiff` works. Is it comparing what **X** doesn't have in **Y**? The other way around? My inability to remember is what prompted the creation of a function I call `compare` and it seems others share my experience.
 
 <!--html_preserve-->{{% tweet "1197634755430367235" %}}<!--/html_preserve-->
